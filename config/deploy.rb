@@ -14,6 +14,8 @@ set :domain, '78.141.216.178'
 set :deploy_to, '/root/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
+set :shared_paths, ['config/sidekiq.yml', 'config/database.yml', 'config/master.key', 'log', 'shared'] ＃很关键，这几个文件夹会在多次部署间，通过符号链接的形式共享
+
 
 # Optional settings:
 set :user, 'root'          # Username in the server to SSH to.
