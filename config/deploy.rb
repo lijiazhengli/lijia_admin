@@ -11,7 +11,7 @@ require 'mina/git'
 
 set :application_name, 'lijia_admin'
 set :domain, '78.141.216.178'
-set :deploy_to, '/root/data'
+set :deploy_to, '/root/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
 
@@ -31,7 +31,7 @@ set :user, 'root'          # Username in the server to SSH to.
 task :remote_environment do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
-  invoke :'rbenv:load'
+  # invoke :'rbenv:load'
 
   # For those using RVM, use this to load an RVM version@gemset.
   # invoke :'rvm:use', 'ruby-1.9.3-p125@default'
