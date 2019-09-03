@@ -1,5 +1,7 @@
 require 'mina/rails'
 require 'mina/git'
+require 'mina/puma'
+require 'mina/rbenv'
 # require 'mina/rbenv'  # for rbenv support. (https://rbenv.org)
 # require 'mina/rvm'    # for rvm support. (https://rvm.io)
 
@@ -14,6 +16,9 @@ set :domain, '78.141.216.178'
 set :deploy_to, '/root/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
+set :stage, 'production'
+set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
+
 
 # Optional settings:
 set :user, 'root'          # Username in the server to SSH to.
@@ -31,7 +36,7 @@ set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/
 task :remote_environment do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
-  # invoke :'rbenv:load'
+  invoke :'rbenv:load'
 
   # For those using RVM, use this to load an RVM version@gemset.
   # invoke :'rvm:use', 'ruby-1.9.3-p125@default'
