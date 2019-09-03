@@ -1,4 +1,3 @@
-require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/puma'
@@ -17,29 +16,15 @@ set :domain, '78.141.216.178'
 set :deploy_to, '/root/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
-set :stage, 'production'
-set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
+# set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
 # Optional settings:
 set :user, 'root'          # Username in the server to SSH to.
 
-set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key')
-set :shared_paths, ['log']
 
-task :setup => :environment do
-  queue! %[mkdir -p "#{deploy_to}/shared/log"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/log"]
-
-  queue! %[mkdir -p "#{deploy_to}/shared/config"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/config"]
-
-  queue! %[mkdir -p "#{deploy_to}/shared/tmp/pids"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/pids"]
-
-  queue! %[mkdir -p "#{deploy_to}/shared/tmp/sockets"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/sockets"]
+task :setup do
+  # command %{rbenv install 2.3.0 --skip-existing}
 end
 
 # Put any custom commands you need to run at setup
@@ -62,8 +47,11 @@ task :deploy do
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
-    to :launch do
-      queue "touch #{deploy_to}/tmp/restart.txt"
+    on :launch do
+      in_path(fetch(:current_path)) do
+        command %{mkdir -p tmp/}
+        command %{touch tmp/restart.txt}
+      end
     end
   end
 
