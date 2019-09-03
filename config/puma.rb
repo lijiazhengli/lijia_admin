@@ -37,3 +37,17 @@ stdout_redirect nil, "#{app_dir}/log/puma.stderr.log", true
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+
+#!/usr/bin/env puma
+
+environment "production"
+basedir = "/root/data/lijia_admin"
+daemonize true
+threads 2,16
+
+bind  "unix:///root/data/lijia_admin/shared/tmp/sockets/puma.sock"
+pidfile  "#{basedir}/current/tmp/puma/pid"
+state_path "#{basedir}/current/tmp/puma/state"
+preload_app!
+activate_control_app

@@ -1,3 +1,4 @@
+require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/puma'
@@ -19,34 +20,26 @@ set :branch, 'master'
 set :stage, 'production'
 set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
-
 # Optional settings:
 set :user, 'root'          # Username in the server to SSH to.
-  # set :port, '30000'           # SSH port number.
-  # set :forward_agent, true     # SSH forward_agent.
 
-# Shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
-# Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
-# run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key')
-task :setup => :environment do
-  # Puma needs a place to store its pid file and socket file.
-  queue! %(mkdir -p "#{deploy_to}/#{shared_path}/tmp/sockets")
-  queue! %(chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/sockets")
-  queue! %(mkdir -p "#{deploy_to}/#{shared_path}/tmp/pids")
-  queue! %(chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/tmp/pids")
-end
-set :shared_paths, ['tmp/pids', 'tmp/sockets']
-# This task is the environment that is loaded for all remote run commands, such as
-# `mina deploy` or `mina rake`.
-task :remote_environment do
-  # If you're using rbenv, use this to load the rbenv environment.
-  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
-  invoke :'rbenv:load'
+set :shared_paths, ['log']
 
-  # For those using RVM, use this to load an RVM version@gemset.
-  # invoke :'rvm:use', 'ruby-1.9.3-p125@default'
+task :setup => :environment do
+  queue! %[mkdir -p "#{deploy_to}/shared/log"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/log"]
+
+  queue! %[mkdir -p "#{deploy_to}/shared/config"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/config"]
+
+  queue! %[mkdir -p "#{deploy_to}/shared/tmp/pids"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/pids"]
+
+  queue! %[mkdir -p "#{deploy_to}/shared/tmp/sockets"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/sockets"]
 end
 
 # Put any custom commands you need to run at setup
@@ -69,12 +62,8 @@ task :deploy do
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
-    on :launch do
-      in_path(fetch(:current_path)) do
-        command %{mkdir -p tmp/}
-        command %{touch tmp/restart.txt}
-      end
-      invoke :'puma:phased_restart'
+    to :launch do
+      queue "touch #{deploy_to}/tmp/restart.txt"
     end
   end
 
