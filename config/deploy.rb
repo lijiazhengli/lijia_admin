@@ -2,15 +2,8 @@ require 'mina/rails'
 require 'mina/git'
 require 'mina/puma'
 require 'mina/rbenv'
-# require 'mina/rbenv'  # for rbenv support. (https://rbenv.org)
-# require 'mina/rvm'    # for rvm support. (https://rvm.io)
 
-# Basic settings:
-#   domain       - The hostname to SSH to.
-#   deploy_to    - Path to deploy into.
-#   repository   - Git repo to clone from. (needed by mina/git)
-#   branch       - Branch name to deploy. (needed by mina/git)
-
+set :user, 'root'          # Username in the server to SSH to.
 set :application_name, 'lijia_admin'
 set :domain, '78.141.216.178'
 set :deploy_to, '/root/data/lijia_admin'
@@ -18,19 +11,18 @@ set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
 # set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
-# Optional settings:
-set :user, 'root'          # Username in the server to SSH to.
-
-set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key')
+set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
+set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key', 'config/puma.rb')
 
 task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
 end
 
-# Put any custom commands you need to run at setup
-# All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
-  # command %{rbenv install 2.3.0 --skip-existing}
+  # command %[touch "#{fetch(:shared_path)}/config/database.yml"]
+  # command %[touch "#{fetch(:shared_path)}/config/master.key"]
+  # command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
+  # comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
 end
 
 desc "Deploys the current version to the server."
