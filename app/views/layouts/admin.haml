@@ -1,0 +1,38 @@
+!!!
+%html{lang: "zh-CN"}
+  %head
+    %meta{charset: "utf-8"}/
+    %meta{content: "text/html; charset=utf-8", "http-equiv" => "content-type"}/
+    %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title
+      Pantry's Best#{content_for?(:title) ? " - " + content_for(:title) : ""}
+    %meta{content: "", name: "description"}/
+    %meta{content: "width=device-width", name: "viewport"}/
+    = stylesheet_link_tag    "admin", media: "all"
+    = javascript_include_tag "admin"
+    = csrf_meta_tags
+
+  %body{role: 'document'}
+    %nav.navbar.navbar-dark.fixed-top.bg-dark.flex-md-nowrap.p-0.shadow
+      %a.navbar-brand.col-sm-3.col-md-2.mr-0{href: "#"} 莉家整理
+      %input.form-control.form-control-dark.w-100{type: 'text', placeholder: "Search", "aria-label" => "Search"}
+      %ul.navbar-nav.px-3
+        %li.nav-item.text-nowrap
+          %a.nav-link{href: "#"} 退出
+
+    .container-fluid
+      .row
+        %nav.col-md-2.d-none.d-md-block.bg-light.sidebar
+          .sidebar-sticky
+            %ul.nav.flex-column
+              %li.nav-item
+                %a.nav-link.active
+                  %span.fa.fa-user-o
+                  Dashboard
+              %li.nav-item
+                %a.nav-link
+                  Orders
+
+        %main.col-md-9.ml-sm-auto.col-lg-10.px-4{role: 'main'}
+          = yield
+    %footer#footer
