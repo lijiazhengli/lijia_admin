@@ -1,25 +1,56 @@
-.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
-  %h1.h2 Dashboard
-  .btn-toolbar.mb-2.mb-md-0
-    .btn-group.mr-2
-      %button.btn.btn-sm.btn-outline-secondary Share
-      %button.btn.btn-sm.btn-outline-secondary Export
-    %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle
-      %span{"data-feather" => 'calendar'} This week
-%h2 Section title
-.table-responsive
-  %table.table.table-striped.table-sm
-    %thead
-      %tr
-        %th Header
-        %th Header
-        %th Header
-    %tbody
-      %tr
-        %td 1,001
-        %td Lorem
-        %td sit
-      %tr
-        %td 1,002
-        %td Lorem
-        %td sit
+!!!
+%html{lang: "zh-CN"}
+  %head
+    %meta{charset: "utf-8"}/
+    %meta{content: "text/html; charset=utf-8", "http-equiv" => "content-type"}/
+    %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title
+      Pantry's Best#{content_for?(:title) ? " - " + content_for(:title) : ""}
+    %meta{content: "", name: "description"}/
+    %meta{content: "width=device-width", name: "viewport"}/
+    = stylesheet_link_tag    "admin", media: "all"
+    = javascript_include_tag "admin"
+    = csrf_meta_tags
+
+  %body{role: 'document'}
+    .container-fluid
+      .row
+        %main.col-md-12.ml-sm-auto.col-lg-12.px-4{role: 'main'}
+          = form_tag admin_do_login_path, method: 'post', class: "form-signin" do
+            .form-group
+              = text_field_tag :name, params[:name],class: 'form-control', placeholder: "用户名"
+            .form-group
+              = password_field_tag :password, params[:password],class: 'form-control', placeholder: "密码"
+            .form-group
+              = submit_tag '登录', class: 'btn btn-lg btn-primary btn-block'
+    %footer#footer
+
+
+
+
+- if false
+  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+    %h1.h2 Dashboard
+    .btn-toolbar.mb-2.mb-md-0
+      .btn-group.mr-2
+        %button.btn.btn-sm.btn-outline-secondary Share
+        %button.btn.btn-sm.btn-outline-secondary Export
+      %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle
+        %span{"data-feather" => 'calendar'} This week
+  %h2 Section title
+  .table-responsive
+    %table.table.table-striped.table-sm
+      %thead
+        %tr
+          %th Header
+          %th Header
+          %th Header
+      %tbody
+        %tr
+          %td 1,001
+          %td Lorem
+          %td sit
+        %tr
+          %td 1,002
+          %td Lorem
+          %td sit

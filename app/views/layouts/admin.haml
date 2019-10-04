@@ -18,7 +18,9 @@
       %input.form-control.form-control-dark.w-100{type: 'text', placeholder: "Search", "aria-label" => "Search"}
       %ul.navbar-nav.px-3
         %li.nav-item.text-nowrap
-          %a.nav-link{href: "#"} 退出
+          = form_tag admin_do_logout_path, method: 'delete' do
+            = submit_tag "#{@admin.try(:name)} |  退出"
+
 
     .container-fluid
       .row

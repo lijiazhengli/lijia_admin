@@ -1,0 +1,42 @@
+class Admin::AdminController < Admin::BaseController
+  layout 'admin'
+  skip_before_action :admin_required, only: [:do_login]
+
+  def ha1(name, realm, password)
+    Digest::MD5.hexdigest([name, realm, password].join(':'))
+  end
+
+  def do_login
+    p params
+    name = params[:name]
+    password = params[:password]
+    redirect_url = params[:redirect_url]
+    admin = Admin.find_by_name(name)
+    password_hash = ha1(name, 'Lijia', password)
+    p password_hash
+    p admin.password_hash 
+
+    # TODO should use can?(:login, @city) here
+    if admin
+      if admin.password_hash == password_hash
+        cookies.signed[:admin_id] = admin.id
+        @admin = admin
+
+        if redirect_url
+          redirect_to redirect_url
+        else
+          redirect_to admin_home_url
+        end
+      else
+        redirect_to admin_root_path
+      end
+    else
+      redirect_to admin_root_path
+    end
+  end
+
+  def do_logout
+    cookies.signed[:admin_id] = nil       # so the app knows
+    redirect_to admin_root_path
+  end
+end
