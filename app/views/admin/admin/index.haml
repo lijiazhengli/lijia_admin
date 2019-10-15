@@ -1,0 +1,19 @@
+%h3 管理员
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 用户名
+        %th 状态
+        %th 操作
+    %tbody
+      - @admins.each do |item|
+        %tr
+          %td= item.name
+          %td= item.active
+          %td
+            = link_to '停用', '', :method => :delete, :data => { :confirm => '确定停用?' }
+
+%br
+
+= paginate @admins
