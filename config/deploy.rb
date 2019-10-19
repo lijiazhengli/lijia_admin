@@ -6,7 +6,7 @@ require 'mina/rbenv'
 set :user, 'root'          # Username in the server to SSH to.
 set :application_name, 'lijia_admin'
 set :domain, '106.75.14.116'
-set :deploy_to, '/root/data/lijia_admin'
+set :deploy_to, '/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
 set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
