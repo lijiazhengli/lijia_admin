@@ -28,11 +28,11 @@ end
 
 task :environment do 
   invoke :'rbenv:load'
-  # invoke :'rvm:use[ruby-1.9.3-p125@default]' 
+  # invoke :'rbenv:use[ruby-2.6.0p0]' 
 end
 
 desc "Deploys the current version to the server."
-task :deploy do
+task :deploy => :environment do
   # uncomment this line to make sure you pushed your local branch to the remote origin
   # invoke :'git:ensure_pushed'
   deploy do
