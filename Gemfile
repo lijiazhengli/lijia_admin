@@ -36,7 +36,7 @@ gem 'jquery-ui-rails'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'font-awesome-rails'
-# gem 'font-awesome-sass'
+gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 
