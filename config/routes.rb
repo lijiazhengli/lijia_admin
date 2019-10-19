@@ -9,6 +9,13 @@ Rails.application.routes.draw do
     post 'do_login' => 'admin#do_login'
     delete 'do_logout' => 'admin#do_logout' 
 
+    resources :courses do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
