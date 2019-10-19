@@ -20,7 +20,7 @@
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
-
+.idea/*
 .DS_Store
 
 /public/assets
