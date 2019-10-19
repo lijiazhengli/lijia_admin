@@ -35,8 +35,8 @@ gem 'jquery-ui-rails'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-gem 'font-awesome-rails'
-gem 'font-awesome-sass'
+# gem 'font-awesome-rails'
+# gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 
