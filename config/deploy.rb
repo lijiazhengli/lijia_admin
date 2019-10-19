@@ -1,3 +1,4 @@
+require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/puma'
@@ -25,13 +26,13 @@ task :setup do
   # comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
 end
 
- task :environment do 
+task :environment do 
   invoke :'rbenv:load'
   # invoke :'rvm:use[ruby-1.9.3-p125@default]' 
 end
 
 desc "Deploys the current version to the server."
-task :deploy do
+task deploy: :environment do
   # uncomment this line to make sure you pushed your local branch to the remote origin
   # invoke :'git:ensure_pushed'
   deploy do
