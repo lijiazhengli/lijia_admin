@@ -15,7 +15,7 @@ set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets',
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key', 'config/puma.rb')
 
 task :setup do
-  # command %{rbenv install 2.3.0 --skip-existing}
+  command %{rbenv install 2.6.0 --skip-existing}
 end
 
 task :setup do
@@ -23,6 +23,11 @@ task :setup do
   # command %[touch "#{fetch(:shared_path)}/config/master.key"]
   # command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
   # comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
+end
+
+ task :environment do 
+  invoke :'rbenv:load'
+  # invoke :'rvm:use[ruby-1.9.3-p125@default]' 
 end
 
 desc "Deploys the current version to the server."
