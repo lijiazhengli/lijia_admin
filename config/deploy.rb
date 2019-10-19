@@ -5,11 +5,11 @@ require 'mina/rbenv'
 
 set :user, 'root'          # Username in the server to SSH to.
 set :application_name, 'lijia_admin'
-set :domain, '78.141.216.178'
+set :domain, '106.75.14.116'
 set :deploy_to, '/root/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'master'
-# set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
+set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key', 'config/puma.rb')
