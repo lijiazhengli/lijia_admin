@@ -11,7 +11,7 @@
     = javascript_include_tag "admin"
     = csrf_meta_tags
 
-  %body{role: 'document'}
+  %body{role: 'document', style: 'align-items: normal;'}
     %nav.navbar.navbar-dark.fixed-top.bg-dark.flex-md-nowrap.p-0.shadow
       %a.navbar-brand.col-sm-3.col-md-2.mr-0{href: "#"} 莉家整理
       - if false
@@ -21,20 +21,21 @@
           = form_tag admin_do_logout_path, method: 'delete' do
             = submit_tag "#{@admin.try(:name)} |  退出", class: "login-out-submint"
 
-
+    %div{style: 'height: 50px;'}
     .container-fluid
-      .row
-        %nav.col-md-2.d-none.d-md-block.bg-light.sidebar
-          .sidebar-sticky
-            %ul.nav.flex-column
-              %li.nav-item
-                %a.nav-link.active
-                  //%span.fa.fa-user-o
-                  用户信息
-              %li.nav-item
-                %a.nav-link
-                  订单
+      %nav.col-md-2.d-none.d-md-block.bg-light.sidebar
+        .sidebar-sticky
+          %ul.nav.flex-column
+            %li.nav-item
+              %a.nav-link.active
+                //%span.fa.fa-user-o
+                用户信息
+            %li.nav-item
+              = link_to '课程', admin_courses_path, class: "nav-link"
+            %li.nav-item
+              %a.nav-link
+                订单
 
-        %main.col-md-9.ml-sm-auto.col-lg-10.px-4{role: 'main'}
-          = yield
+      .col-md-12.ml-sm-auto.col-lg-10.px-4{role: 'main'}
+        = yield
     %footer#footer

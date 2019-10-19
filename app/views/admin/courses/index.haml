@@ -1,3 +1,4 @@
+%h2 课程列表
 - if true
   = search_form_for @q, url: admin_courses_path, html: {class: 'form-inline'} do |f|
     .form-group
@@ -15,7 +16,7 @@
       %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle
         %span{"data-feather" => 'calendar'} This week
 
-%h2 课程列表
+
 .table-responsive
   %table.table.table-striped.table-sm
     %thead
