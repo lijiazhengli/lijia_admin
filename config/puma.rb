@@ -1,24 +1,4 @@
-# environment "production"
-
-# path_to_your_app = '/data/lijia_admin'
-# bind  "unix:///{path_to_your_app}/shared/tmp/sockets/puma.sock"
-# pidfile "/{path_to_your_app}/shared/tmp/pids/puma.pid"
-# state_path "/{path_to_your_app}/shared/tmp/sockets/puma.state"
-# directory "/{path_to_your_app}/current"
-
-# workers 2
-# threads 1,2
-
-# daemonize true
-
-# activate_control_app 'unix:///{path_to_your_app}/shared/tmp/sockets/pumactl.sock'
-
-# prune_bundler
-
-
-
 #!/usr/bin/env puma
-
 #rails的运行环境
 environment 'production'
 threads 2, 64
