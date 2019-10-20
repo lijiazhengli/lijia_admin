@@ -3,7 +3,7 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :order_payment_records, allow_destroy: true
 
   has_many  :order_arranger_assignments
-  has_many  :order_arrangers, through: :city_product_set_offering
+  has_many  :arrangers, through: :order_arranger_assignments
 
   has_many :purchased_items
   accepts_nested_attributes_for :purchased_items, allow_destroy: true

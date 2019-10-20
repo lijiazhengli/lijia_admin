@@ -57,7 +57,7 @@
           %input.form-control#remote-detailed(type='file' multiple=false)
     .col-md-12#remote-detailed-image-collection
       %img.img-thumbnail.img-fixed#remote-detailed-image(src="#{@course.detailed_image}?imageView2/0/w/750")
-    = f.submit '保存', class: 'btn btn-default'
+    = f.submit '保存', class: 'btn btn-success'
 
 :javascript
   $('#remote-front').fileupload({

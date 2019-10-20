@@ -3,8 +3,8 @@
   = search_form_for @q, url: admin_goods_path, html: {class: 'form-inline'} do |f|
     .form-group
       = f.search_field :title_cont, class: "form-control", placeholder: "产品名称"
-    = f.submit '查询', class: "btn btn-default"
-    = link_to '新建产品', new_admin_good_path, class: "btn btn-default"
+    = f.submit '查询', class: "btn btn-secondary"
+    = link_to '新建产品', new_admin_good_path, class: "btn btn-success"
 
 - if false
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom

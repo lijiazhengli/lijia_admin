@@ -7,8 +7,8 @@
       = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
     .form-group
       = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
-    = f.submit '查询', class: "btn btn-default"
-    = link_to '新建订单', new_admin_order_path, class: "btn btn-default"
+    = f.submit '查询', class: "btn btn-secondary"
+    = link_to '新建订单', new_admin_order_path, class: "btn btn-success"
 
 - if false
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
@@ -25,10 +25,11 @@
     %thead
       %tr
         %th 创建人
+        %th 类型
         %th 订购人
         %th 城市名称
-        %th 开始和结束日期
         %th 状态
+        %th 开始和结束日期
         %th 推荐人
         %th 创建时间
         %th 操作
@@ -36,9 +37,10 @@
       - @orders.each do |item|
         %tr
           %td= item.admin_id
+          %td= Order::ORDER_TYPE[item.order_type]
           %td= "#{item.customer_name}|#{item.customer_phone_number}"
           %td= item.city_name
-          %td= item.status
+          %td= Order::STATUS[item.status]
           %td= "#{item.start_date}~#{item.end_date}"
           %td= "#{item.referral_name}|#{item.referral_phone_number}"
           %td= item.created_at.strftime('%F %T')

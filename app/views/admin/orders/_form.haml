@@ -51,4 +51,4 @@
       = f.label "订单状态"
       = f.select :status, options_for_select(Order::STATUS.invert, @order.status), {}, class: 'form-control'
 
-    = f.submit '保存', class: 'btn btn-default'
+    = f.submit '保存', class: 'btn btn-success'

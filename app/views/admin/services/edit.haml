@@ -1,5 +1,5 @@
 %h3 修改课程
 
-= link_to '返回', admin_courses_path
+= link_to '返回', admin_courses_path, class: "btn btn-secondary"
 
 = render :partial => 'form', :locals => {url: admin_course_path(@course)}

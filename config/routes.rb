@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     post 'do_login' => 'admin#do_login'
     delete 'do_logout' => 'admin#do_logout' 
 
+    resources :arrangers
+
     resources :courses do
       collection do
         post :file_upload
