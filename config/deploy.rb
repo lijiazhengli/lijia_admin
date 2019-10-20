@@ -31,6 +31,10 @@ task :environment do
   # invoke :'rbenv:use[ruby-2.6.0p0]' 
 end
 
+task :remote_environment do
+  invoke :'rbenv:load'
+end
+
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   # uncomment this line to make sure you pushed your local branch to the remote origin
