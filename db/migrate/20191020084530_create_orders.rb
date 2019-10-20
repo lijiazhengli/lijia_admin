@@ -7,6 +7,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.string  :start_date
       t.string  :end_date
       t.string  :status
+      t.string  :order_type, limit: 20
       t.string  :customer_name
       t.string  :customer_phone_number
       t.string  :address_province
@@ -19,6 +20,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.timestamps
     end
     add_index :orders, :start_date
+    add_index :orders, :order_type
 
     create_table :products do |t|
       t.string  :type
@@ -67,10 +69,11 @@ class CreateOrders < ActiveRecord::Migration[6.0]
     create_table :order_arranger_assignments do |t|
       t.integer  :order_id
       t.integer  :arranger_id
+      t.string  :order_type, limit: 20
       t.float  :amount, default: 0
     end
     add_index :order_arranger_assignments, :order_id
-    add_index :order_arranger_assignments, :arranger_id
+    add_index :order_arranger_assignments, [:arranger_id, :order_type]
 
   end
 end

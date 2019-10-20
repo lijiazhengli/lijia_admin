@@ -16,6 +16,16 @@
       = f.text_field :city_name, class: 'form-control'
 
     .form-group
+      = f.label "费用"
+      %br
+      = f.text_field :price, class: 'form-control'
+
+    .form-group
+      = f.label "描述"
+      %br
+      = f.text_area :description, class: 'form-control'
+
+    .form-group
       = f.label "*开始日期"
       %br
       = f.text_field :start_date, class: 'form-control', type: :date

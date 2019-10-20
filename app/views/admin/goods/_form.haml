@@ -1,0 +1,82 @@
+.col-md-6
+  = form_for @good, url: url do |f|
+    - if @good.errors.any?
+      .form-group
+        %ul
+          - @good.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+    .form-group
+      = f.label "*名称"
+      %br
+      = f.text_field :title, class: 'form-control'
+
+    .form-group
+      = f.label "城市"
+      %br
+      = f.text_field :city_name, class: 'form-control'
+
+    .form-group
+      = f.label "价格"
+      %br
+      = f.text_field :price, class: 'form-control'
+
+    .form-group
+      = f.label "是否启用"
+      = f.select :active, options_for_select({'是' => true, '否' => false}, @good.active), {}, class: 'form-control'
+
+    - if false
+      .form-inline
+        = f.text_field :front_image, style: 'display: none'
+        %label.col-md-12.control-label(for='front_image')= "首页图片"
+        .col-md-12
+          %span.btn.btn-success.fileinput-button#remote-front-image-btn
+            %i.glyphicon.glyphicon-plus
+            %span#remote-front-image-select-text 选择图片
+            %input.form-control#remote-front(type='file' multiple=false)
+      .col-md-12#remote-front-image-collection
+        %img.img-thumbnail.img-fixed#remote-front-image(src="#{@service.front_image}?imageView2/0/w/750")
+      .form-inline
+        = f.text_field :detailed_image, style: 'display: none'
+        %label.col-md-12.control-label(for='detailed_image')= "详细页图片"
+        .col-md-12
+          %span.btn.btn-success.fileinput-button#remote-detailed-image-btn
+            %i.glyphicon.glyphicon-plus
+            %span#remote-detailed-image-select-text 选择图片
+            %input.form-control#remote-detailed(type='file' multiple=false)
+      .col-md-12#remote-detailed-image-collection
+        %img.img-thumbnail.img-fixed#remote-detailed-image(src="#{@service.detailed_image}?imageView2/0/w/750")
+    = f.submit '保存', class: 'btn btn-default'
+
+- if false
+  :javascript
+    $('#remote-front').fileupload({
+      url: '#{file_upload_admin_courses_path(type: 'front')}',
+      dataType: 'json',
+      autoUpload: true,
+      paramName: 'FileContent'
+    }).bind('fileuploadadd', function (e, data) {
+      console.log(data);
+      data.submit();
+      $('#remote-front-image-btn').addClass('disabled');
+      $('#remote-front-image-select-text').text('上传中');
+    }).bind('fileuploaddone', function (e, data) {
+      $('#remote-front-image-btn').removeClass('disabled');
+      $('#remote-front-image-select-text').text('选择图片');
+      $('#service_front_image').val(data.result.download_url);
+      $('#remote-front-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
+    });
+    $('#remote-detailed').fileupload({
+      url: '#{file_upload_admin_courses_path(type: 'detailed')}',
+      dataType: 'json',
+      autoUpload: true,
+      paramName: 'FileContent'
+    }).bind('fileuploadadd', function (e, data) {
+      data.submit();
+      $('#remote-detailed-image-btn').addClass('disabled');
+      $('#remote-detailed-image-select-text').text('上传中');
+    }).bind('fileuploaddone', function (e, data) {
+      $('#remote-detailed-image-btn').removeClass('disabled');
+      $('#remote-detailed-image-select-text').text('选择图片');
+      $('#service_detailed_image').val(data.result.download_url);
+      $('#remote-detailed-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
+    });

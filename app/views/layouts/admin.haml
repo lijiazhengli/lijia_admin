@@ -31,7 +31,11 @@
                 //%span.fa.fa-user-o
                 用户信息
             %li.nav-item
-              = link_to '课程', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
+              = link_to '整理服务', admin_services_path, class: "nav-link #{'active' if params[:controller] == 'admin/services'}"
+            %li.nav-item
+              = link_to '课程培训', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
+            %li.nav-item
+              = link_to '收纳工具', admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods'}"
             %li.nav-item
               = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders'}"
 

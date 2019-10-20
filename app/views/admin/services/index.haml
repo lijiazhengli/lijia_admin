@@ -1,0 +1,38 @@
+%h2 整理服务列表
+- if true
+  = search_form_for @q, url: admin_services_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :title_cont, class: "form-control", placeholder: "服务名称"
+    = f.submit '查询', class: "btn btn-default"
+    = link_to '新建课程', new_admin_service_path, class: "btn btn-default"
+
+- if false
+  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+    %h1.h2 课程列表
+    .btn-toolbar.mb-2.mb-md-0
+      .btn-group.mr-2
+        %button.btn.btn-sm.btn-outline-secondary 新建
+        %button.btn.btn-sm.btn-outline-secondary Export
+      %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle
+        %span{"data-feather" => 'calendar'} This week
+
+
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 名称
+        %th 城市名称
+        %th 金额
+        %th 是否启用
+        %th 操作
+    %tbody
+      - @services.each do |item|
+        %tr
+          %td= item.title
+          %td= item.city_name
+          %td= item.price
+          %td= item.active
+          %td
+            = link_to '修改', edit_admin_service_path(item)
+  = paginate @services

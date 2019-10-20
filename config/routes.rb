@@ -17,6 +17,24 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :goods do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
+
+    resources :services do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
+
+    
+
     resources :orders do
     end
   end

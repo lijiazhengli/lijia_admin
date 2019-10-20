@@ -47,8 +47,9 @@ ActiveRecord::Schema.define(version: 2019_10_20_084530) do
   create_table "order_arranger_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "order_id"
     t.integer "arranger_id"
+    t.string "order_type", limit: 20
     t.float "amount", default: 0.0
-    t.index ["arranger_id"], name: "index_order_arranger_assignments_on_arranger_id"
+    t.index ["arranger_id", "order_type"], name: "index_order_arranger_assignments_on_arranger_id_and_order_type"
     t.index ["order_id"], name: "index_order_arranger_assignments_on_order_id"
   end
 
@@ -71,6 +72,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_084530) do
     t.string "start_date"
     t.string "end_date"
     t.string "status"
+    t.string "order_type", limit: 20
     t.string "customer_name"
     t.string "customer_phone_number"
     t.string "address_province"
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_084530) do
     t.string "referral_phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_type"], name: "index_orders_on_order_type"
     t.index ["start_date"], name: "index_orders_on_start_date"
   end
 
