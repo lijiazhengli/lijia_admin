@@ -27,14 +27,13 @@
         .sidebar-sticky
           %ul.nav.flex-column
             %li.nav-item
-              %a.nav-link.active
+              %a.nav-link
                 //%span.fa.fa-user-o
                 用户信息
             %li.nav-item
-              = link_to '课程', admin_courses_path, class: "nav-link"
+              = link_to '课程', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
             %li.nav-item
-              %a.nav-link
-                订单
+              = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders'}"
 
       .col-md-12.ml-sm-auto.col-lg-10.px-4{role: 'main'}
         = yield

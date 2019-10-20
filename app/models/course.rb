@@ -1,2 +1,2 @@
-class Course < ApplicationRecord
+class Course < Product
 end

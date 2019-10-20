@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_19_095016) do
+ActiveRecord::Schema.define(version: 2019_10_20_084530) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 2019_10_19_095016) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_admins_on_name"
+  end
+
+  create_table "arrangers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "base_order_count", default: 0
+    t.string "name"
+    t.string "phone_number"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -33,6 +42,73 @@ ActiveRecord::Schema.define(version: 2019_10_19_095016) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "order_arranger_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "arranger_id"
+    t.float "amount", default: 0.0
+    t.index ["arranger_id"], name: "index_order_arranger_assignments_on_arranger_id"
+    t.index ["order_id"], name: "index_order_arranger_assignments_on_order_id"
+  end
+
+  create_table "order_payment_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "payment_method_id"
+    t.string "payment_method_name"
+    t.float "cost"
+    t.boolean "active"
+    t.datetime "timestamp"
+    t.string "out_trade_no"
+    t.string "transaction_id"
+    t.index ["order_id"], name: "index_order_payment_records_on_order_id"
+  end
+
+  create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "admin_id"
+    t.string "city_name"
+    t.string "start_date"
+    t.string "end_date"
+    t.string "status"
+    t.string "customer_name"
+    t.string "customer_phone_number"
+    t.string "address_province"
+    t.string "address_city"
+    t.string "location_title"
+    t.string "location_address"
+    t.string "location_details"
+    t.string "referral_name"
+    t.string "referral_phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["start_date"], name: "index_orders_on_start_date"
+  end
+
+  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "type"
+    t.float "price"
+    t.string "title"
+    t.string "city_name"
+    t.string "start_date"
+    t.string "end_date"
+    t.text "description"
+    t.string "front_image"
+    t.string "detailed_image"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["type"], name: "index_products_on_type"
+  end
+
+  create_table "purchased_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "product_id"
+    t.integer "quantity"
+    t.float "price"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_purchased_items_on_order_id"
   end
 
   create_table "role_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

@@ -1,0 +1,47 @@
+%h2 订单列表
+- if true
+  = search_form_for @q, url: admin_orders_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
+    .form-group
+      = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
+    .form-group
+      = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
+    = f.submit '查询', class: "btn btn-default"
+    = link_to '新建订单', new_admin_order_path, class: "btn btn-default"
+
+- if false
+  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+    %h1.h2 课程列表
+    .btn-toolbar.mb-2.mb-md-0
+      .btn-group.mr-2
+        %button.btn.btn-sm.btn-outline-secondary 新建
+        %button.btn.btn-sm.btn-outline-secondary Export
+      %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle
+        %span{"data-feather" => 'calendar'} This week
+
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 创建人
+        %th 订购人
+        %th 城市名称
+        %th 开始和结束日期
+        %th 状态
+        %th 推荐人
+        %th 创建时间
+        %th 操作
+    %tbody
+      - @orders.each do |item|
+        %tr
+          %td= item.admin_id
+          %td= "#{item.customer_name}|#{item.customer_phone_number}"
+          %td= item.city_name
+          %td= item.status
+          %td= "#{item.start_date}~#{item.end_date}"
+          %td= "#{item.referral_name}|#{item.referral_phone_number}"
+          %td= item.created_at.strftime('%F %T')
+          %td
+            = link_to '修改', edit_admin_order_path(item)
+  = paginate @orders
