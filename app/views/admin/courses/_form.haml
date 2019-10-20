@@ -11,6 +11,11 @@
       = f.text_field :title, class: 'form-control'
 
     .form-group
+      = f.label "城市"
+      %br
+      = f.text_field :city_name, class: 'form-control'
+
+    .form-group
       = f.label "*开始日期"
       %br
       = f.text_field :start_date, class: 'form-control', type: :date
