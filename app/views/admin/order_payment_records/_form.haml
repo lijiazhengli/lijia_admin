@@ -1,0 +1,25 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+
+    .form-group
+      = f.label "名称"
+      %br
+      = f.select :payment_method_id, options_for_select(OrderPaymentRecord::PAYMENT_METHOD_ID.invert, @item.payment_method_id), {}, class: 'form-control'
+    .form-group
+      = f.label "费用类型"
+      %br
+      例：整理收入、收纳工具收入、改造收入
+      = f.text_field :payment_method_name, class: 'form-control'
+
+    .form-group
+      = f.label "费用"
+      %br
+      说明： 收入填正数， 支持填负数
+      = f.text_field :cost, class: 'form-control'
+
+    = f.submit '保存', class: 'btn btn-success'

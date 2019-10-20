@@ -1,0 +1,23 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    = f.hidden_field :order_type
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+
+    .form-group
+      = f.label "姓名"
+      %br
+      = f.select :arranger_id, options_for_select(Arranger.where(active: true).pluck(:name, :id).to_h, @item.arranger_id), {}, class: 'form-control'
+    .form-group
+      = f.label "角色"
+      %br
+      = f.select :item_type, options_for_select(OrderArrangerAssignment::ITEM_TYPE.invert, @item.item_type), {}, class: 'form-control'
+    .form-group
+      = f.label "费用"
+      %br
+      = f.text_field :amount, class: 'form-control'
+
+    = f.submit '保存', class: 'btn btn-success'

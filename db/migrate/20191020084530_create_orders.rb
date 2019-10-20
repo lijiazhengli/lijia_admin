@@ -51,7 +51,6 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.integer  :payment_method_id
       t.string   :payment_method_name
       t.float    :cost
-      t.boolean  :active
       t.datetime :timestamp
       t.string   :out_trade_no
       t.string   :transaction_id

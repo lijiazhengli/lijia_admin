@@ -6,6 +6,7 @@ class Admin::OrdersController < Admin::BaseController
     @params = params[:q] || {}
     @q = Order.order('id desc').ransack(@params)
     @orders = @q.result(distinct: true).page(params[:page])
+    @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
   end
 
   def new
@@ -19,6 +20,12 @@ class Admin::OrdersController < Admin::BaseController
     else
       render :new
     end
+  end
+
+  def show
+    @order = Order.find(params[:id])
+    @order_arranger_assignments = @order.order_arranger_assignments
+    @arrangers_hash = Arranger.where(id: @order_arranger_assignments.map(&:arranger_id)).pluck(:id, :name).to_h
   end
 
   def update

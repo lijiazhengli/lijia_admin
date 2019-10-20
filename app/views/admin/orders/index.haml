@@ -27,7 +27,7 @@
         %th 创建人
         %th 类型
         %th 订购人
-        %th 城市名称
+        %th 城市
         %th 状态
         %th 开始和结束日期
         %th 推荐人
@@ -36,7 +36,7 @@
     %tbody
       - @orders.each do |item|
         %tr
-          %td= item.admin_id
+          %td= @admins_hash[item.admin_id]
           %td= Order::ORDER_TYPE[item.order_type]
           %td= "#{item.customer_name}|#{item.customer_phone_number}"
           %td= item.city_name
@@ -45,5 +45,14 @@
           %td= "#{item.referral_name}|#{item.referral_phone_number}"
           %td= item.created_at.strftime('%F %T')
           %td
+            = link_to '查看', admin_order_path(item)
+            |
             = link_to '修改', edit_admin_order_path(item)
+            |
+            = link_to "#{Order::ORDER_TYPE[item.order_type]}信息", admin_order_purchased_items_path(item)
+            |
+            = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
+            |
+            = link_to '费用', admin_order_order_payment_records_path(item)
+            
   = paginate @orders

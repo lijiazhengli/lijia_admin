@@ -1,0 +1,24 @@
+%h2 订单服务成员列表
+
+= link_to '返回', admin_orders_path, class: "btn btn-secondary"
+= link_to "新建服务成员", new_admin_order_order_arranger_assignment_path, class: "btn btn-success"
+
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 姓名
+        %th 角色
+        %th 费用
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= @arrangers_hash[item.arranger_id]
+          %td= OrderArrangerAssignment::ITEM_TYPE[item.item_type]
+          %td= item.amount
+          %td
+            = link_to '修改', edit_admin_order_order_arranger_assignment_path(@order, item)
+            |
+            = link_to '删除', admin_order_order_arranger_assignment_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items

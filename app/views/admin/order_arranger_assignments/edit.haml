@@ -1,0 +1,5 @@
+%h3 修改订单的服务成员
+
+= link_to '返回', admin_order_order_arranger_assignments_path(@order), class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_order_order_arranger_assignment_path(@order,@item)}

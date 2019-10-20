@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_20_084530) do
+ActiveRecord::Schema.define(version: 2019_10_20_140220) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_084530) do
     t.integer "arranger_id"
     t.string "order_type", limit: 20
     t.float "amount", default: 0.0
+    t.string "item_type", limit: 20
     t.index ["arranger_id", "order_type"], name: "index_order_arranger_assignments_on_arranger_id_and_order_type"
     t.index ["order_id"], name: "index_order_arranger_assignments_on_order_id"
   end

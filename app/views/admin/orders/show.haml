@@ -1,0 +1,25 @@
+%table.table.table-bordered
+  %tr
+    %th 城市
+    %td= @order.city_name
+  %tr
+    %th 类型
+    %td= Order::ORDER_TYPE[@order.order_type]
+  %tr
+    %th 订购人
+    %td= "#{@order.customer_name}|#{@order.customer_phone_number}"
+  %tr
+    %th 开始和结束日期
+    %td= "#{@order.start_date}~#{@order.end_date}"
+  %tr
+    %th 推荐人
+    %td= "#{@order.referral_name}|#{@order.referral_phone_number}"
+  %tr
+    %th 地址
+    %td= @order.location_address
+  %tr
+    %th 服务人员
+    %td
+      - @order_arranger_assignments.order(:item_type).each do |item|
+        %div #{OrderArrangerAssignment::ITEM_TYPE[item.item_type]}： #{@arrangers_hash[item.arranger_id]} 
+
