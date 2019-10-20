@@ -15,6 +15,10 @@ set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git p
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key', 'config/puma.rb')
 
+task :environment do 
+  invoke :'rbenv:load'
+end
+
 task :remote_environment do
   invoke :'rbenv:load'
 end
