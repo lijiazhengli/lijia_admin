@@ -15,24 +15,20 @@ set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git p
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/master.key', 'config/puma.rb')
 
-task :setup do
-  command %{rbenv install 2.6.0 --skip-existing}
-end
-
-task :setup do
-  # command %[touch "#{fetch(:shared_path)}/config/database.yml"]
-  # command %[touch "#{fetch(:shared_path)}/config/master.key"]
-  # command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
-  # comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
-end
-
 task :environment do 
   invoke :'rbenv:load'
-  # invoke :'rbenv:use[ruby-2.6.0p0]' 
 end
 
 task :remote_environment do
   invoke :'rbenv:load'
+end
+
+task :setup => :environment do
+  # command %[touch "#{fetch(:shared_path)}/config/database.yml"]
+  # command %[touch "#{fetch(:shared_path)}/config/master.key"]
+  # command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
+  # comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
+  command %{rbenv install 2.6.0 --skip-existing}
 end
 
 desc "Deploys the current version to the server."
