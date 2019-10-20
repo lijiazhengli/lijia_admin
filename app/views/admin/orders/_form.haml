@@ -7,6 +7,9 @@
           - @order.errors.messages.each do |key,msg|
             %li= msg.join(',')
     .form-group
+      = f.label "订单类型"
+      = f.select :order_type, options_for_select(Order::ORDER_TYPE.invert, @order.order_type), {}, class: 'form-control'
+    .form-group
       = f.label "城市"
       %br
       = f.text_field :city_name, class: 'form-control'
