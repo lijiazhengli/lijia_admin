@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_20_140220) do
+ActiveRecord::Schema.define(version: 2019_10_22_142302) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_140220) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "user_name"
     t.index ["name"], name: "index_admins_on_name"
   end
 

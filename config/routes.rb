@@ -3,11 +3,13 @@ Rails.application.routes.draw do
   get 'welcome/index'
   namespace :admin do
     #root "wx_menus#index"
-    root "base#index"
+    root "base#admin_login"
     get 'home' => 'base#home'
     get 'index' => 'admin#index' 
     post 'do_login' => 'admin#do_login'
     delete 'do_logout' => 'admin#do_logout' 
+
+    resources :admin
 
     resources :arrangers
 

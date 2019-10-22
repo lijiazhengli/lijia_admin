@@ -17,19 +17,24 @@
       - if false
         %input.form-control.form-control-dark.w-100{type: 'text', placeholder: "Search", "aria-label" => "Search"}
       %ul.navbar-nav.px-3
-        %li.nav-item.text-nowrap
-          = form_tag admin_do_logout_path, method: 'delete' do
-            = submit_tag "#{@admin.try(:name)} |  退出", class: "login-out-submint"
+        %li.nav-item.text-nowrap.white-color
+          = @admin.try(:user_name)
+          |
+          = link_to '退出', admin_do_logout_path, method: :delete, class: "white-color"
+          - if @admin.present?
+            |
+            = link_to '修改密码', edit_admin_admin_path(@admin), class: "white-color"
 
     %div{style: 'height: 50px;'}
     .container-fluid
       %nav.col-md-2.d-none.d-md-block.bg-light.sidebar
         .sidebar-sticky
           %ul.nav.flex-column
-            %li.nav-item
-              %a.nav-link
-                //%span.fa.fa-user-o
-                用户信息
+            - if false
+              %li.nav-item
+                %a.nav-link
+                  //%span.fa.fa-user-o
+                  用户信息
             %li.nav-item
               = link_to '整理服务', admin_services_path, class: "nav-link #{'active' if params[:controller] == 'admin/services'}"
             %li.nav-item

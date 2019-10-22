@@ -3,7 +3,7 @@ class Admin::ArrangersController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Arranger.ransack(@params)
+    @q = Arranger.order('base_order_count desc').ransack(@params)
     @arrangers = @q.result(distinct: true).page(params[:page])
   end
 

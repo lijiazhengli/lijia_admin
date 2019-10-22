@@ -1,9 +1,10 @@
 class Admin::BaseController < ApplicationController
   layout "admin"
 
-  before_action :admin_required, except: [:index]
+  before_action :admin_required, except: [:admin_login]
+  # before_action :admin_required, except: [:index]
 
-  def index
+  def admin_login
     if cookies.signed[:admin_id].present? and Admin.where(id: cookies.signed[:admin_id]).includes(:roles).first
       redirect_to admin_home_url
     else
@@ -17,14 +18,14 @@ class Admin::BaseController < ApplicationController
 
   def admin_required
     if (not cookies.signed[:admin_id]) or (not Admin.where(id: cookies.signed[:admin_id]).first.active)
-      redirect_to admin_root_url
+      redirect_to root_url
+    else
+      @admin = Admin.where(id: cookies.signed[:admin_id]).includes(:roles).first
+      redirect_to root_url if @admin.blank?
     end
-    @admin = Admin.where(id: cookies.signed[:admin_id]).includes(:roles).first
   end
 
   def file_upload_to_qiniu(image_type)
-    p image_type
-    p params
     bucket = ENV['QINIU_BUCKET']
     key = "#{image_type}/#{Time.now.to_i * 1000 + rand(1000)}"
     put_policy = Qiniu::Auth::PutPolicy.new(
