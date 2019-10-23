@@ -1,0 +1,5 @@
+%h3 修改整理服务
+
+= link_to '返回', admin_services_path, class: "btn btn-secondary"
+
+= render :partial => 'form', :locals => {url: admin_service_path(@service)}

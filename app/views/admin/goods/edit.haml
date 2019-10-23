@@ -1,0 +1,5 @@
+%h3 修改产品
+
+= link_to '返回', admin_goods_path, class: "btn btn-secondary"
+
+= render :partial => 'form', :locals => {url: admin_good_path(@good)}

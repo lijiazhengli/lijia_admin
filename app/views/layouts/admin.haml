@@ -11,30 +11,41 @@
     = javascript_include_tag "admin"
     = csrf_meta_tags
 
-  %body{role: 'document'}
+  %body{role: 'document', style: 'align-items: normal;'}
     %nav.navbar.navbar-dark.fixed-top.bg-dark.flex-md-nowrap.p-0.shadow
       %a.navbar-brand.col-sm-3.col-md-2.mr-0{href: "#"} 莉家整理
       - if false
         %input.form-control.form-control-dark.w-100{type: 'text', placeholder: "Search", "aria-label" => "Search"}
       %ul.navbar-nav.px-3
-        %li.nav-item.text-nowrap
-          = form_tag admin_do_logout_path, method: 'delete' do
-            = submit_tag "#{@admin.try(:name)} |  退出", class: "login-out-submint"
+        %li.nav-item.text-nowrap.white-color
+          = @admin.try(:user_name)
+          |
+          = link_to '退出', admin_do_logout_path, method: :delete, class: "white-color"
+          - if @admin.present?
+            |
+            = link_to '修改密码', edit_admin_admin_path(@admin), class: "white-color"
 
-
+    %div{style: 'height: 50px;'}
     .container-fluid
-      .row
-        %nav.col-md-2.d-none.d-md-block.bg-light.sidebar
-          .sidebar-sticky
-            %ul.nav.flex-column
-              %li.nav-item
-                %a.nav-link.active
-                  //%span.fa.fa-user-o
-                  用户信息
+      %nav.col-md-2.d-none.d-md-block.bg-light.sidebar
+        .sidebar-sticky
+          %ul.nav.flex-column
+            - if false
               %li.nav-item
                 %a.nav-link
-                  订单
+                  //%span.fa.fa-user-o
+                  用户信息
+            %li.nav-item
+              = link_to '整理服务', admin_services_path, class: "nav-link #{'active' if params[:controller] == 'admin/services'}"
+            %li.nav-item
+              = link_to '课程培训', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
+            %li.nav-item
+              = link_to '收纳工具', admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods'}"
+            %li.nav-item
+              = link_to '整理师', admin_arrangers_path, class: "nav-link #{'active' if params[:controller] == 'admin/arrangers'}"
+            %li.nav-item
+              = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders'}"
 
-        %main.col-md-9.ml-sm-auto.col-lg-10.px-4{role: 'main'}
-          = yield
+      .col-md-12.ml-sm-auto.col-lg-10.px-4{role: 'main'}
+        = yield
     %footer#footer

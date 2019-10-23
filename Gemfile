@@ -26,10 +26,12 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+gem 'figaro'
+
+gem 'ransack'
+
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-
-
 
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -44,6 +46,11 @@ gem 'jquery-rails'
 gem "haml-rails"
 
 gem 'kaminari'
+
+gem 'simple_form'
+
+gem 'qiniu'
+gem 'jquery-fileupload-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

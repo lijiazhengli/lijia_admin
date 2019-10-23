@@ -1,0 +1,5 @@
+%h3 修改课程
+
+= link_to '返回', admin_arragers_path, class: "btn btn-secondary"
+
+= render :partial => 'form', :locals => {url: admin_arrager_path(@arrager)}

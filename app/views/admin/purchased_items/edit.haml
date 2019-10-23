@@ -1,0 +1,5 @@
+%h3 修改订单#{@order_type}
+
+= link_to '返回', admin_order_purchased_items_path(@order), class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_order_purchased_item_path(@order,@item)}

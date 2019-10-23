@@ -1,0 +1,12 @@
+.container-fluid
+  .row
+    %main.col-md-12.ml-sm-auto.col-lg-12.px-4{role: 'main'}
+      = form_tag admin_admin_path, method: 'put', class: "form-signin" do
+        .form-group
+          = password_field_tag :password, '',class: 'form-control', placeholder: "新密码"
+        .form-group
+          = password_field_tag :password_confirmation, '',class: 'form-control', placeholder: "确认密码"
+        - if flash[:edit_password_error].present?
+          %div=flash[:edit_password_error]
+        .form-group
+          = submit_tag '修改', class: 'btn btn-lg btn-primary btn-block'

@@ -1,0 +1,5 @@
+%h3 修改订单费用
+
+= link_to '返回', admin_order_order_payment_records_path(@order), class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_order_order_payment_record_path(@order,@item)}

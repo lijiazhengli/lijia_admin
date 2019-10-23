@@ -10,6 +10,22 @@ class Admin::AdminController < Admin::BaseController
     Digest::MD5.hexdigest([name, realm, password].join(':'))
   end
 
+  def edit
+  end
+
+  def update
+    p params
+    admin = Admin.find(params[:id])
+    password = params[:password].strip
+    if password == params[:password_confirmation].strip and admin.update_attributes(password_hash: ha1(admin.name, 'Lijia', password))
+      flash[:edit_password_error] = nil
+      redirect_to admin_home_url
+    else
+      flash[:edit_password_error] = '两次输入不一致'
+      render :edit
+    end
+  end
+
   def do_login
     name = params[:name]
     password = params[:password]

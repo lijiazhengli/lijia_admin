@@ -1,0 +1,24 @@
+%h2 订单的#{@order_type}列表
+
+= link_to '返回', admin_orders_path, class: "btn btn-secondary"
+= link_to "新建订单的#{@order_type}", new_admin_order_purchased_item_path, class: "btn btn-success"
+
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 名称
+        %th 金额
+        %th 数量
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= @product_hash[item.product_id]
+          %td= item.price
+          %td= item.quantity
+          %td
+            = link_to '修改', edit_admin_order_purchased_item_path(@order, item)
+            |
+            = link_to '删除', admin_order_purchased_item_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items
