@@ -13,9 +13,16 @@
     = csrf_meta_tags
 
   %body{role: 'document'}
+    %nav.navbar.navbar-dark.fixed-top.bg-dark.flex-md-nowrap.p-0.shadow
+      %a.navbar-brand.col-sm-3.col-md-2.mr-0{href: "#"} 莉家整理
+
     .container-fluid
       .row
         %main.col-md-12.ml-sm-auto.col-lg-12.px-4{role: 'main'}
+          - if false
+            .table-responsive
+              %h2{style: "text-align: center;"} 莉家整理管理后台
+
           = form_tag admin_do_login_path, method: 'post', class: "form-signin" do
             .form-group
               = text_field_tag :name, params[:name],class: 'form-control', placeholder: "用户名"

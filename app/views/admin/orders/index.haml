@@ -7,6 +7,30 @@
       = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
     .form-group
       = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
+
+    .form-group
+      = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
+    .form-group
+      = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
+
+    .form-group
+      = f.label "开始日期"
+      = f.date_field :start_date_gteq, class: "form-control"
+      = f.label "截止日期"
+      = f.date_field :end_date_lteq, class: "form-control"
+
+    .form-group
+      = f.label '创建人'
+      = select_tag "q[admin_id_eq]", options_for_select(Admin.pluck(:user_name, :id).to_h, @params[:admin_id_eq]), include_blank: true, class: "form-control"
+
+    .form-group
+      = f.label '订单状态'
+      = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+    .form-group
+      = f.label '订单类型'
+      = select_tag "q[order_type_eq]", options_for_select(Order::ORDER_TYPE.invert, @params[:order_type_eq]), include_blank: true, class: "form-control"
+
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建订单', new_admin_order_path, class: "btn btn-success"
 

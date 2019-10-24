@@ -15,4 +15,5 @@ class Admin < ActiveRecord::Base
       self.is?(role.name)
     end
   end
+
 end

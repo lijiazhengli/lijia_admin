@@ -6,9 +6,9 @@
     .form-group
       = f.search_field :phone_number_cont, class: "form-control", placeholder: "电话"
     .form-group
-      = f.search_field :base_order_count_gteq, class: "form-control", placeholder: "单量起"
+      = f.search_field :orders_count_gteq, class: "form-control", placeholder: "单量起"
     .form-group
-      = f.search_field :base_order_count_lteq, class: "form-control", placeholder: "单量止"
+      = f.search_field :orders_count_lteq, class: "form-control", placeholder: "单量止"
     = f.submit '查询', class: "btn btn-md btn-secondary"
     = link_to '新建整理师信息', new_admin_arranger_path, class: "btn btn-success"
 
@@ -27,7 +27,7 @@
       - @arrangers.each do |item|
         %tr
           %td= item.name
-          %th= item.base_order_count
+          %th= item.orders_count
           %td= item.phone_number
           %td= item.active
           %td

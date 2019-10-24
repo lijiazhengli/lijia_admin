@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root 'welcome#index'
+  #root 'welcome#index'
+  root "admin/base#admin_login"
   get 'welcome/index'
   namespace :admin do
     #root "wx_menus#index"

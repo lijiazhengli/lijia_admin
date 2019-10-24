@@ -10,7 +10,7 @@
     .form-group
       = f.label "姓名"
       %br
-      = f.select :arranger_id, options_for_select(Arranger.where(active: true).pluck(:name, :id).to_h, @item.arranger_id), {}, class: 'form-control'
+      = f.select :arranger_id, options_for_select(Arranger.current_arranger_hash.invert, @item.arranger_id), {}, class: 'form-control'
     .form-group
       = f.label "角色"
       %br

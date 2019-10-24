@@ -1,5 +1,5 @@
 namespace :admin do 
- desc '建立后台管理账户'
+  desc '建立后台管理账户'
   task :init_admin => :environment do
     realm = "Lijia"
     password = "lijia99"
@@ -33,22 +33,31 @@ namespace :admin do
 
     '常莉、刘薛（晓雪）、岳艳霞、薄蕾（蕾蕾）、张维、林雪枫、刘素芬、马卓、陈子奇、何娅楠、仲昭秋、董彬、孙燕、国艳琴、孙芳媛'.split('、').each do |user_name|
       arranger = Arranger.where(name: user_name).first_or_create
-      arranger.update_attributes(base_order_count: 999)
+      arranger.update_attributes(base_order_count: 999, active: true)
     end
 
     '江红、马欣、马倩'.split('、').each do |user_name|
       arranger = Arranger.where(name: user_name).first_or_create
-      arranger.update_attributes(base_order_count: 8)
+      arranger.update_attributes(base_order_count: 8, active: true)
     end
 
     '刘岩、张华、李秀桂、田甜、宋云香、姚桂杰'.split('、').each do |user_name|
       arranger = Arranger.where(name: user_name).first_or_create
-      arranger.update_attributes(base_order_count: 2)
+      arranger.update_attributes(base_order_count: 2, active: true)
     end
     '棚桥丽华、王艳杰、郭锐、张颖'.split('、').each do |user_name|
       arranger = Arranger.where(name: user_name).first_or_create
-      arranger.update_attributes(base_order_count: 1)
+      arranger.update_attributes(base_order_count: 1, active: true)
     end
 
   end
+
+  desc '更新整理师信息'
+  task :update_arranger_orders_count => :environment do
+    Arranger.all.each do |item|
+      orders_count = OrderArrangerAssignment.where(arranger_id: item.id, order_type: Order::SERVICE_ORDER).select('distinct order_id').count
+      item.update_attributes(orders_count: (item.base_order_count + orders_count))
+    end
+  end
+
 end

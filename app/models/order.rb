@@ -14,6 +14,8 @@ class Order < ApplicationRecord
     'Product'       => '收纳功能'
   }
 
+  SERVICE_ORDER = 'Service'
+
   STATUS = {
     'unpaid'       => '待支付',
     'paided'       => '已支付',
