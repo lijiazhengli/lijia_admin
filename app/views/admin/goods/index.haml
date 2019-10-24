@@ -16,7 +16,10 @@
       %button.btn.btn-sm.btn-outline-secondary.dropdown-toggle
         %span{"data-feather" => 'calendar'} This week
 
-
+%br
+%div
+  总数： 
+  = @goods.total_count
 .table-responsive
   %table.table.table-striped.table-sm
     %thead

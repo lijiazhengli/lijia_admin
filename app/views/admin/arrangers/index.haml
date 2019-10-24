@@ -13,7 +13,9 @@
     = link_to '新建整理师信息', new_admin_arranger_path, class: "btn btn-success"
 
 
-
+%div
+  总数： 
+  = @arrangers.total_count
 .table-responsive
   %table.table.table-striped.table-sm
     %thead

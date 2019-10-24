@@ -3,6 +3,10 @@
 = link_to '返回', admin_orders_path, class: "btn btn-secondary"
 = link_to "新建订单的#{@order_type}", new_admin_order_purchased_item_path, class: "btn btn-success"
 
+%br
+%div
+  总数： 
+  = @items.total_count
 .table-responsive
   %table.table.table-striped.table-sm
     %thead
