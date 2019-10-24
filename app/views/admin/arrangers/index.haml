@@ -32,4 +32,6 @@
           %td= item.active
           %td
             = link_to '修改', edit_admin_arranger_path(item)
+            |
+            = link_to '订单', service_orders_admin_arranger_path(item)
   = paginate @arrangers

@@ -12,7 +12,11 @@ Rails.application.routes.draw do
 
     resources :admin
 
-    resources :arrangers
+    resources :arrangers do
+      member do
+        get :service_orders
+      end
+    end
 
     resources :courses do
       collection do

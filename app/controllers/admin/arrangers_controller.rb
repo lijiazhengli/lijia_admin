@@ -7,6 +7,14 @@ class Admin::ArrangersController < Admin::BaseController
     @arrangers = @q.result(distinct: true).page(params[:page])
   end
 
+  def service_orders
+    @arranger = Arranger.find(params[:id])
+    @params = params[:q] || {}
+    @q = @arranger.orders.order('start_date desc').ransack(@params)
+    @orders = @q.result(distinct: true).page(params[:page])
+    @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
+  end
+
   def new
     @arranger = Arranger.new
   end

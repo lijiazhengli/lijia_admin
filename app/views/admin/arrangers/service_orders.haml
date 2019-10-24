@@ -1,17 +1,12 @@
-%h2 订单列表
+%h2 #{@arranger.name}订单列表
 - if true
-  = search_form_for @q, url: admin_orders_path, html: {class: 'form-inline'} do |f|
+  = search_form_for @q, url: service_orders_admin_arranger_path(@arranger), html: {class: 'form-inline'} do |f|
     .form-group
       = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
     .form-group
       = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
     .form-group
       = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
-
-    .form-group
-      = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
-    .form-group
-      = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
 
     .form-group
       = f.label "开始日期"
@@ -22,10 +17,6 @@
     .form-group
       = f.label '创建人'
       = select_tag "q[admin_id_eq]", options_for_select(Admin.pluck(:user_name, :id).to_h, @params[:admin_id_eq]), include_blank: true, class: "form-control"
-
-    .form-group
-      = f.label '订单状态'
-      = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
 
     .form-group
       = f.label '订单类型'
@@ -54,7 +45,6 @@
         %th 城市
         %th 状态
         %th 开始和结束日期
-        %th 推荐人
         %th 创建时间
         %th 操作
     %tbody
@@ -66,17 +56,8 @@
           %td= item.city_name
           %td= Order::STATUS[item.status]
           %td= "#{item.start_date}~#{item.end_date}"
-          %td= "#{item.referral_name}|#{item.referral_phone_number}"
           %td= item.created_at.strftime('%F %T')
           %td
             = link_to '详情', admin_order_path(item)
-            |
-            = link_to '修改', edit_admin_order_path(item)
-            |
-            = link_to "#{Order::ORDER_TYPE[item.order_type]}信息", admin_order_purchased_items_path(item)
-            |
-            = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
-            |
-            = link_to '费用', admin_order_order_payment_records_path(item)
             
   = paginate @orders
