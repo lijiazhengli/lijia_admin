@@ -22,6 +22,7 @@
     %thead
       %tr
         %th 名称
+        %td 费用
         %th 城市名称
         %th 开始日期
         %th 结束日期
@@ -31,6 +32,7 @@
       - @courses.each do |item|
         %tr
           %td= item.title
+          %td= item.price
           %td= item.city_name
           %td= item.start_date
           %td= item.end_date

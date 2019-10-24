@@ -11,6 +11,11 @@
       = f.text_field :title, class: 'form-control'
 
     .form-group
+      = f.label "费用"
+      %br
+      = f.text_field :price, class: 'form-control'
+
+    .form-group
       = f.label "描述"
       %br
       = f.text_area :description, class: 'form-control'
@@ -19,7 +24,7 @@
       = f.label "是否启用"
       = f.select :active, options_for_select({'是' => true, '否' => false}, @service.active), {}, class: 'form-control'
 
-    - if false
+    - if true
       .form-inline
         = f.text_field :front_image, style: 'display: none'
         %label.col-md-12.control-label(for='front_image')= "首页图片"
@@ -42,10 +47,10 @@
         %img.img-thumbnail.img-fixed#remote-detailed-image(src="#{@service.detailed_image}?imageView2/0/w/750")
     = f.submit '保存', class: 'btn btn-success'
 
-- if false
+- if true
   :javascript
     $('#remote-front').fileupload({
-      url: '#{file_upload_admin_courses_path(type: 'front')}',
+      url: '#{file_upload_admin_services_path(type: 'front')}',
       dataType: 'json',
       autoUpload: true,
       paramName: 'FileContent'
@@ -61,7 +66,7 @@
       $('#remote-front-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
     });
     $('#remote-detailed').fileupload({
-      url: '#{file_upload_admin_courses_path(type: 'detailed')}',
+      url: '#{file_upload_admin_services_path(type: 'detailed')}',
       dataType: 'json',
       autoUpload: true,
       paramName: 'FileContent'

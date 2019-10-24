@@ -14,7 +14,7 @@ class Admin::GoodsController < Admin::BaseController
 
   def create
     @good = Good.new(current_record_params)
-    if @course.save
+    if @good.save
       redirect_to admin_goods_path
     else
       render :new

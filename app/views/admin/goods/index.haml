@@ -22,7 +22,8 @@
     %thead
       %tr
         %th 名称
-        %th 城市名称
+        - if false
+          %th 城市名称
         %th 价格
         %th 是否启用
         %th 操作
@@ -30,7 +31,8 @@
       - @goods.each do |item|
         %tr
           %td= item.title
-          %td= item.city_name
+          - if false
+            %td= item.city_name
           %td= item.price
           %td= item.active
           %td
