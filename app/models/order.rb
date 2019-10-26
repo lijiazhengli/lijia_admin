@@ -22,4 +22,21 @@ class Order < ApplicationRecord
     'completed'    => '已完成',
     'canceled'     => '已取消'
   }
+
+
+  def save_with_new_external_id
+    start = self.start_date.split('-').join('')
+    prefix = self.order_type[0] + 'O'
+    max_id = ExternalId.where(prefix: prefix, date: start).first_or_create
+    result = nil
+    max_id.with_lock do
+      new_num = max_id.number + 1
+      self.external_id = prefix + start + sprintf('%04d', new_num)
+      result = self.save!
+      if result
+        max_id.update(number: new_num)
+      end
+    end
+    result
+  end
 end

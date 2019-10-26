@@ -15,17 +15,11 @@
     %th 开始和结束日期
     %td= "#{@order.start_date}~#{@order.end_date}"
   %tr
-    %th 推荐人
-    %td= "#{@order.referral_name}|#{@order.referral_phone_number}"
-  %tr
     %th 地址
     %td= @order.location_address
   %tr
     %th 服务备注
     %td= @order.service_notes
-  %tr
-    %th 备注
-    %td= @order.notes
   %tr
     %th 服务人员
     %td
@@ -39,10 +33,3 @@
           %div= item.product.title
         - else
           %div #{item.product.title} x #{item.quantity}
-
-  %tr
-    %th 付款记录
-    %td
-      - @order.order_payment_records.each do |item|
-        %div #{item.payment_method_name}:  #{item.cost}
-

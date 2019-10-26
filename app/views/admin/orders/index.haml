@@ -2,12 +2,11 @@
 - if true
   = search_form_for @q, url: admin_orders_path, html: {class: 'form-inline'} do |f|
     .form-group
-      = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
+      = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
     .form-group
-      = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
+      = f.search_field :location_address_cont, class: "form-control", placeholder: "地址"
     .form-group
       = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
-
     .form-group
       = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
     .form-group
@@ -18,6 +17,9 @@
       = f.date_field :start_date_gteq, class: "form-control"
       = f.label "截止日期"
       = f.date_field :end_date_lteq, class: "form-control"
+
+    .form-group
+      = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
 
     .form-group
       = f.label '创建人'
@@ -51,8 +53,8 @@
   %table.table.table-striped.table-sm
     %thead
       %tr
+        %td 单号
         %th 创建人
-        %th 类型
         %th 订购人
         %th 城市
         %th 状态
@@ -63,8 +65,8 @@
     %tbody
       - @orders.each do |item|
         %tr
+          %td= item.external_id
           %td= @admins_hash[item.admin_id]
-          %td= Order::ORDER_TYPE[item.order_type]
           %td= "#{item.customer_name}|#{item.customer_phone_number}"
           %td= item.city_name
           %td= Order::STATUS[item.status]

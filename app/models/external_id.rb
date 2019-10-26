@@ -1,0 +1,2 @@
+class ExternalId < ApplicationRecord
+end

@@ -62,6 +62,6 @@
           %td= "#{item.start_date}~#{item.end_date}"
           %td= item.created_at.strftime('%F %T')
           %td
-            = link_to '详情', admin_order_path(item)
+            = link_to '详情', base_show_admin_order_path(item)
             
   = paginate @orders

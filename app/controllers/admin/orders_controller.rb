@@ -15,7 +15,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def create
     @order = Order.new(current_record_params)
-    if @order.save
+    if @order.save_with_new_external_id
       redirect_to admin_orders_path
     else
       render :new
@@ -24,8 +24,11 @@ class Admin::OrdersController < Admin::BaseController
 
   def show
     @order = Order.find(params[:id])
-    @order_arranger_assignments = @order.order_arranger_assignments
-    @arrangers_hash = Arranger.where(id: @order_arranger_assignments.map(&:arranger_id)).pluck(:id, :name).to_h
+  end
+
+  def base_show
+    p params
+    @order = Order.find(params[:id])
   end
 
   def update

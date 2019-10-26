@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_24_145135) do
+ActiveRecord::Schema.define(version: 2019_10_26_113738) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(version: 2019_10_24_145135) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "external_ids", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "prefix", limit: 5
+    t.string "date"
+    t.integer "number", default: 0
+    t.index ["prefix", "date"], name: "index_external_ids_on_prefix_and_date"
   end
 
   create_table "order_arranger_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -88,6 +95,10 @@ ActiveRecord::Schema.define(version: 2019_10_24_145135) do
     t.string "referral_phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "external_id", limit: 20
+    t.text "notes"
+    t.text "service_notes"
+    t.index ["external_id"], name: "index_orders_on_external_id"
     t.index ["order_type"], name: "index_orders_on_order_type"
     t.index ["start_date"], name: "index_orders_on_start_date"
   end

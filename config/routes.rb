@@ -45,6 +45,9 @@ Rails.application.routes.draw do
     
 
     resources :orders do
+      member do
+        get :base_show
+      end
       resources :order_arranger_assignments
       resources :order_payment_records
       resources :purchased_items
