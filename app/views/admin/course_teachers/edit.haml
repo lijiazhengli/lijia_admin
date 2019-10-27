@@ -1,0 +1,5 @@
+%h3 修改课程讲师
+
+= link_to '返回', admin_course_course_teachers_path(@course), class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_course_course_teacher_path(@course,@item)}

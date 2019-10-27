@@ -1,0 +1,22 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+    .form-group
+      = f.label "*名称"
+      %br
+      = f.text_field :name, class: 'form-control'
+
+    .form-group
+      = f.label "介绍"
+      %br
+      = f.text_area :introduce, class: 'form-control'
+
+    .form-group
+      = f.label "是否启用"
+      = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
+
+    = f.submit '保存', class: 'btn btn-success'

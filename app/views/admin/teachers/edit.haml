@@ -1,0 +1,5 @@
+%h3 修改讲师信息
+
+= link_to '返回', admin_teachers_path, class: "btn btn-secondary"
+
+= render :partial => 'form', :locals => {url: admin_teacher_path(@item)}

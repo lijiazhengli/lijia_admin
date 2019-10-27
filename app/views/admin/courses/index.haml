@@ -42,4 +42,8 @@
           %td= item.active
           %td
             = link_to '修改', edit_admin_course_path(item)
+            |
+            = link_to "讲师", admin_course_course_teachers_path(item)
+            |
+            = link_to "学员", admin_course_students_path(item)
   = paginate @courses

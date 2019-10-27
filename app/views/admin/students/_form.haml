@@ -1,0 +1,46 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+
+    .form-group
+      = f.label "城市"
+      %br
+      = f.text_field :city_name, class: 'form-control'
+
+    .form-group
+      = f.label "职业"
+      %br
+      = f.text_field :careers, class: 'form-control'
+
+    .form-group
+      = f.label "职业规划"
+      %br
+      = f.text_field :career_plan, class: 'form-control'
+
+    .form-group
+      = f.label "备注"
+      %br
+      = f.text_area :notes, class: 'form-control'
+
+    .form-group
+      = f.label "教师评价"
+      %br
+      = f.text_area :review, class: 'form-control'
+
+    .form-group
+      = f.label "学员反馈"
+      %br
+      = f.text_area :feedback, class: 'form-control'
+
+    .form-group
+      = f.label "是否启用"
+      = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
+
+
+    = f.submit '保存', class: 'btn btn-success'
+
+

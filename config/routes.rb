@@ -24,6 +24,8 @@ Rails.application.routes.draw do
         put :file_upload
         patch :file_upload
       end
+      resources :course_teachers
+      resources :students
     end
 
     resources :goods do
@@ -34,16 +36,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :services do
-      collection do
-        post :file_upload
-        put :file_upload
-        patch :file_upload
-      end
-    end
-
-    
-
     resources :orders do
       member do
         get :base_show
@@ -52,6 +44,16 @@ Rails.application.routes.draw do
       resources :order_payment_records
       resources :purchased_items
     end
+
+    resources :services do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
+
+    resources :teachers
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -1,0 +1,27 @@
+%h2 整理师列表
+- if true
+  = search_form_for @q, url: admin_teachers_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :name_cont, class: "form-control", placeholder: "姓名"
+    = f.submit '查询', class: "btn btn-md btn-secondary"
+    = link_to '新建讲师信息', new_admin_teacher_path, class: "btn btn-success"
+
+
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 姓名
+        %th 是否启用
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.name
+          %td= item.active
+          %td
+            = link_to '修改', edit_admin_teacher_path(item)
+  = paginate @items

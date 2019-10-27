@@ -1,0 +1,26 @@
+%h2 课程讲师列表
+
+= link_to '返回', admin_courses_path, class: "btn btn-secondary"
+= link_to "新建讲师", new_admin_course_course_teacher_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 姓名
+        %th 介绍
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.teacher.name
+          %td= item.introduce
+          %td
+            = link_to '修改', edit_admin_course_course_teacher_path(@course, item)
+            |
+            = link_to '删除', admin_course_course_teacher_path(@course, item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items

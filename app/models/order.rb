@@ -48,7 +48,7 @@ class Order < ApplicationRecord
       @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_UPDATE_ORDER', 'PARAMS' => options}.to_s)
       success = false
       allow_methods = %w(
-        check_user create_order save_with_new_external_id
+        check_user create_order create_course_student save_with_new_external_id
       )
 
       all_methods = options.symbolize_keys![:methods] || []
@@ -128,6 +128,18 @@ class Order < ApplicationRecord
         purchased_items_attributes: order_hash[:purchased_items] || []
       )
       Order.new(order_attr)
+    end
+
+    def create_course_student order_hash, params
+      order = order_hash[:order]
+      user = order_hash[:user]
+      raise '不能创建学员' if order.blank? or user.blank?
+      order.purchased_items.each do |item|
+        course = Course.find(item.product_id)
+        student = Student.where(course_id: course.id, user_id: user.id,  order_id: order.id).first_or_create
+        student.update_attributes!(notes: order.notes, city_name: order.city_name)
+        order_hash[:student] = student
+      end
     end
 
     def save_with_new_external_id(order_hash, params)

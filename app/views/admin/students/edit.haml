@@ -1,0 +1,5 @@
+%h3 修改学员信息
+
+= link_to '返回', admin_course_students_path(@course), class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_course_student_path(@course,@item)}

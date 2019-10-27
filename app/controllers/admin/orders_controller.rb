@@ -24,7 +24,11 @@ class Admin::OrdersController < Admin::BaseController
       option[:purchased_items] = [{product_id: params[:purchased_item_id], quantity: params[:quantity] || 1, price: product.price}]
     end
 
-    option[:methods] = %w(check_user create_order save_with_new_external_id)
+    if params_attr[:order_type] == Order::COURSE_ORDER
+      option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
+    else
+      option[:methods] = %w(check_user create_order save_with_new_external_id)
+    end
     option[:redis_expire_name] = "cart-#{order_attr[:customer_phone_number]}"
 
     @order, success, @errors = Order.create_or_update_order(option)

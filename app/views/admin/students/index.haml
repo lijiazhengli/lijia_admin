@@ -1,0 +1,31 @@
+%h2 学院列表
+
+= link_to '返回', admin_courses_path, class: "btn btn-secondary"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 姓名
+        %th 电话
+        %th 城市
+        %th 职业
+        %th 职业规划
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          - user = item.user
+          %td= user.name
+          %td= user.phone_number
+          %td= item.city_name
+          %td= item.careers
+          %td= item.career_plan
+          %td
+            = link_to '修改', edit_admin_course_student_path(@course, item)
+  = paginate @items
+

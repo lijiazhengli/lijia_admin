@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_081730) do
+ActiveRecord::Schema.define(version: 2019_10_27_144606) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 2019_10_27_081730) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "orders_count", default: 0
     t.index ["orders_count"], name: "index_arrangers_on_orders_count"
+  end
+
+  create_table "course_teachers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "course_id"
+    t.integer "teacher_id"
+    t.string "name"
+    t.text "introduce"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_course_teachers_on_course_id"
+    t.index ["teacher_id"], name: "index_course_teachers_on_teacher_id"
   end
 
   create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -141,6 +152,32 @@ ActiveRecord::Schema.define(version: 2019_10_27_081730) do
     t.string "name"
     t.text "description"
     t.index ["name"], name: "index_roles_on_name"
+  end
+
+  create_table "students", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "course_id"
+    t.integer "order_id"
+    t.string "city_name"
+    t.string "careers"
+    t.string "career_plan"
+    t.text "notes"
+    t.text "feedback"
+    t.text "review"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_students_on_course_id"
+    t.index ["order_id"], name: "index_students_on_order_id"
+    t.index ["user_id"], name: "index_students_on_user_id"
+  end
+
+  create_table "teachers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.text "introduce"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

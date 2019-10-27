@@ -83,9 +83,6 @@
             - if item.order_type == Order::SERVICE_ORDER
               |
               = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
-            - if item.order_type == Order::COURSE_ORDER
-              |
-              = link_to "学员", admin_order_order_arranger_assignments_path(item)
             |
             = link_to '费用', admin_order_order_payment_records_path(item)
             

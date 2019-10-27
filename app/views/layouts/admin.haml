@@ -44,6 +44,8 @@
             %li.nav-item
               = link_to '整理师', admin_arrangers_path, class: "nav-link #{'active' if params[:controller] == 'admin/arrangers'}"
             %li.nav-item
+              = link_to '讲师', admin_teachers_path, class: "nav-link #{'active' if params[:controller] == 'admin/teachers'}"
+            %li.nav-item
               = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders'}"
 
       .col-md-12.ml-sm-auto.col-lg-10.px-4{role: 'main'}
