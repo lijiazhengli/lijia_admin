@@ -14,10 +14,18 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def create
-    @order = Order.new(current_record_params)
-    if @order.save_with_new_external_id
+    params_attr = params[:order]
+    order_attr = current_record_params
+    option = {order_attr: order_attr, params: params_attr}
+
+    option[:methods] = %w(check_user create_order save_with_new_external_id)
+    option[:redis_expire_name] = "cart-#{order_attr[:customer_phone_number]}"
+
+    @order, success, @errors = Order.create_or_update_order(option)
+    if success
       redirect_to admin_orders_path
     else
+      @order = Order.new(order_attr)
       render :new
     end
   end

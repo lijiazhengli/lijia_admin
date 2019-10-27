@@ -6,6 +6,10 @@
         %ul
           - @order.errors.messages.each do |key,msg|
             %li= msg.join(',')
+    - if @errors.present?
+      .form-group
+        %ul
+          %li= @errors.values.join(',')
     .form-group
       = f.label "订单类型"
       = f.select :order_type, options_for_select(Order::ORDER_TYPE.invert, @order.order_type), {}, class: 'form-control'
