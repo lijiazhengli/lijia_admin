@@ -10,13 +10,19 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def new
-    @order = Order.new(admin_id: @admin.id)
+    @order = Order.new(admin_id: @admin.id, order_type: params[:order_type] || 'Service')
   end
 
   def create
     params_attr = params[:order]
-    order_attr = current_record_params
+    
+    order_attr = params.require(:order).permit!
     option = {order_attr: order_attr, params: params_attr}
+
+    if params[:purchased_item_id].present?
+      product = Product.find(params[:purchased_item_id])
+      option[:purchased_items] = [{product_id: params[:purchased_item_id], quantity: params[:quantity] || 1, price: product.price}]
+    end
 
     option[:methods] = %w(check_user create_order save_with_new_external_id)
     option[:redis_expire_name] = "cart-#{order_attr[:customer_phone_number]}"
@@ -25,7 +31,7 @@ class Admin::OrdersController < Admin::BaseController
     if success
       redirect_to admin_orders_path
     else
-      @order = Order.new(order_attr)
+      @order = Order.new(current_record_params)
       render :new
     end
   end
@@ -35,7 +41,6 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def base_show
-    p params
     @order = Order.find(params[:id])
   end
 

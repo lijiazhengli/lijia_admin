@@ -15,6 +15,7 @@ class Order < ApplicationRecord
   }
 
   SERVICE_ORDER = 'Service'
+  COURSE_ORDER = 'Course'
 
   STATUS = {
     'unpaid'       => '待支付',
@@ -84,14 +85,11 @@ class Order < ApplicationRecord
 
     def check_redis_expire_name(order_hash, params)
       redis = $redis
-      p  redis.get(order_hash[:redis_expire_name])
-      p  order_hash[:redis_expire_name]
       raise '请不要重复提交订单' if order_hash[:redis_expire_name].blank? or redis.get(order_hash[:redis_expire_name]) == 'true'
       redis.set(order_hash[:redis_expire_name], true)
       redis.expire(order_hash[:redis_expire_name], 5 * 60)
       @@order_logger.info (Time.now.to_s + {'m_name' => 'SET_TRANSACTION_REDIS_EXPIRE_TIME', "#{order_hash[:redis_expire_name]}" => redis.get(order_hash[:redis_expire_name]), 'ORDER_HASH' => order_hash}.to_s)
     end
-
 
     def check_user order_hash, params
       return if order_hash[:user].present?
@@ -114,8 +112,6 @@ class Order < ApplicationRecord
 
     def create_order order_hash, params
       order = build_order_params(order_hash, params)
-      user = order_hash[:user]
-      order.user_id = user.id
       if !order.valid? || !order.save
         @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_USER_ERRORS', 'order' => order, 'ERRORS' => order.errors}.to_s)
         raise order.errors
@@ -127,8 +123,10 @@ class Order < ApplicationRecord
 
     def build_order_params order_hash, params
       order_attr = order_hash[:order_attr] || {}
-      user = order_hash[:user]
-      order_attr = order_attr.merge!(user_id: user.id)
+      order_attr = order_attr.merge!(
+        user_id: order_hash[:user_id] || order_hash[:user].try(:id),
+        purchased_items_attributes: order_hash[:purchased_items] || []
+      )
       Order.new(order_attr)
     end
 

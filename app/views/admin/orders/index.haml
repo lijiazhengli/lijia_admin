@@ -35,6 +35,7 @@
 
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建订单', new_admin_order_path, class: "btn btn-success"
+    = link_to '新建课程订单', new_admin_order_path(order_type: 'Course'), class: "btn btn-success"
 
 - if false
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
@@ -79,8 +80,12 @@
             = link_to '修改', edit_admin_order_path(item)
             |
             = link_to "#{Order::ORDER_TYPE[item.order_type]}信息", admin_order_purchased_items_path(item)
-            |
-            = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
+            - if item.order_type == Order::SERVICE_ORDER
+              |
+              = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
+            - if item.order_type == Order::COURSE_ORDER
+              |
+              = link_to "学员", admin_order_order_arranger_assignments_path(item)
             |
             = link_to '费用', admin_order_order_payment_records_path(item)
             
