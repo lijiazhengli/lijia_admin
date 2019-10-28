@@ -1,0 +1,40 @@
+%h2 用户列表
+
+= search_form_for @q, url: admin_users_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :name_cont, class: "form-control", placeholder: "姓名"
+  .form-group
+    = f.search_field :phone_number_cont, class: "form-control", placeholder: "电话"
+  .form-group
+    = f.label "创建时间起"
+    = f.date_field :created_at_gteq, class: "form-control"
+    = f.label "创建时间止"
+    = f.date_field :created_at_lteq, class: "form-control"
+  = f.submit '查询', class: "btn btn-md btn-secondary"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 姓名
+        %th 电话
+        %th 创建时间
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.name
+          %td= item.phone_number
+          %td= item.created_at.strftime('%F %T')
+          %td
+            = link_to '订单', admin_orders_path(user_id: item.id)
+            |
+            = link_to '整理服务', admin_orders_path(order_type: 'Service', user_id: item.id)
+            |
+            = link_to '课程', admin_orders_path(order_type: 'Course', user_id: item.id)
+  = paginate @items
+

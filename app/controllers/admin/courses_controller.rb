@@ -21,6 +21,10 @@ class Admin::CoursesController < Admin::BaseController
     end
   end
 
+  def show
+    @course = Course.find(params[:id])
+  end
+
   def update
     @course = Course.find(params[:id])
     if @course.update_attributes(current_record_params)

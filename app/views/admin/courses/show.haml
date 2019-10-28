@@ -1,0 +1,33 @@
+%table.table.table-bordered
+  %tr
+    %th 名称
+    %td= @course.title
+  %tr
+    %th 城市
+    %td= @course.city_name
+  %tr
+    %th 开始和结束日期
+    %td= "#{@course.start_date}~#{@course.end_date}"
+  %tr
+    %th 费用
+    %td= @course.price
+  %tr
+    %th 描述
+    %td= @course.description
+
+  %tr
+    %th 讲师
+    %td
+      - @course.course_teachers.each do |item|
+        %div #{item.name}
+        %div #{item.introduce} 
+  %tr
+    %th 学员
+    %td
+      - @course.students.includes(:user).each do |item|
+        - user = item.user
+        .bold-text= "#{user.name} #{user.phone_number}"
+        %div= "职业： #{item.careers}"
+
+
+

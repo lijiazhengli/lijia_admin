@@ -4,6 +4,13 @@ class Admin::OrdersController < Admin::BaseController
   def index
     p params
     @params = params[:q] || {}
+    if params[:order_type].present?
+      @params[:order_type_eq] = params[:order_type]
+    end
+
+    if params[:user_id].present?
+      @params[:customer_phone_number_cont] = (User.find(params[:user_id]).phone_number rescue '')
+    end
     @q = Order.order('id desc').ransack(@params)
     @orders = @q.result(distinct: true).page(params[:page])
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
