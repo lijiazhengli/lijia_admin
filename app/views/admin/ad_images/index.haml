@@ -1,0 +1,40 @@
+%h2 图片列表
+= search_form_for @q, url: admin_ad_images_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :title_cont, class: "form-control", placeholder: "名称"
+  .form-group
+    = f.label '图片类型'
+    = select_tag "q[ad_type_eq]", options_for_select(AdImage::AD_TYPE.invert, @params[:ad_type_eq]), include_blank: true, class: "form-control"
+  = f.submit '查询', class: "btn btn-secondary"
+  = link_to '新建图片', new_admin_ad_image_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 名称
+        %th 图片类型
+        %th 链接
+        %th 手机图片
+        %th 是否启用
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.title
+          %td= AdImage::AD_TYPE[item.ad_type]
+          %td= item.url
+          %td= image_tag(item.mobile_image, width: '100px')
+          %td= item.active
+          %td
+            = link_to '修改', edit_admin_ad_image_path(item)
+            |
+            = link_to '删除', admin_ad_image_path(item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items
+
+
+

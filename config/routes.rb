@@ -12,6 +12,14 @@ Rails.application.routes.draw do
 
     resources :admin
 
+    resources :ad_images do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
+
     resources :arrangers do
       member do
         get :service_orders

@@ -1,0 +1,27 @@
+.form-inline
+  %label.col-md-12.control-label(for="#{image_name}")= "#{image_size}"
+  .col-md-12
+    %span.btn.btn-success.fileinput-button{id: "#{button_name}-image-btn"}
+      %i.glyphicon.glyphicon-plus
+      %span{id: "#{button_name}-image-select-text"} 选择图片
+      %input.form-control{id: "#{button_name}"}(type='file' multiple=false)
+.col-md-12{id: "#{button_name}-image-collection"}
+  %img.img-thumbnail.img-fixed{id: "#{button_name}-image"}(src="#{item.send(image_name)}?imageView2/0/w/750")
+
+:javascript
+  $('##{button_name}').fileupload({
+    url: '#{upload_url}',
+    dataType: 'json',
+    autoUpload: true,
+    paramName: 'FileContent'
+  }).bind('fileuploadadd', function (e, data) {
+    console.log(data);
+    data.submit();
+    $('##{button_name}-image-btn').addClass('disabled');
+    $('##{button_name}-image-select-text').text('上传中');
+  }).bind('fileuploaddone', function (e, data) {
+    $('##{button_name}-image-btn').removeClass('disabled');
+    $('##{button_name}-image-select-text').text('选择图片');
+    $('##{input_name}').val(data.result.download_url);
+    $('##{button_name}-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
+  });

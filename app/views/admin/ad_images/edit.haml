@@ -1,0 +1,5 @@
+%h3 修改图片
+
+= link_to '返回', admin_ad_images_path, class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_ad_image_path(@item)}
