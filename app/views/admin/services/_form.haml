@@ -24,59 +24,10 @@
       = f.label "是否启用"
       = f.select :active, options_for_select({'是' => true, '否' => false}, @service.active), {}, class: 'form-control'
 
-    - if true
-      .form-inline
-        = f.text_field :front_image, style: 'display: none'
-        %label.col-md-12.control-label(for='front_image')= "首页图片"
-        .col-md-12
-          %span.btn.btn-success.fileinput-button#remote-front-image-btn
-            %i.glyphicon.glyphicon-plus
-            %span#remote-front-image-select-text 选择图片
-            %input.form-control#remote-front(type='file' multiple=false)
-      .col-md-12#remote-front-image-collection
-        %img.img-thumbnail.img-fixed#remote-front-image(src="#{@service.front_image}?imageView2/0/w/750")
-      .form-inline
-        = f.text_field :detailed_image, style: 'display: none'
-        %label.col-md-12.control-label(for='detailed_image')= "详细页图片"
-        .col-md-12
-          %span.btn.btn-success.fileinput-button#remote-detailed-image-btn
-            %i.glyphicon.glyphicon-plus
-            %span#remote-detailed-image-select-text 选择图片
-            %input.form-control#remote-detailed(type='file' multiple=false)
-      .col-md-12#remote-detailed-image-collection
-        %img.img-thumbnail.img-fixed#remote-detailed-image(src="#{@service.detailed_image}?imageView2/0/w/750")
-    = f.submit '保存', class: 'btn btn-success'
+    = f.text_field :front_image, style: 'display: none'
+    = render partial: 'upload_image', locals: {item: @service, image_name: 'front_image', image_size: '首页图片(200x200)', button_name: 'front-image', input_name: 'service_front_image', upload_url: file_upload_admin_services_path(type: 'front')}
 
-- if true
-  :javascript
-    $('#remote-front').fileupload({
-      url: '#{file_upload_admin_services_path(type: 'front')}',
-      dataType: 'json',
-      autoUpload: true,
-      paramName: 'FileContent'
-    }).bind('fileuploadadd', function (e, data) {
-      console.log(data);
-      data.submit();
-      $('#remote-front-image-btn').addClass('disabled');
-      $('#remote-front-image-select-text').text('上传中');
-    }).bind('fileuploaddone', function (e, data) {
-      $('#remote-front-image-btn').removeClass('disabled');
-      $('#remote-front-image-select-text').text('选择图片');
-      $('#service_front_image').val(data.result.download_url);
-      $('#remote-front-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
-    });
-    $('#remote-detailed').fileupload({
-      url: '#{file_upload_admin_services_path(type: 'detailed')}',
-      dataType: 'json',
-      autoUpload: true,
-      paramName: 'FileContent'
-    }).bind('fileuploadadd', function (e, data) {
-      data.submit();
-      $('#remote-detailed-image-btn').addClass('disabled');
-      $('#remote-detailed-image-select-text').text('上传中');
-    }).bind('fileuploaddone', function (e, data) {
-      $('#remote-detailed-image-btn').removeClass('disabled');
-      $('#remote-detailed-image-select-text').text('选择图片');
-      $('#service_detailed_image').val(data.result.download_url);
-      $('#remote-detailed-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
-    });
+    = f.text_field :detailed_image, style: 'display: none'
+    = render partial: 'upload_image', locals: {item: @service, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'service_detailed_image', upload_url: file_upload_admin_services_path(type: 'detailed')}
+
+    = f.submit '保存', class: 'btn btn-success'

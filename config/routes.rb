@@ -65,5 +65,22 @@ Rails.application.routes.draw do
     resources :teachers
     resources :users
   end
+
+  resources :applets, only: [:index, :show] do
+    collection do
+      get  :cart
+      post :check_order_status
+      post :cancel_order
+      post :delete_user_address
+      get  :login
+      get  :load_address_list
+      get  :load_address_info
+      get  :orders
+      get  :order_show
+      get  :set_phone
+      post :save_address
+      post :create_order
+    end
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
