@@ -27,7 +27,11 @@ class Admin::BaseController < ApplicationController
 
   def file_upload_to_qiniu(image_type)
     bucket = ENV['QINIU_BUCKET']
-    key = "#{image_type}/#{Time.now.to_i * 1000 + rand(1000)}"
+    if params[:type].present?
+      key = "#{image_type}/#{params[:type]}/#{Time.now.to_i * 1000 + rand(1000)}"
+    else
+      key = "#{image_type}/#{Time.now.to_i * 1000 + rand(1000)}"
+    end
     put_policy = Qiniu::Auth::PutPolicy.new(
         bucket,
         key,

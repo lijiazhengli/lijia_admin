@@ -5,6 +5,15 @@ class AppletsController < ApplicationController
     request_info[:home_slideshows] = AdImage.applet_home.map{|item| item.to_applet_list}
     request_info[:services] = Service.applet_home.limit(4).map{|item| item.to_applet_list}
     request_info[:courses] = Course.applet_home.limit(4).map{|item| item.to_applet_list}
+    request_info[:goods] = Good.applet_home.limit(6).map{|item| item.to_applet_list}
+    render json: request_info
+  end
+
+  def product_show
+    p params
+    product = Product.find(params[:id])
+    request_info = {}
+    request_info[:info] = product.to_applet_show
     render json: request_info
   end
 

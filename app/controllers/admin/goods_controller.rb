@@ -40,7 +40,7 @@ class Admin::GoodsController < Admin::BaseController
   end
 
   def file_upload
-    file_upload_to_qiniu('good-')
+    file_upload_to_qiniu('good')
   end
 
   private

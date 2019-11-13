@@ -40,7 +40,7 @@ class Admin::ServicesController < Admin::BaseController
   end
 
   def file_upload
-    file_upload_to_qiniu('service-')
+    file_upload_to_qiniu('service')
   end
 
   private
