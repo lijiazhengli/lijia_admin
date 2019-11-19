@@ -13,4 +13,13 @@ class Product < ActiveRecord::Base
       img_url: self.detailed_image
     }
   end
+
+  def to_applet_list
+    {
+      id: self.id,
+      title: self.title,
+      price: self.price,
+      img_url: self.front_image
+    }
+  end
 end
