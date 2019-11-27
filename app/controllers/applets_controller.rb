@@ -30,7 +30,6 @@ class AppletsController < ApplicationController
         phone_number = Wx::MiniApplet.decryptData(request['session_key'], params)
         if phone_number.present?
           user = User.find_or_create_source_user(phone_number, 'weixin_applet', {wx_ma_id: request['openid']})
-          user.confirm! if user.confirmation_token.present?
           user.update(wx_ma_id: request['openid']) if user.wx_ma_id.blank?
           user_info.merge!(customerPhoneNumber: user.phone_number) 
         end
