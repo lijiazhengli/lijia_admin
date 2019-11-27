@@ -44,9 +44,9 @@
 
     .form-group
       - if @order.order_type == Order::COURSE_ORDER
-        = f.label '学员电话'
+        = f.label '*学员电话'
       - else
-        = f.label '订购电话'
+        = f.label '*订购电话'
       %br
       = f.text_field :customer_phone_number, class: 'form-control'
 
