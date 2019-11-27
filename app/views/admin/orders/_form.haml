@@ -25,7 +25,12 @@
         = f.label "订单类型"
         = f.select :order_type, options_for_select(Order::ORDER_TYPE.invert, @order.order_type), {}, class: 'form-control'
     .form-group
-      = f.label "城市"
+      - if @order.order_type == Order::SERVICE_ORDER
+        = f.label '城市'
+      - elsif @order.order_type == Order::COURSE_ORDER
+        = f.label '开课城市'
+      - else
+        = f.label '城市'
       %br
       = f.text_field :city_name, class: 'form-control'
 
@@ -39,9 +44,9 @@
 
     .form-group
       - if @order.order_type == Order::COURSE_ORDER
-        = f.label '学员电话'
+        = f.label '*学员电话'
       - else
-        = f.label '订购电话'
+        = f.label '*订购电话'
       %br
       = f.text_field :customer_phone_number, class: 'form-control'
 
