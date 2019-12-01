@@ -1,4 +1,5 @@
 class AppletsController < ApplicationController
+  protect_from_forgery
 
   def index
     request_info = {}
@@ -46,22 +47,15 @@ class AppletsController < ApplicationController
   end
 
   def save_address
+    p 'save_address start'
+    p params
     user = User.where(phone_number: params[:customer_phone_number]).last
     params[:user_id] = user.try(:id)
     address_attr = address_params
-    address_attr[:has_points] = address_attr[:gaode_lng].present? ? true : false
 
-    address_attr[:active] = true
-
-    if address_attr[:address_city].present?
-      city = City.get_city_by_address_city(address_attr[:address_city])
-    else
-      city = City.get_city_by_address_city(address_attr[:address_province])
-    end
-    address_attr[:city_id] = city.id
-
+    p address_attr
   
-    Address.for_user_default(params[:user_id]).update_all(is_default: false) if address_attr[:is_default] == '1' and params[:user_id].present?
+    Address.for_user(params[:user_id]).update_all(is_default: false) if address_attr[:is_default] == '1' and params[:user_id].present?
 
     if params[:address_id].present?
       address = Address.find(params[:address_id]) rescue nil
@@ -73,13 +67,14 @@ class AppletsController < ApplicationController
     else
       address = Address.create(address_attr)
     end
+    address.errors
     render json: {current_address: address.to_cart_info}
   end
 
 
   def load_address_list(current_address = nil)
     user = User.where(phone_number: params[:customer_phone_number]).last
-    user_addresses = Address.for_applet_user(user.id).order('id desc')
+    user_addresses = Address.for_user(user.id).order('id desc')
     address_hash = user_addresses.select{|item| item.gaode_lng.present?}.map{|item| item.to_cart_info}
     render json: {addresses: address_hash, current_address: current_address || address_hash[0]}
   end

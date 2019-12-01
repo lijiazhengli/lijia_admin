@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_27_155105) do
+ActiveRecord::Schema.define(version: 2019_12_01_095037) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -21,6 +21,25 @@ ActiveRecord::Schema.define(version: 2019_11_27_155105) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["ad_type", "active"], name: "index_ad_images_on_ad_type_and_active"
+  end
+
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "recipient_name"
+    t.string "recipient_phone_number"
+    t.string "location_title"
+    t.string "location_address"
+    t.string "location_details"
+    t.decimal "gaode_lng", precision: 11, scale: 8
+    t.decimal "gaode_lat", precision: 11, scale: 8
+    t.string "address_province"
+    t.string "address_city"
+    t.string "address_district"
+    t.boolean "is_default", default: false
+    t.integer "sex"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "is_default"], name: "index_addresses_on_user_id_and_is_default"
   end
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
