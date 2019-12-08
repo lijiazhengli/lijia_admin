@@ -184,18 +184,21 @@ class AppletsController < ApplicationController
     end
 
     order_attr[:user_id] = user.id
+    order_attr[:city_name] = order_attr[:address_city]
 
-    order_attr, purchased_items = get_purchased_items(order_attr, params[:cartProducts], params[:current_event_info])
+    order_attr, purchased_items = get_purchased_items(order_attr, params[:cartProducts])
 
     option = {order_attr: order_attr.permit!, params: order_info}
     option[:purchased_items] = purchased_items
     option[:user] = user if user.present?
 
-    option[:methods] = %w(product_cost_and_ids build_order_free_products create_order build_applet_user_order_free_act)
+    option[:methods] = %w(check_user create_order  save_with_new_external_id)
     option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
+
+    p option
     @order, success, errors = Order.create_or_update_order(option)
     if success
-      weixin_option = @order.v2_weixin_json('127.0.0.1', @order.wx_open_id, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']})
+      weixin_option = @order.weixin_pay_json('127.0.0.1', @order.wx_open_id, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']})
       if weixin_option.present?
         render json: {success: true, weixin_option: weixin_option}
       else
@@ -210,13 +213,28 @@ class AppletsController < ApplicationController
 
   def applet_order_base_info(order_info)
     {
-      ziti_zhekou: 1,
-      discount_method: 'membership_discount',
       status: "create",
-      shopping_cart_id: 0,
       wx_open_id: order_info[:wx_ma_id],
-      purchase_source: "美莉家小程序"
+      purchase_source: "美莉家小程序",
+      order_type: 'Product'
     }
+  end
+
+  def get_purchased_items(order_attr, cart_products)
+    return [order_attr, []] if cart_products.blank?
+    items = []
+    products_ids = []
+
+
+    cart_products.each{|item| products_ids.push(item[:id])} 
+    product_hash = Product.where(id: products_ids).pluck(:id, :price).to_h
+
+    cart_products.each do |info|
+      next if info.blank?
+      product_id = info[:id].to_i
+      items << {product_id: product_id, quantity: info[:quantity].to_i, price: product_hash[product_id] || 0}
+    end
+    [order_attr, items]
   end
 
 
@@ -229,8 +247,5 @@ class AppletsController < ApplicationController
       :user_id
     )
   end
-
-
-
 
 end

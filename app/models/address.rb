@@ -20,4 +20,15 @@ class Address < ApplicationRecord
     attrs[:sex] = self.get_applet_sex
     attrs
   end
+
+
+  def to_applet_order_info
+    attrs = {}
+    %w(location_title recipient_name recipient_phone_number location_address location_details
+      address_province address_city address_district).each do |info|
+      attrs[info.to_sym] =  self.send(info)
+    end
+    attrs[:sex] = self.get_applet_sex
+    attrs
+  end
 end

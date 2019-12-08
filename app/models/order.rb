@@ -41,8 +41,53 @@ class Order < ApplicationRecord
     result
   end
 
+
+  def no_payed_due
+    product_cost = self.purchased_items.sum('price * quantity')
+    total_cost = product_cost.round(2)
+    total_cost
+  end
+
+  def order_transfer_info(pay_method)
+    [self.external_id, self.no_payed_due]
+  end
+
+  def weixin_pay_json(ip, openid, wx_attr = {})
+    return {} if openid.blank?
+    trade_no, trade_due = self.order_transfer_info('tenpay')
+    params = {
+      body: "美莉家-微信支付",
+      out_trade_no: trade_no,
+      total_fee: String(Integer(trade_due * 100)),
+      spbill_create_ip: "#{ip}",
+      notify_url: ENV['WX_PAYMENT_NOTIFICATION_URL'],
+      trade_type: 'JSAPI',
+      openid: openid
+      }
+    r = WxPay::Service.invoke_unifiedorder params, wx_attr
+    p r
+    if r.success?
+      option = {
+        appId: r['appid'],
+        package: "prepay_id=#{r['prepay_id']}",
+        nonceStr: r['nonce_str'],
+        timeStamp: "#{Time.now.to_i}",
+        signType: "MD5"
+      }
+      str = "appId=#{option[:appId]}&nonceStr=#{option[:nonceStr]}&package=#{option[:package]}&signType=#{option[:signType]}&timeStamp=#{option[:timeStamp]}&key=#{ENV['WX_API_KEY']}"
+      pay_sign = Digest::MD5.hexdigest(str).upcase
+      option[:paySign] = pay_sign
+    else
+      option = {}
+    end
+    option
+  end
+
   class << self
     @@order_logger = Logger.new 'log/order_logger.log'
+    def generate_out_trade_no
+      DateTime.now.strftime('%Y%m%d%H%M%S%L')
+    end
     def create_or_update_order options= {}
       @@order_logger.info (Time.now.to_s + '......................  CREATE_OR_UPDATE_ORDER_BIGIN............................')
       @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_UPDATE_ORDER', 'PARAMS' => options}.to_s)
@@ -69,8 +114,10 @@ class Order < ApplicationRecord
         Order.transaction do
           check_redis_expire_name(order_hash, options)
           select_methods.each do |method|
+            p method
             send("#{method}", order_hash, params)
           end
+          p order_hash
           $redis.del(options[:redis_expire_name]) if options[:redis_expire_name].present?
           success = true
         end
