@@ -1,6 +1,6 @@
 # required
 # WxPay.appid = ENV['WX_APP_ID']
-# WxPay.key = ENV['WX_API_KEY']
+WxPay.key = ENV['WX_MCH_KEY']
 WxPay.mch_id = ENV['WX_MCH_ID']
 
 # cert, see https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=4_3
