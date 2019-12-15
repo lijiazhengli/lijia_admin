@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-#source 'https://gems.ruby-china.com'
+# source 'https://gems.ruby-china.com'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby '2.6.0'
@@ -79,3 +79,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'mina'
 gem 'mina-puma'
+gem 'mina-multistage', require: false
