@@ -1,5 +1,5 @@
 set :domain, '106.75.14.116'
-set :deploy_to, '/workspace/lijia_admin'
+set :deploy_to, '/workspace/lijia_staging'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'staging'
 set :user, 'root'
