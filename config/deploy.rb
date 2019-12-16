@@ -11,6 +11,8 @@ require 'mina/rbenv'
 # set :deploy_to, '/data/lijia_admin'
 # set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 # set :branch, 'master'
+set :stages, %w(staging production)
+set :default_stage, 'staging'
 set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
