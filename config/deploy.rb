@@ -5,13 +5,8 @@ require 'mina/git'
 require 'mina/puma'
 require 'mina/rbenv'
 
-# set :user, 'root'          # Username in the server to SSH to.
-# set :application_name, 'lijia_admin'
-# set :domain, '106.75.14.116'
-# set :deploy_to, '/data/lijia_admin'
-# set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
-# set :branch, 'master'
 set :stages, %w(staging production)
+set :stages_dir, 'config/deploy'
 set :default_stage, 'staging'
 set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
@@ -22,22 +17,19 @@ set :shared_files, fetch(:shared_files, []).push('config/application.yml', 'conf
 #   invoke :'rbenv:load'
 # end
 #
-task :remote_environment do
-  invoke :'rbenv:load'
-end
+# task :remote_environment do
+#   invoke :'rbenv:load'
+# end
 
 task :setup => :environment do
-  # command %[touch "#{fetch(:shared_path)}/config/database.yml"]
-  # command %[touch "#{fetch(:shared_path)}/config/master.key"]
-  # command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
-  # comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
   command %{rbenv install 2.6.0 --skip-existing}
 end
 
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   # uncomment this line to make sure you pushed your local branch to the remote origin
-  # invoke :'git:ensure_pushed'
+  invoke :'rbenv:load'
+  invoke :'git:ensure_pushed'
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
