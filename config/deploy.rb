@@ -22,9 +22,9 @@ set :shared_files, fetch(:shared_files, []).push('config/application.yml', 'conf
 #   invoke :'rbenv:load'
 # end
 #
-# task :remote_environment do
-#   invoke :'rbenv:load'
-# end
+task :remote_environment do
+  invoke :'rbenv:load'
+end
 
 task :setup => :environment do
   # command %[touch "#{fetch(:shared_path)}/config/database.yml"]
