@@ -13,22 +13,18 @@ set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git p
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
 set :shared_files, fetch(:shared_files, []).push('config/application.yml', 'config/database.yml', 'config/master.key', 'config/puma.rb')
 
-# task :environment do
-#   invoke :'rbenv:load'
-# end
-#
-# task :remote_environment do
-#   invoke :'rbenv:load'
-# end
 
-task :setup => :environment do
+task :remote_environment do
+  invoke :'rbenv:load'
+end
+
+task :setup => :remote_environment do
   command %{rbenv install 2.6.0 --skip-existing}
 end
 
 desc "Deploys the current version to the server."
-task :deploy => :environment do
+task :deploy => :remote_environment do
   # uncomment this line to make sure you pushed your local branch to the remote origin
-  invoke :'rbenv:load'
   invoke :'git:ensure_pushed'
   deploy do
     invoke :'git:clone'
