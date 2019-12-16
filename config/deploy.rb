@@ -1,3 +1,7 @@
+set :stages, %w(staging production)
+set :stages_dir, 'config/deploy'
+set :default_stage, 'staging'
+
 require 'mina/multistage'
 require 'mina/bundler'
 require 'mina/rails'
@@ -5,9 +9,6 @@ require 'mina/git'
 require 'mina/puma'
 require 'mina/rbenv'
 
-set :stages, %w(staging production)
-set :stages_dir, 'config/deploy'
-set :default_stage, 'staging'
 set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
@@ -18,12 +19,12 @@ task :remote_environment do
   invoke :'rbenv:load'
 end
 
-task :setup => :remote_environment do
+task setup: :environment do
   command %{rbenv install 2.6.0 --skip-existing}
 end
 
 desc "Deploys the current version to the server."
-task :deploy => :remote_environment do
+task deploy: :environment do
   # uncomment this line to make sure you pushed your local branch to the remote origin
   invoke :'git:ensure_pushed'
   deploy do
