@@ -135,7 +135,7 @@ class AppletsController < ApplicationController
       success, errors, new_status = order.check_applet_order_status
     end
     if success
-      weixin_option = order.v2_weixin_json('127.0.0.1', order.wx_open_id, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']})
+      weixin_option = order.weixin_pay_json('127.0.0.1', order.wx_open_id, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']})
       if weixin_option.present?
         render json: {success: true, weixin_option: weixin_option}
       else

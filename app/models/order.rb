@@ -26,13 +26,21 @@ class Order < ApplicationRecord
 
   def to_applet_order_list
     attrs = self.attributes.slice(
-      "id","status", "wx_open_id",'created_at'
+      "id", "status", "recipient_name", "recipient_phone_number", "address_province", "address_city", "location_title", "address_district",
+      "wx_open_id",'created_at'
     )
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
     attrs["order_total_fee"] = self.no_payed_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
     product_ids = self.purchased_items.pluck(:product_id).uniq
     [attrs, product_ids]
+  end
+
+  def check_applet_order_status
+    return [false, "订单已经完成付款，请勿重复付款", 'paid'] if self.status == 'paid' or self.no_payed_due <= 0
+    return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
+    return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
+    return [true, nil, nil]
   end
 
 
@@ -104,7 +112,7 @@ class Order < ApplicationRecord
       @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_UPDATE_ORDER', 'PARAMS' => options}.to_s)
       success = false
       allow_methods = %w(
-        check_user create_order create_course_student save_with_new_external_id
+        check_user create_order create_course_student save_with_new_external_id cancel_order
       )
 
       all_methods = options.symbolize_keys![:methods] || []
@@ -186,6 +194,12 @@ class Order < ApplicationRecord
         purchased_items_attributes: order_hash[:purchased_items] || []
       )
       Order.new(order_attr)
+    end
+
+    def cancel_order order_hash, params
+      raise '订单不存在' if order_hash[:order].blank?
+      order = order_hash[:order]
+      order.update_attributes!(status: 'canceled')
     end
 
     def create_course_student order_hash, params
