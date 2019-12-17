@@ -22,4 +22,13 @@ class Product < ActiveRecord::Base
       img_url: self.front_image
     }
   end
+
+  def self.get_product_list_hash(product_ids)
+    products =  Product.where(id: product_ids)
+    item_hash = {}
+    products.each do |product|
+      item_hash[product.id] = product.to_applet_list
+    end
+    return item_hash
+  end
 end

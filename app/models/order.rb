@@ -24,6 +24,17 @@ class Order < ApplicationRecord
     'canceled'     => '已取消'
   }
 
+  def to_applet_order_list
+    attrs = self.attributes.slice(
+      "id","status", "wx_open_id",'created_at'
+    )
+    attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
+    attrs["order_total_fee"] = self.no_payed_due
+    attrs["product_counts"] = self.purchased_items.sum(:quantity)
+    product_ids = self.purchased_items.pluck(:product_id).uniq
+    [attrs, product_ids]
+  end
+
 
   def save_with_new_external_id
     start = self.start_date.split('-').join('')

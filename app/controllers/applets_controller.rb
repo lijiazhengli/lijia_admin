@@ -96,17 +96,15 @@ class AppletsController < ApplicationController
     if user.present?
       order_product_ids = []
       order_infos = []
-      if params[:status] == 'unpaid' or params[:status].blank?
-        orders = user.orders.local_uppaid_applet_orders.includes(:purchased_items).order('id desc')
-        orders.each do |order|
-          info, product_ids = order.to_applet_order_list
-          order_infos << info
-          order_product_ids += product_ids
-        end
+      if params[:status].blank?
+        orders = user.orders.includes(:purchased_items).order('orders.id desc')
+      else
+        orders = user.orders.where(status: params[:status]).includes(:purchased_items).order('orders.id desc')
       end
-      if params[:status] != 'unpaid'
-        order_infos += ret['orders']
-        order_product_ids += ret['ordered_product_ids']
+      orders.each do |order|
+        info, product_ids = order.to_applet_order_list
+        order_infos << info
+        order_product_ids += product_ids
       end
       products = Product.get_product_list_hash(order_product_ids.uniq)
       attr_info = {orders: order_infos, products: products}
@@ -213,7 +211,7 @@ class AppletsController < ApplicationController
 
   def applet_order_base_info(order_info)
     {
-      status: "create",
+      status: "unpaid",
       wx_open_id: order_info[:wx_ma_id],
       purchase_source: "美莉家小程序",
       order_type: 'Product'
