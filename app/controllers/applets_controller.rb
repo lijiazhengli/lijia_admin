@@ -207,6 +207,35 @@ class AppletsController < ApplicationController
     end
   end
 
+  def create_course_order
+    p params
+    order_info = params[:orderInfo]
+    user = User.where(phone_number: order_info[:customer_phone_number]).last
+
+    order_info[:wx_ma_id] = user.wx_ma_id
+    order_attr = base_course_params
+
+    p order_attr
+    order_attr.merge!(applet_course_base_info(order_info))
+
+    order_attr[:user_id] = user.id
+    order_attr[:city_name] = order_attr[:city_name]
+
+    option = {order_attr: order_attr.permit!, params: order_info}
+    option[:user] = user if user.present?
+
+    option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
+    option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
+
+    p option
+    @order, success, errors = Order.create_or_update_order(option)
+    if success
+      render json: {success: false, order: order}
+    else
+      render json: {success: false, errors: errors.values[0]}
+    end
+  end
+
 
 
   def applet_order_base_info(order_info)
@@ -217,6 +246,17 @@ class AppletsController < ApplicationController
       order_type: 'Product'
     }
   end
+
+  def applet_course_base_info(order_info)
+    {
+      status: "unpaid",
+      wx_open_id: order_info[:wx_ma_id],
+      purchase_source: "美莉家小程序",
+      order_type: 'Course'
+    }
+  end
+
+
 
   def get_purchased_items(order_attr, cart_products)
     return [order_attr, []] if cart_products.blank?
@@ -242,6 +282,15 @@ class AppletsController < ApplicationController
       :customer_phone_number,
       :recipient_name,
       :recipient_phone_number,
+      :user_id
+    )
+  end
+
+  def base_course_params
+    params.require(:orderInfo).permit(
+      :recipient_name,
+      :recipient_phone_number,
+      :city_name,
       :user_id
     )
   end
