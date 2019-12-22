@@ -209,19 +209,18 @@ class AppletsController < ApplicationController
 
   def create_course_order
     p params
-    order_info = params[:orderInfo]
-    user = User.where(phone_number: order_info[:customer_phone_number]).last
+    order_info = params
+    user = User.where(phone_number: params[:customer_phone_number]).last
 
     order_info[:wx_ma_id] = user.wx_ma_id
     order_attr = base_course_params
-
-    p order_attr
     order_attr.merge!(applet_course_base_info(order_info))
 
     order_attr[:user_id] = user.id
     order_attr[:city_name] = order_attr[:city_name]
 
     option = {order_attr: order_attr.permit!, params: order_info}
+    option[:purchased_items] = get_course_purchased_items(order_info)
     option[:user] = user if user.present?
 
     option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
@@ -230,7 +229,7 @@ class AppletsController < ApplicationController
     p option
     @order, success, errors = Order.create_or_update_order(option)
     if success
-      render json: {success: false, order: order}
+      render json: {success: success, order: @order}
     else
       render json: {success: false, errors: errors.values[0]}
     end
@@ -275,6 +274,12 @@ class AppletsController < ApplicationController
     [order_attr, items]
   end
 
+  def get_course_purchased_items(order_info)
+    return [] if order_info[:course_id].blank?
+    course = Course.find(order_info[:course_id])
+    [{product_id: course.id, quantity: order_info[:course_quantity] || 1, price: course.price}]
+  end
+
 
   def base_order_params
     params.require(:orderInfo).permit(
@@ -287,10 +292,11 @@ class AppletsController < ApplicationController
   end
 
   def base_course_params
-    params.require(:orderInfo).permit(
+    params.permit(
       :recipient_name,
       :recipient_phone_number,
       :city_name,
+      :applet_form_id,
       :user_id
     )
   end
