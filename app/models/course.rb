@@ -1,6 +1,10 @@
 class Course < Product
   has_many  :students
   accepts_nested_attributes_for :students, allow_destroy: true
+
+  has_one  :course_extend
+  accepts_nested_attributes_for :course_extend, allow_destroy: true
+
   has_many  :course_teachers
   has_many  :teachers, through: :course_teachers
 
@@ -17,5 +21,9 @@ class Course < Product
       end_date: self.end_date,
       img_url: self.front_image
     }
+  end
+
+  def self_extend
+    CourseExtend.find_or_create_by(course_id: self.id)
   end
 end

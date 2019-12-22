@@ -21,6 +21,11 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label "培训地址"
+      %br
+      = text_field_tag :course_address , params[:course_address], class: 'form-control'
+
+    .form-group
       = f.label "描述"
       %br
       = f.text_area :description, class: 'form-control'

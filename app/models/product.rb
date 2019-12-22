@@ -2,7 +2,7 @@ class Product < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
   def to_applet_show
-    {
+    attrs = {
       id: self.id,
       title: self.title,
       desc: self.description,
@@ -12,6 +12,11 @@ class Product < ActiveRecord::Base
       end_date: self.end_date,
       img_url: self.detailed_image
     }
+    if self.type == 'Course'
+      info_extend = CourseExtend.find_by_course_id(self.id)
+      attrs[:address] = info_extend.try(:address)
+    end
+    attrs
   end
 
   def to_applet_list
