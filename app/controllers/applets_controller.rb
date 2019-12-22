@@ -207,6 +207,40 @@ class AppletsController < ApplicationController
     end
   end
 
+  def create_service_order
+    p params
+    order_info = params[:orderInfo]
+    user = User.where(phone_number: order_info[:customer_phone_number]).last
+
+
+    order_info[:wx_ma_id] = user.wx_ma_id
+    order_attr = base_order_params
+
+    p order_attr
+    order_attr.merge!(applet_service_base_info(order_info))
+
+    if order_info[:address_id].present?
+      order_attr.merge!(Address.find(order_info[:address_id]).to_applet_order_info)
+    end
+
+    order_attr[:user_id] = user.id
+    order_attr[:city_name] = order_attr[:address_city]
+    option = {order_attr: order_attr.permit!, params: order_info}
+    option[:purchased_items] = get_service_purchased_items(order_info)
+    option[:user] = user if user.present?
+
+    option[:methods] = %w(check_user create_order save_with_new_external_id)
+    option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
+    p option
+    @order, success, errors = Order.create_or_update_order(option)
+    if success
+      render json: {success: success, order: @order}
+    else
+      render json: {success: false, errors: errors.values[0]}
+    end
+    @order, success, errors = Order.create_or_update_order(option)
+  end
+
   def create_course_order
     p params
     order_info = params
@@ -246,13 +280,16 @@ class AppletsController < ApplicationController
     }
   end
 
+  def applet_service_base_info(order_info)
+    info = applet_order_base_info(order_info)
+    info[:order_type] = 'Service'
+    info
+  end
+
   def applet_course_base_info(order_info)
-    {
-      status: "unpaid",
-      wx_open_id: order_info[:wx_ma_id],
-      purchase_source: "美莉家小程序",
-      order_type: 'Course'
-    }
+    info = applet_order_base_info(order_info)
+    info[:order_type] = 'Course'
+    info
   end
 
 
@@ -272,6 +309,12 @@ class AppletsController < ApplicationController
       items << {product_id: product_id, quantity: info[:quantity].to_i, price: product_hash[product_id] || 0}
     end
     [order_attr, items]
+  end
+
+  def get_service_purchased_items(order_info)
+    return [] if order_info[:service_id].blank?
+    service = Service.find(order_info[:service_id])
+    [{product_id: service.id, quantity: order_info[:service_quantity] || 1}]
   end
 
   def get_course_purchased_items(order_info)
