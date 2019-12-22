@@ -15,12 +15,16 @@
     %thead
       %tr
         %th 姓名
+        %td 标签
+        %td 头像
         %th 是否启用
         %th 操作
     %tbody
       - @items.each do |item|
         %tr
           %td= item.name
+          %td= item.tag
+          %td= image_tag(item.mobile_image || '', width: '100px')
           %td= item.active
           %td
             = link_to '修改', edit_admin_teacher_path(item)

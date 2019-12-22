@@ -44,6 +44,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :introduces do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
+
     resources :orders do
       member do
         get :base_show
@@ -62,7 +70,13 @@ Rails.application.routes.draw do
     end
 
     resources :students
-    resources :teachers
+    resources :teachers do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+      end
+    end
     resources :users
   end
 
@@ -74,6 +88,7 @@ Rails.application.routes.draw do
       post :cancel_order
       get  :course_index
       post :delete_user_address
+      get  :home_show
       get  :login
       get  :load_address_list
       get  :load_address_info

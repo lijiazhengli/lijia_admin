@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_22_081225) do
+ActiveRecord::Schema.define(version: 2019_12_22_141523) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -101,6 +101,18 @@ ActiveRecord::Schema.define(version: 2019_12_22_081225) do
     t.string "date"
     t.integer "number", default: 0
     t.index ["prefix", "date"], name: "index_external_ids_on_prefix_and_date"
+  end
+
+  create_table "introduces", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "item_type"
+    t.string "mobile_image"
+    t.text "description"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "tag"
+    t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 
   create_table "order_arranger_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -225,6 +237,9 @@ ActiveRecord::Schema.define(version: 2019_12_22_081225) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "mobile_image"
+    t.string "tag"
+    t.integer "position"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

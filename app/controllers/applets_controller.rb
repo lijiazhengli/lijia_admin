@@ -24,8 +24,15 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
+  def home_show
+    request_info = {}
+    request_info[:home_introduces] = Introduce.applet_home.map{|item| item.to_applet_list}
+    request_info[:team_introduces] = Introduce.applet_team.map{|item| item.to_applet_list}
+    request_info[:teacher_introduces] = Teacher.applet_home.map{|item| item.to_applet_list}
+    render json: request_info
+  end
+
   def cart_show
-    p params
     product = Product.find(params[:id])
     request_info = {}
     request_info[:info] = product.to_applet_cart_show
@@ -34,7 +41,6 @@ class AppletsController < ApplicationController
   end
 
   def product_show
-    p params
     product = Product.find(params[:id])
     request_info = {}
     request_info[:info] = product.to_applet_show
