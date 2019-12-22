@@ -68,17 +68,20 @@ Rails.application.routes.draw do
 
   resources :applets, only: [:index, :show] do
     collection do
-      get  :product_show
       get  :cart
+      get  :cart_show
       post :check_order_status
       post :cancel_order
+      get  :course_index
       post :delete_user_address
       get  :login
       get  :load_address_list
       get  :load_address_info
       get  :orders
       get  :order_show
+      get  :product_show
       get  :set_phone
+      get  :service_index
       post :save_address
       post :create_order
       post :create_course_order
