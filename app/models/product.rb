@@ -15,6 +15,7 @@ class Product < ActiveRecord::Base
     if self.type == 'Course'
       info_extend = CourseExtend.find_by_course_id(self.id)
       attrs[:address] = info_extend.try(:address)
+      attrs[:teachers] = self.teachers.map{|item| item.to_course_list}
     end
     attrs
   end

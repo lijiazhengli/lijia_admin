@@ -10,6 +10,15 @@ class Teacher < ApplicationRecord
       img_url: self.mobile_image
     }
   end
+
+  def to_course_list
+    {
+      id: self.id,
+      name: self.name,
+      tag: self.tag,
+      img_url: self.mobile_image
+    }
+  end
   class << self
     def current_teacher_hash
       Teacher.where(active: true).pluck(:id, :name).to_h

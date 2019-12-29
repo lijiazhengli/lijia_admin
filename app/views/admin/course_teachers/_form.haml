@@ -10,9 +10,10 @@
       = f.label "姓名"
       %br
       = f.select :teacher_id, options_for_select(Teacher.current_teacher_hash.invert, @item.teacher_id), {}, class: 'form-control'
-    .form-group
-      = f.label "介绍"
-      %br
-      = f.text_area :introduce, class: 'form-control'
+    - if false
+      .form-group
+        = f.label "介绍"
+        %br
+        = f.text_area :introduce, class: 'form-control'
 
     = f.submit '保存', class: 'btn btn-success'

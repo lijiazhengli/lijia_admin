@@ -12,13 +12,15 @@
     %thead
       %tr
         %th 姓名
-        %th 介绍
+        %th 标签
+        %th 头像
         %th 操作
     %tbody
       - @items.each do |item|
         %tr
           %td= item.teacher.name
-          %td= item.introduce
+          %td= item.teacher.tag
+          %td= image_tag(item.teacher.mobile_image || '', width: '100px')
           %td
             = link_to '修改', edit_admin_course_course_teacher_path(@course, item)
             |

@@ -45,6 +45,7 @@ class AppletsController < ApplicationController
     request_info = {}
     request_info[:info] = product.to_applet_show
     request_info[:cart_info] = product.to_applet_list
+    p request_info
     render json: request_info
   end
 
