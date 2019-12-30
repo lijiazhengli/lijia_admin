@@ -1,6 +1,19 @@
 class User < ApplicationRecord
   has_many  :orders
 
+  def get_applet_sex
+    self.sex ? "#{self.sex}" : '0'
+  end
+
+  def to_applet_list
+    attrs = {}
+    %w(name profession avatar address_province address_city address_district).each do |info|
+      attrs[info.to_sym] =  self.send(info)
+    end
+    attrs[:sex] = self.get_applet_sex
+    attrs
+  end
+
   def self.find_or_create_source_user(mobile, source, user_info)
     user = User.where(phone_number: mobile).first
     return user if user.present?

@@ -71,19 +71,28 @@ class AppletsController < ApplicationController
     render json: user_info
   end
 
+  def user_info
+    p params
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    
+    render json: {userInfo: user.to_applet_list}
+  end
+
+  def save_user_info
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    user.update(user_params)
+    render json: {userInfo: user.to_applet_list}
+  end
+
   def cart
     products = Product.get_product_list_hash(params[:product_ids].split(','))
     render json: {productInfos: products}
   end
 
   def save_address
-    p 'save_address start'
-    p params
     user = User.where(phone_number: params[:customer_phone_number]).last
     params[:user_id] = user.try(:id)
     address_attr = address_params
-
-    p address_attr
   
     Address.for_user(params[:user_id]).update_all(is_default: false) if address_attr[:is_default] == '1' and params[:user_id].present?
 
@@ -97,7 +106,6 @@ class AppletsController < ApplicationController
     else
       address = Address.create(address_attr)
     end
-    address.errors
     render json: {current_address: address.to_cart_info}
   end
 
@@ -192,6 +200,18 @@ class AppletsController < ApplicationController
       :user_id,
       :sex,
       :is_default
+    )
+  end
+
+  def user_params
+    params.permit(
+      :name,
+      :profession,
+      :avatar,
+      :address_province,
+      :address_city,
+      :address_district,
+      :sex
     )
   end
 
