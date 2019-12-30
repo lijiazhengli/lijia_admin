@@ -10,7 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_144606) do
+ActiveRecord::Schema.define(version: 2019_12_22_141523) do
+
+  create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "ad_type"
+    t.string "url"
+    t.string "mobile_image"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ad_type", "active"], name: "index_ad_images_on_ad_type_and_active"
+  end
+
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "recipient_name"
+    t.string "recipient_phone_number"
+    t.string "location_title"
+    t.string "location_address"
+    t.string "location_details"
+    t.decimal "gaode_lng", precision: 11, scale: 8
+    t.decimal "gaode_lat", precision: 11, scale: 8
+    t.string "address_province"
+    t.string "address_city"
+    t.string "address_district"
+    t.boolean "is_default", default: false
+    t.integer "sex"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "is_default"], name: "index_addresses_on_user_id_and_is_default"
+  end
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
@@ -31,6 +61,14 @@ ActiveRecord::Schema.define(version: 2019_10_27_144606) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "orders_count", default: 0
     t.index ["orders_count"], name: "index_arrangers_on_orders_count"
+  end
+
+  create_table "course_extends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "course_id"
+    t.string "address"
+    t.decimal "gaode_lng", precision: 11, scale: 8
+    t.decimal "gaode_lat", precision: 11, scale: 8
+    t.index ["course_id"], name: "index_course_extends_on_course_id"
   end
 
   create_table "course_teachers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -63,6 +101,18 @@ ActiveRecord::Schema.define(version: 2019_10_27_144606) do
     t.string "date"
     t.integer "number", default: 0
     t.index ["prefix", "date"], name: "index_external_ids_on_prefix_and_date"
+  end
+
+  create_table "introduces", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "item_type"
+    t.string "mobile_image"
+    t.text "description"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "tag"
+    t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 
   create_table "order_arranger_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -109,8 +159,16 @@ ActiveRecord::Schema.define(version: 2019_10_27_144606) do
     t.string "external_id", limit: 20
     t.text "notes"
     t.text "service_notes"
+    t.integer "sex"
+    t.string "wx_open_id", limit: 50
+    t.string "purchase_source", limit: 20
+    t.string "recipient_name"
+    t.string "recipient_phone_number"
+    t.string "address_district"
+    t.string "applet_form_id"
     t.index ["external_id"], name: "index_orders_on_external_id"
     t.index ["order_type"], name: "index_orders_on_order_type"
+    t.index ["purchase_source"], name: "index_orders_on_purchase_source"
     t.index ["start_date"], name: "index_orders_on_start_date"
   end
 
@@ -127,6 +185,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_144606) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "position", default: 999
     t.index ["type"], name: "index_products_on_type"
   end
 
@@ -178,6 +237,9 @@ ActiveRecord::Schema.define(version: 2019_10_27_144606) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "mobile_image"
+    t.string "tag"
+    t.integer "position"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -186,7 +248,12 @@ ActiveRecord::Schema.define(version: 2019_10_27_144606) do
     t.integer "sex"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "wx_ma_id", limit: 50
+    t.string "wx_union_id", limit: 50
+    t.string "source", limit: 50
     t.index ["phone_number"], name: "index_users_on_phone_number"
+    t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
+    t.index ["wx_union_id"], name: "index_users_on_wx_union_id"
   end
 
 end

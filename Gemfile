@@ -52,6 +52,9 @@ gem 'simple_form'
 gem 'qiniu'
 gem 'jquery-fileupload-rails'
 
+# 微信支付
+gem 'wx_pay'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

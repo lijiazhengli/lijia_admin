@@ -15,6 +15,7 @@ class Admin::CoursesController < Admin::BaseController
   def create
     @course = Course.new(current_record_params)
     if @course.save
+      @course.self_extend.update(address: params[:course_address])
       redirect_to admin_courses_path
     else
       render :new
@@ -28,6 +29,7 @@ class Admin::CoursesController < Admin::BaseController
   def update
     @course = Course.find(params[:id])
     if @course.update_attributes(current_record_params)
+      @course.self_extend.update(address: params[:course_address])
       redirect_to admin_courses_path
     else
       render :edit
@@ -36,6 +38,7 @@ class Admin::CoursesController < Admin::BaseController
 
   def edit
     @course = Course.find(params[:id])
+    params[:course_address] = @course.self_extend.address
   end
 
   def destroy
@@ -44,7 +47,7 @@ class Admin::CoursesController < Admin::BaseController
   end
 
   def file_upload
-    file_upload_to_qiniu('course-')
+    file_upload_to_qiniu('course')
   end
 
   private

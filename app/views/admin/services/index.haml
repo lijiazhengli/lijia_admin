@@ -28,15 +28,20 @@
         - if false
           %th 城市名称
         %th 费用
+        %th 首页图片
+        %th 详细页图片
         %th 是否启用
         %th 操作
     %tbody
       - @services.each do |item|
+        - p item
         %tr
           %td= item.title
           - if false
             %td= item.city_name
           %td= item.price
+          %td= image_tag(item.front_image || '', width: '100px')
+          %td= image_tag(item.detailed_image || '', width: '100px')
           %td= item.active
           %td
             = link_to '修改', edit_admin_service_path(item)

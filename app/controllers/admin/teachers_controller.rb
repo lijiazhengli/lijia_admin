@@ -33,6 +33,10 @@ class Admin::TeachersController < Admin::BaseController
     @item = Teacher.find(params[:id])
   end
 
+  def file_upload
+    file_upload_to_qiniu('teacher/')
+  end
+
   private
 
   def current_record_params
