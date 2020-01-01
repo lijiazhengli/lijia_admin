@@ -30,8 +30,10 @@ module Wx
       cipher.iv  = iv
 
       decrypted_plain_text = cipher.update(encrypted_data) + cipher.final
-      p decrypted_plain_text.strip.gsub(/[\x0E]/, '')
-      result = JSON.parse(decrypted_plain_text.strip.gsub(/[\x0E]/, ''))
+      Rails.logger.info "----#{Time.now.strftime("%F %T")}-----decrypted_plain_text: #{decrypted_plain_text}"
+      decrypted_plain_text = decrypted_plain_text.strip.gsub(/[\u0000-\u001F\u2028\u2029]/, '')
+      p decrypted_plain_text
+      result = JSON.parse(decrypted_plain_text)
       p result
       return nil if result['watermark']['appid'] != APP_ID
       result['purePhoneNumber']
@@ -39,3 +41,9 @@ module Wx
 
   end
 end
+
+
+
+
+
+
