@@ -70,7 +70,7 @@ class WeixinController < ApplicationController
 
 
   # 微信支付验证回调方法
-  def wx_payment
+  def wx_verify
     logger.info "========= wenxin_pay_verify_params: #{params.inspect}================"
     result = Hash.from_xml(request.body.read)["xml"]
     if WxPay::Sign.verify?(result)
