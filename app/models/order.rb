@@ -119,7 +119,7 @@ class Order < ApplicationRecord
         timeStamp: "#{Time.now.to_i}",
         signType: "MD5"
       }
-      str = "appId=#{option[:appId]}&nonceStr=#{option[:nonceStr]}&package=#{option[:package]}&signType=#{option[:signType]}&timeStamp=#{option[:timeStamp]}&key=#{ENV['WX_API_KEY']}"
+      str = "appId=#{option[:appId]}&nonceStr=#{option[:nonceStr]}&package=#{option[:package]}&signType=#{option[:signType]}&timeStamp=#{option[:timeStamp]}&key=#{ENV['WX_MCH_ID']}"
       pay_sign = Digest::MD5.hexdigest(str).upcase
       option[:paySign] = pay_sign
     else
