@@ -1,7 +1,8 @@
 class WeixinController < ApplicationController
   #skip_before_action :verify_authenticity_token, only: [:index, :show, :create]
-  before_action :authenticate, only: [:index, :show, :create]
-  before_action :read_and_authenticate_payment, only: [:verify]
+  protect_from_forgery
+  #before_action :authenticate, only: [:index, :show, :create]
+  #before_action :read_and_authenticate_payment, only: [:verify]
   layout false
 
   # 微信公众平台入口验证，GET
