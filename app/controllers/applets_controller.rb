@@ -52,6 +52,7 @@ class AppletsController < ApplicationController
   def login
     request = Wx::MiniApplet.get_open_id_by(params[:code])
     #request['session_key']用于 wx.checkSession， 检查登陆是否已过期
+    Rails.logger.info "----#{Time.now.strftime("%F %T")}-----update_product_logger_params: #{request.inspect}"
     user_info = {}
     if request['openid'].present?
       user = User.find_by_wx_ma_id(request['openid'])

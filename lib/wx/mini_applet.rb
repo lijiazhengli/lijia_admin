@@ -13,6 +13,8 @@ module Wx
 
 
     def self.decryptData(session_key, option)
+      Rails.logger.info "----#{Time.now.strftime("%F %T")}-----session_key: #{session_key}"
+      Rails.logger.info "----#{Time.now.strftime("%F %T")}-----option: #{option.inspect}"
       session_key = session_key
       encryptedData = option[:encryptedData]
       iv = option[:iv]
