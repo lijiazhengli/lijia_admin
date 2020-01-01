@@ -8,6 +8,8 @@ class Order < ApplicationRecord
   has_many :purchased_items
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
 
+  scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
+
   ORDER_TYPE = {
     'Service'       => '整理服务',
     'Course'       => '课程培训',
@@ -24,6 +26,8 @@ class Order < ApplicationRecord
     'canceled'     => '已取消'
   }
 
+  CURRENT_STATUS = %w(unpaid paided)
+
   def to_applet_order_list
     attrs = self.attributes.slice(
       "id", "status", "recipient_name", "recipient_phone_number", "address_province", "address_city", "location_title", "address_district",
@@ -37,7 +41,7 @@ class Order < ApplicationRecord
   end
 
   def check_applet_order_status
-    return [false, "订单已经完成付款，请勿重复付款", 'paid'] if self.status == 'paid' or self.no_payed_due <= 0
+    return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_payed_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
     return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
     return [true, nil, nil]

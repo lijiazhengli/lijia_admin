@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       post :create_order
       post :create_course_order
       post :create_service_order
+      get  :crm_info
       post :delete_user_address
       get  :home_show
       get  :login

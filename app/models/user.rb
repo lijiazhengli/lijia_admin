@@ -14,6 +14,17 @@ class User < ApplicationRecord
     attrs
   end
 
+  def to_applet_crm_list
+    attrs = {}
+    %w(name avatar).each do |info|
+      attrs[info.to_sym] =  self.send(info)
+    end
+    attrs[:sex] = self.get_applet_sex
+    orders = self.orders.current_orders.select(:order_type)
+    Order::ORDER_TYPE.keys.each{|item| attrs["#{item.downcase}_count".to_sym] = orders.select{|i| i.order_type == item}.size}
+    attrs
+  end
+
   def self.find_or_create_source_user(mobile, source, user_info)
     user = User.where(phone_number: mobile).first
     return user if user.present?
