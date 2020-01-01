@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   #root 'welcome#index'
   root "admin/base#admin_login"
   get 'welcome/index'
+
+  post '/wx_payment', to: 'weixin#wx_verify'
+
   namespace :admin do
     #root "wx_menus#index"
     root "base#admin_login"
@@ -87,6 +90,10 @@ Rails.application.routes.draw do
       post :check_order_status
       post :cancel_order
       get  :course_index
+      post :create_order
+      post :create_course_order
+      post :create_service_order
+      get  :crm_info
       post :delete_user_address
       get  :home_show
       get  :login
@@ -98,9 +105,8 @@ Rails.application.routes.draw do
       get  :set_phone
       get  :service_index
       post :save_address
-      post :create_order
-      post :create_course_order
-      post :create_service_order
+      post :save_user_info
+      get  :user_info
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

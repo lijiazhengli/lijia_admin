@@ -8,6 +8,10 @@ class Order < ApplicationRecord
   has_many :purchased_items
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
 
+  scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
+
+  TENPAY_ID = 2
+
   ORDER_TYPE = {
     'Service'       => '整理服务',
     'Course'       => '课程培训',
@@ -19,25 +23,32 @@ class Order < ApplicationRecord
 
   STATUS = {
     'unpaid'       => '待支付',
+    'part-paid'    => '部分付款',
     'paided'       => '已支付',
     'completed'    => '已完成',
     'canceled'     => '已取消'
   }
 
+  CURRENT_STATUS = %w(unpaid paided part-paid)
+
   def to_applet_order_list
     attrs = self.attributes.slice(
-      "id", "status", "recipient_name", "recipient_phone_number", "address_province", "address_city", "location_title", "address_district",
-      "wx_open_id",'created_at'
+      "address_province", "address_city", "address_district", 'created_at',
+      "id", "location_title",
+      'order_type', "recipient_name", "recipient_phone_number", "status",
+      "wx_open_id", 
     )
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
-    attrs["order_total_fee"] = self.no_payed_due
+    attrs["order_total_fee"] = self.order_total_fee
+    attrs["no_payed_due"] = self.no_payed_due
+    attrs["tenpay_payed_due"] = self.no_tenpay_payed_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
     product_ids = self.purchased_items.pluck(:product_id).uniq
     [attrs, product_ids]
   end
 
   def check_applet_order_status
-    return [false, "订单已经完成付款，请勿重复付款", 'paid'] if self.status == 'paid' or self.no_payed_due <= 0
+    return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_payed_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
     return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
     return [true, nil, nil]
@@ -60,20 +71,35 @@ class Order < ApplicationRecord
     result
   end
 
+  def next_payment_method_num(method_id)
+    self.external_id + "#{self.order_payment_records.where(payment_method_id: method_id).count+1}"
+  end
+
 
   def no_payed_due
-    product_cost = self.purchased_items.sum('price * quantity')
-    total_cost = product_cost.round(2)
+    total_cost = self.order_payment_records.unpaid.sum(:cost).round(2)
     total_cost
   end
 
-  def order_transfer_info(pay_method)
-    [self.external_id, self.no_payed_due]
+  def no_tenpay_payed_due
+    total_cost = self.order_payment_records.tenpay_method.unpaid.sum(:cost).round(2)
+    total_cost
+  end
+
+  def order_total_fee
+    total_cost = self.order_payment_records.sum(:cost).round(2)
+    total_cost
+  end
+
+  def order_transfer_info(method_id)
+    item = self.order_payment_records.where(payment_method_id: method_id).unpaid.last
+    return [nil,nil] if item.blank?
+    [item.out_trade_no, item.cost]
   end
 
   def weixin_pay_json(ip, openid, wx_attr = {})
     return {} if openid.blank?
-    trade_no, trade_due = self.order_transfer_info('tenpay')
+    trade_no, trade_due = self.order_transfer_info(Order::TENPAY_ID)
     params = {
       body: "美莉家-微信支付",
       out_trade_no: trade_no,
@@ -112,7 +138,7 @@ class Order < ApplicationRecord
       @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_UPDATE_ORDER', 'PARAMS' => options}.to_s)
       success = false
       allow_methods = %w(
-        check_user create_order create_course_student save_with_new_external_id cancel_order
+        check_user create_order create_course_student save_with_new_external_id update_order cancel_order create_tenpay_order_payment_record update_order_payment_record
       )
 
       all_methods = options.symbolize_keys![:methods] || []
@@ -126,6 +152,7 @@ class Order < ApplicationRecord
         user: options[:user],
         order_attr: options[:order_attr] || {},
         purchased_items: options[:purchased_items] || [],
+        current_payment_record: options[:current_payment_record],
         errors: {}
       }
       @@order_logger.info (Time.now.to_s + {'m_name' => 'TRANSACTION_METHODS_BIGIN', 'METHODS' => select_methods, 'ORDER_HASH' => order_hash}.to_s)
@@ -196,6 +223,16 @@ class Order < ApplicationRecord
       Order.new(order_attr)
     end
 
+    def create_tenpay_order_payment_record(order_hash, params)
+      raise '订单不存在' if order_hash[:order].blank?
+      order = order_hash[:order]
+      product_cost = order.purchased_items.sum('price * quantity')
+      total_cost = product_cost.round(2)
+      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
+      order_payment_record.save!
+      order_hash[:order_payment_record] = order_payment_record
+    end
+
     def cancel_order order_hash, params
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
@@ -233,6 +270,40 @@ class Order < ApplicationRecord
         end
       end
       order_hash[:order] = order
+    end
+
+    def update_order order_hash, params
+      raise '订单不存在' if order_hash[:order].blank? or order_hash[:order_attr].blank?
+      order = order_hash[:order]
+      raise order.errors unless order.update(order_hash[:order_attr])
+      order_hash[:order] = order
+    end
+
+    def update_order_payment_record order_hash, params
+      raise '付款记录不存在' if order_hash[:current_payment_record].blank?
+      item = order_hash[:current_payment_record]
+      raise item.errors unless item.update(timestamp: Time.now)
+      order_hash[:current_payment_record] = item
+    end
+
+    def update_order_transfer_info(option={})
+      order_payment_record = OrderPaymentRecord.where(out_trade_no: option[:out_trade_no]).first
+      order = order_payment_record.order
+      return nil if order.blank?
+      return nil if order.no_payed_due <= 0 or option[:transfer_received].to_f < order_payment_record.cost
+      order_payment_record.transaction_id = option[:transaction_id]
+      order_attr = {}
+      if order.order_type == "Product"
+        order_attr[:status] = 'paided'
+      else
+        order_attr[:status] = 'part-paid'
+      end
+      order_info = {order_attr: order_attr, order: order, params: option}
+      order_info[:methods] = %w(update_order update_order_payment_record)
+      order_info[:current_payment_record] = order_payment_record
+      order_info[:redis_expire_name] = "order-#{order.id}"
+      order, success, errors = Order.create_or_update_order(order_info)
+      order
     end
   end
 end

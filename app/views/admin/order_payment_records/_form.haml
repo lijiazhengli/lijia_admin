@@ -22,4 +22,10 @@
       说明： 收入填正数， 支持填负数
       = f.text_field :cost, class: 'form-control'
 
+    .form-group
+      = f.label "到账时间"
+      %br
+      说明： 请填写顾客实际付款时间， 如未付款此项不用填写
+      = f.text_field :timestamp, class: 'form-control', type: :date
+
     = f.submit '保存', class: 'btn btn-success'

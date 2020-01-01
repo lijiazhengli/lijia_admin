@@ -71,19 +71,36 @@ class AppletsController < ApplicationController
     render json: user_info
   end
 
+  def user_info
+    p params
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    
+    render json: {userInfo: user.to_applet_list}
+  end
+
+  def crm_info
+    p params
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    
+    render json: {userInfo: user.to_applet_crm_list}
+
+  end
+
+  def save_user_info
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    user.update(user_params)
+    render json: {userInfo: user.to_applet_list}
+  end
+
   def cart
     products = Product.get_product_list_hash(params[:product_ids].split(','))
     render json: {productInfos: products}
   end
 
   def save_address
-    p 'save_address start'
-    p params
     user = User.where(phone_number: params[:customer_phone_number]).last
     params[:user_id] = user.try(:id)
     address_attr = address_params
-
-    p address_attr
   
     Address.for_user(params[:user_id]).update_all(is_default: false) if address_attr[:is_default] == '1' and params[:user_id].present?
 
@@ -97,7 +114,6 @@ class AppletsController < ApplicationController
     else
       address = Address.create(address_attr)
     end
-    address.errors
     render json: {current_address: address.to_cart_info}
   end
 
@@ -126,10 +142,11 @@ class AppletsController < ApplicationController
     if user.present?
       order_product_ids = []
       order_infos = []
+      order_type = params[:order_type] || 'Service'
       if params[:status].blank?
-        orders = user.orders.includes(:purchased_items).order('orders.id desc')
+        orders = user.orders.where(order_type: order_type).includes(:purchased_items).order('orders.id desc')
       else
-        orders = user.orders.where(status: params[:status]).includes(:purchased_items).order('orders.id desc')
+        orders = user.orders.where(order_type: order_type, status: params[:status]).includes(:purchased_items).order('orders.id desc')
       end
       orders.each do |order|
         info, product_ids = order.to_applet_order_list
@@ -195,6 +212,18 @@ class AppletsController < ApplicationController
     )
   end
 
+  def user_params
+    params.permit(
+      :name,
+      :profession,
+      :avatar,
+      :address_province,
+      :address_city,
+      :address_district,
+      :sex
+    )
+  end
+
   def create_order
     p params
     order_info = params[:orderInfo]
@@ -220,7 +249,7 @@ class AppletsController < ApplicationController
     option[:purchased_items] = purchased_items
     option[:user] = user if user.present?
 
-    option[:methods] = %w(check_user create_order  save_with_new_external_id)
+    option[:methods] = %w(check_user create_order  save_with_new_external_id create_tenpay_order_payment_record)
     option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
 
     p option
