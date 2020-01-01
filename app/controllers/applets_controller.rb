@@ -142,10 +142,11 @@ class AppletsController < ApplicationController
     if user.present?
       order_product_ids = []
       order_infos = []
+      order_type = params[:order_type] || 'Service'
       if params[:status].blank?
-        orders = user.orders.includes(:purchased_items).order('orders.id desc')
+        orders = user.orders.where(order_type: order_type).includes(:purchased_items).order('orders.id desc')
       else
-        orders = user.orders.where(status: params[:status]).includes(:purchased_items).order('orders.id desc')
+        orders = user.orders.where(order_type: order_type, status: params[:status]).includes(:purchased_items).order('orders.id desc')
       end
       orders.each do |order|
         info, product_ids = order.to_applet_order_list
@@ -248,7 +249,7 @@ class AppletsController < ApplicationController
     option[:purchased_items] = purchased_items
     option[:user] = user if user.present?
 
-    option[:methods] = %w(check_user create_order  save_with_new_external_id)
+    option[:methods] = %w(check_user create_order  save_with_new_external_id create_tenpay_order_payment_record)
     option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
 
     p option

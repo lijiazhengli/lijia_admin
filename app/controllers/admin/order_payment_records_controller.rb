@@ -12,6 +12,9 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   end
 
   def create
+    attrs = current_record_params
+    attrs[:out_trade_no] = @order.next_payment_method_num(current_record_params[:payment_method_id]) if [Order::TENPAY_ID].include?(current_record_params[:payment_method_id].to_i)
+
     @item = @order.order_payment_records.build(current_record_params)
     if @item.save
       redirect_to admin_order_order_payment_records_path(@order)

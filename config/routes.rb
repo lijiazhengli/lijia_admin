@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   #root 'welcome#index'
   root "admin/base#admin_login"
   get 'welcome/index'
+
+  post '/wx_payment', to: 'weixin#wx_verify'
+
   namespace :admin do
     #root "wx_menus#index"
     root "base#admin_login"
