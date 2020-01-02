@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       post :create_service_order
       get  :crm_info
       post :delete_user_address
+      get  :good_index
       get  :home_show
       get  :login
       get  :load_address_list
