@@ -336,15 +336,19 @@ class AppletsController < ApplicationController
     end
   end
 
-
-
   def applet_order_base_info(order_info)
-    {
+    attrs = {
       status: "unpaid",
       wx_open_id: order_info[:wx_ma_id],
       purchase_source: "美莉家小程序",
       order_type: 'Product'
     }
+    if order_info[:referral_phone_number].present?
+      referral_user = User.where(phone_number: order_info[:referral_phone_number]).last
+      attrs[:referral_phone_number] = referral_user.try(:phone_number)
+      attrs[:referral_name] = referral_user.try(:name)
+    end
+    attrs
   end
 
   def applet_service_base_info(order_info)
@@ -358,7 +362,6 @@ class AppletsController < ApplicationController
     info[:order_type] = 'Course'
     info
   end
-
 
 
   def get_purchased_items(order_attr, cart_products)
