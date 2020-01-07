@@ -359,6 +359,9 @@ class AppletsController < ApplicationController
 
   def applet_course_base_info(order_info)
     info = applet_order_base_info(order_info)
+    info[:address_province] = order_info[:address_province]
+    info[:address_city] = order_info[:address_city]
+    info[:address_district] = order_info[:address_district]
     info[:order_type] = 'Course'
     info
   end
