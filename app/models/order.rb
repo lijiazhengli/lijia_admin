@@ -210,7 +210,7 @@ class Order < ApplicationRecord
         raise order.errors
       end
       order_hash[:order] = order
-      save_with_new_external_id(order_hash, params)
+      #save_with_new_external_id(order_hash, params)
       @@order_logger.info (Time.now.to_s + {'m_name' => 'AFTER_CREATE_ORDER', 'order_hash_USER' => order_hash[:order]}.to_s)
     end
 
@@ -228,7 +228,7 @@ class Order < ApplicationRecord
       order = order_hash[:order]
       product_cost = order.purchased_items.sum('price * quantity')
       total_cost = product_cost.round(2)
-      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
+      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '收纳工具收入', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
       order_payment_record.save!
       order_hash[:order_payment_record] = order_payment_record
     end
