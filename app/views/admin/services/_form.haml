@@ -16,6 +16,12 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label "预约人数"
+      %br
+      = f.text_field :count_string, class: 'form-control'
+
+    
+    .form-group
       = f.label "描述"
       %br
       = f.text_area :description, class: 'form-control'

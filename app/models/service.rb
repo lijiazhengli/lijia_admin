@@ -6,6 +6,7 @@ class Service < Product
       title: self.title,
       id: self.id,
       desc: self.description,
+      count_string: self.count_string,
       img_url: self.front_image
     }
   end

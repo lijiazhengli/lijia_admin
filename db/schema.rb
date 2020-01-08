@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_30_164932) do
+ActiveRecord::Schema.define(version: 2020_01_08_164725) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -172,6 +172,16 @@ ActiveRecord::Schema.define(version: 2019_12_30_164932) do
     t.index ["start_date"], name: "index_orders_on_start_date"
   end
 
+  create_table "product_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "product_id"
+    t.string "type"
+    t.string "mobile_image"
+    t.integer "position"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "type"
     t.float "price"
@@ -186,6 +196,7 @@ ActiveRecord::Schema.define(version: 2019_12_30_164932) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "position", default: 999
+    t.string "count_string"
     t.index ["type"], name: "index_products_on_type"
   end
 
