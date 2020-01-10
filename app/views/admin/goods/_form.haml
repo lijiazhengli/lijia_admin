@@ -25,7 +25,7 @@
       = f.select :active, options_for_select({'是' => true, '否' => false}, @good.active), {}, class: 'form-control'
 
     = f.text_field :front_image, style: 'display: none'
-    = render partial: 'upload_image', locals: {item: @good, image_name: 'front_image', image_size: '首页图片(200x200)', button_name: 'front-image', input_name: 'good_front_image', upload_url: file_upload_admin_goods_path(type: 'front')}
+    = render partial: 'upload_image', locals: {item: @good, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'good_front_image', upload_url: file_upload_admin_goods_path(type: 'front')}
 
     = f.text_field :detailed_image, style: 'display: none'
     = render partial: 'upload_image', locals: {item: @good, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'good_detailed_image', upload_url: file_upload_admin_goods_path(type: 'detailed')}

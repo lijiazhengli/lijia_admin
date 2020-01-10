@@ -25,6 +25,6 @@
       = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
 
     = f.text_field :mobile_image, style: 'display: none'
-    = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '手机图片(100x100)', button_name: 'mobile-image', input_name: 'teacher_mobile_image', upload_url: file_upload_admin_teachers_path(type: 'mobile')}
+    = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '手机图片(220x220)', button_name: 'mobile-image', input_name: 'teacher_mobile_image', upload_url: file_upload_admin_teachers_path(type: 'mobile')}
 
     = f.submit '保存', class: 'btn btn-success'
