@@ -9,7 +9,7 @@
     .form-group
       = f.label "#{@order_type}"
       %br
-      = f.select :product_id, options_for_select(Product.where(type: @order.order_type).pluck(:title, :id).to_h, @item.product_id), {}, class: 'form-control select2', 'data-live-search'=>"true", "data-size"=>"5"
+      = f.select :product_id, options_for_select(Product.get_purchased_items(@order.order_type), @item.product_id), {}, class: 'form-control select2', 'data-live-search'=>"true", "data-size"=>"5"
     .form-group
       = f.label "费用"
       %br

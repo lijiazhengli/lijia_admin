@@ -31,6 +31,7 @@
         %th 结束日期
         %th 首页图片
         %th 详细页图片
+        %th 位置
         %th 是否启用
         %th 操作
     %tbody
@@ -43,6 +44,7 @@
           %td= item.end_date
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
+          %td= item.position
           %td= item.active
           %td
             = link_to '详情', admin_course_path(item)

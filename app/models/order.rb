@@ -15,11 +15,12 @@ class Order < ApplicationRecord
   ORDER_TYPE = {
     'Service'       => '整理服务',
     'Course'       => '课程培训',
-    'Product'       => '收纳功能'
+    'Product'       => '收纳工具'
   }
 
   SERVICE_ORDER = 'Service'
   COURSE_ORDER = 'Course'
+  PRODUCT_ORDER = 'Product'
 
   STATUS = {
     'unpaid'       => '待支付',

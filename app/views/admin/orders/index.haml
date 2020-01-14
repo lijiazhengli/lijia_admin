@@ -34,8 +34,9 @@
       = select_tag "q[order_type_eq]", options_for_select(Order::ORDER_TYPE.invert, @params[:order_type_eq]), include_blank: true, class: "form-control"
 
     = f.submit '查询', class: "btn btn-secondary"
-    = link_to '新建订单', new_admin_order_path, class: "btn btn-success"
+    = link_to '新建整理服务订单', new_admin_order_path, class: "btn btn-success"
     = link_to '新建课程订单', new_admin_order_path(order_type: 'Course'), class: "btn btn-success"
+    = link_to '新建收纳工具订单', new_admin_order_path(order_type: 'Product'), class: "btn btn-success"
 
 - if false
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom

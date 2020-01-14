@@ -1,6 +1,11 @@
 class Product < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
+  def self.get_purchased_items(order_type)
+    current_type =  order_type == Order::PRODUCT_ORDER ? 'Good' : @order.order_type
+    Product.active.where(type: current_type).map{|i| ["#{i.title}-#{i.price}", i.id]}
+  end
+
   def to_applet_show
     attrs = {
       id: self.id,
