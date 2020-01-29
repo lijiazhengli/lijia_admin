@@ -4,8 +4,8 @@ class Admin::ServicesController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Service.ransack(@params)
-    @services = @q.result(distinct: true).page(params[:page])
+    @q = Service.order(:position).ransack(@params)
+    @items = @q.result(distinct: true).page(params[:page])
   end
 
   def new
@@ -41,6 +41,42 @@ class Admin::ServicesController < Admin::BaseController
 
   def file_upload
     file_upload_to_qiniu('service')
+  end
+
+  def up_serial
+    item = Service.where(id: params[:id]).first
+    if item.up_serial params[:target_id]
+      render js: "alert('操作成功');"
+    else
+      render js: "alert('操作失败');"
+    end
+  end
+
+  def down_serial
+    item = Service.where(id: params[:id]).first
+    if item.down_serial params[:target_id]
+      render js: "alert('操作成功');"
+    else
+      render js: "alert('操作失败');"
+    end
+  end
+
+  def enable
+    item = Service.find(params[:id])
+    if item.enable
+      redirect_to admin_services_path, alert: '成功'
+    else
+      redirect_to admin_services_path, alert: '失败'
+    end
+  end
+
+  def disable
+    item = Service.find(params[:id])
+    if item.disable
+      redirect_to admin_services_path, alert: '成功'
+    else
+      redirect_to admin_services_path, alert: '失败'
+    end
   end
 
   private

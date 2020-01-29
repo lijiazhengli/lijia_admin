@@ -19,7 +19,7 @@
 %br
 %div
   总数： 
-  = @courses.total_count
+  = @items.total_count
 .table-responsive
   %table.table.table-striped.table-sm
     %thead
@@ -34,9 +34,10 @@
         %th 位置
         %th 是否启用
         %th 操作
-    %tbody
-      - @courses.each do |item|
-        %tr
+    %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+      - @items.each do |item|
+        - @draggable = true
+        %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_courses_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_courses_path(:id =>item.id)}")
           %td= item.title
           %td= item.price
           %td= item.city_name
@@ -44,14 +45,18 @@
           %td= item.end_date
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= item.position
           %td= item.active
           %td
             = link_to '详情', admin_course_path(item)
+            |
+            - if item.active
+              = link_to '关闭', disable_admin_course_path(item), :method => :put
+            - else
+              = link_to '启用', enable_admin_course_path(item), :method => :put
             |
             = link_to '修改', edit_admin_course_path(item)
             |
             = link_to "讲师", admin_course_course_teachers_path(item)
             |
             = link_to "学员", admin_students_path(course_id: item.id)
-  = paginate @courses
+  = paginate @items

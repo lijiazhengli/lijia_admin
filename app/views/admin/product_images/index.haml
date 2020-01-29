@@ -1,0 +1,33 @@
+%h3 产品详细图片列表
+= link_to '新建产品图片', new_admin_product_product_image_path(@product), class: "btn btn-success"
+- if @product.type == 'Good'
+  = link_to '返回收纳工具列表', admin_goods_path, class: "btn btn-success"
+- elsif @product.type == 'Service'
+  = link_to '返回整理服务列表', admin_services_path, class: "btn btn-success"
+- if @product.type == 'Course'
+  = link_to '返回课程列表', admin_courses_path, class: "btn btn-success"
+
+
+%table.table.table-striped
+  %tr
+    %th 图片
+    %th 位置
+    %th 是否显示
+    %th 操作
+
+  %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+    - @items.each do |item|
+      - @draggable = true
+      %tr(id="product-image-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_product_product_images_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_product_product_images_path(:id =>item.id)}")
+        %td= image_tag item.mobile_image, style: 'width: 100px'
+        %td= item.position
+        %td= item.active
+        %td
+          = link_to '修改', edit_admin_product_product_image_path(@product, item)
+          |
+          - if item.active
+            = link_to '关闭', disable_admin_product_product_image_path(@product,item), :method => :put
+          - else
+            = link_to '启用', enable_admin_product_product_image_path(@product,item), :method => :put
+          |
+          = link_to '删除', admin_product_product_image_path(@product, item), method: :delete, data: { :confirm => '确定删除吗？' }

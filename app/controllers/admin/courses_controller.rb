@@ -5,7 +5,7 @@ class Admin::CoursesController < Admin::BaseController
   def index
     @params = params[:q] || {}
     @q = Course.order('position asc').ransack(@params)
-    @courses = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page])
   end
 
   def new
@@ -48,6 +48,41 @@ class Admin::CoursesController < Admin::BaseController
 
   def file_upload
     file_upload_to_qiniu('course')
+  end
+  def up_serial
+    item = Course.where(id: params[:id]).first
+    if item.up_serial params[:target_id]
+      render js: "alert('操作成功');"
+    else
+      render js: "alert('操作失败');"
+    end
+  end
+
+  def down_serial
+    item = Course.where(id: params[:id]).first
+    if item.down_serial params[:target_id]
+      render js: "alert('操作成功');"
+    else
+      render js: "alert('操作失败');"
+    end
+  end
+
+  def enable
+    item = Course.find(params[:id])
+    if item.enable
+      redirect_to admin_courses_path, alert: '成功'
+    else
+      redirect_to admin_courses_path, alert: '失败'
+    end
+  end
+
+  def disable
+    item = Course.find(params[:id])
+    if item.disable
+      redirect_to admin_courses_path, alert: '成功'
+    else
+      redirect_to admin_courses_path, alert: '失败'
+    end
   end
 
   private

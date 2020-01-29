@@ -19,7 +19,7 @@
 %br
 %div
   总数： 
-  = @services.total_count
+  = @items.total_count
 .table-responsive
   %table.table.table-striped.table-sm
     %thead
@@ -31,13 +31,12 @@
         %th 预约人数
         %th 首页图片
         %th 详细页图片
-        %th 位置
         %th 是否启用
         %th 操作
-    %tbody
-      - @services.each do |item|
-        - p item
-        %tr
+    %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+      - @items.each do |item|
+        - @draggable = true
+        %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_services_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_services_path(:id =>item.id)}")
           %td= item.title
           - if false
             %td= item.city_name
@@ -45,8 +44,12 @@
           %td= item.count_string
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= item.position
           %td= item.active
           %td
             = link_to '修改', edit_admin_service_path(item)
-  = paginate @services
+            |
+            - if item.active
+              = link_to '关闭', disable_admin_service_path(item), :method => :put
+            - else
+              = link_to '启用', enable_admin_service_path(item), :method => :put
+  = paginate @items

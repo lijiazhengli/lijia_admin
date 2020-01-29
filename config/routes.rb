@@ -34,6 +34,12 @@ Rails.application.routes.draw do
         post :file_upload
         put :file_upload
         patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
       end
       resources :course_teachers
       resources :students
@@ -44,6 +50,12 @@ Rails.application.routes.draw do
         post :file_upload
         put :file_upload
         patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
       end
     end
 
@@ -64,11 +76,33 @@ Rails.application.routes.draw do
       resources :purchased_items
     end
 
+    resources :products do
+      resources :product_images do
+        collection do
+          post :file_upload
+          put :file_upload
+          patch :file_upload
+          put :up_serial
+          put :down_serial
+        end
+        member do
+          put :disable
+          put :enable
+        end
+      end
+    end
+
     resources :services do
       collection do
         post :file_upload
         put :file_upload
         patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
       end
     end
 

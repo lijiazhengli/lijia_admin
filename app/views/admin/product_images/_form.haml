@@ -1,0 +1,22 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+    .form-group
+      = f.label "位置"
+      %br
+      = f.text_field :position, class: 'form-control', type: :number
+
+    .form-group
+      = f.label "是否启用"
+      = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
+
+    = f.text_field :mobile_image, style: 'display: none'
+    = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '宽带为750', button_name: 'mobile-image', input_name: 'product_image_mobile_image', upload_url: file_upload_admin_product_product_images_path(type: 'mobile')}
+
+    = f.submit '保存', class: 'btn btn-success'
+
+

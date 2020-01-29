@@ -1,0 +1,5 @@
+%h3 新建产品详细图片
+
+= link_to '返回', admin_product_product_images_path(@product), class: 'btn btn-success'
+
+= render :partial => 'form', :locals => {url: admin_product_product_images_path(@product)}
