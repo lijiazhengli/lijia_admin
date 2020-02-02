@@ -26,6 +26,7 @@ class Order < ApplicationRecord
     'unpaid'       => '待支付',
     'part-paid'    => '部分付款',
     'paided'       => '已支付',
+    'on_the_road'    => '已发货',
     'completed'    => '已完成',
     'canceled'     => '已取消'
   }
