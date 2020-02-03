@@ -411,6 +411,8 @@ class AppletsController < ApplicationController
     params.permit(
       :recipient_name,
       :recipient_phone_number,
+      :customer_name,
+      :customer_phone_number,
       :referral_name,
       :referral_phone_number,
       :city_name,

@@ -42,9 +42,12 @@
         %tr
           %td= item.course.title
           %td= item.user_id
-          - user = item.user
-          %td= item.order.try(:customer_name)
-          %td= user.phone_number
+          - if false
+            - user = item.user
+            %td= item.order.try(:customer_name)
+            %td= user.phone_number
+          %td= item.name
+          %td= item.phone_number
           %td= item.city_name
           %td= item.careers
           %td= item.career_plan

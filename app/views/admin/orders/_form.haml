@@ -41,7 +41,7 @@
 
     .form-group
       - if @order.order_type == Order::COURSE_ORDER
-        = f.label '学员名称'
+        = f.label '*学员名称'
       - else
         = f.label '订购人'
       %br

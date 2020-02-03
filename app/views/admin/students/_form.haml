@@ -5,6 +5,15 @@
         %ul
           - @item.errors.messages.each do |key,msg|
             %li= msg.join(',')
+    .form-group
+      = f.label "姓名"
+      %br
+      = f.text_field :name, class: 'form-control'
+
+    .form-group
+      = f.label "电话"
+      %br
+      = f.text_field :phone_number, class: 'form-control'
 
     .form-group
       = f.label "城市"

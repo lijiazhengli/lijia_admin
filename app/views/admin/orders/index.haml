@@ -13,6 +13,11 @@
       = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
 
     .form-group
+      = f.search_field :recipient_name_cont, class: "form-control", placeholder: "收货人/学员"
+    .form-group
+      = f.search_field :recipient_phone_number_cont, class: "form-control", placeholder: "收货人/学员电话"
+
+    .form-group
       = f.label "开始日期"
       = f.date_field :start_date_gteq, class: "form-control"
       = f.label "截止日期"
@@ -58,6 +63,7 @@
         %th 单号
         %th 创建人
         %th 订购人
+        %th 收货人（学员）信息
         %th 城市
         %th 状态
         %th 开始和结束日期
@@ -70,6 +76,7 @@
           %td= item.external_id
           %td= @admins_hash[item.admin_id]
           %td= "#{item.customer_name}|#{item.customer_phone_number}"
+          %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
           %td= item.city_name
           %td= Order::STATUS[item.status]
           %td= "#{item.start_date}~#{item.end_date}"

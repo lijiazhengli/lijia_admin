@@ -220,6 +220,7 @@ class Order < ApplicationRecord
       order_attr = order_hash[:order_attr] || {}
       order_attr = order_attr.merge!(
         user_id: order_hash[:user_id] || order_hash[:user].try(:id),
+        customer_name: order_attr[:customer_name] || order_hash[:customer_name] || order_hash[:user].try(:name),
         purchased_items_attributes: order_hash[:purchased_items] || []
       )
       Order.new(order_attr)
@@ -248,7 +249,7 @@ class Order < ApplicationRecord
       order.purchased_items.each do |item|
         course = Course.find(item.product_id)
         student = Student.where(course_id: course.id, user_id: user.id,  order_id: order.id).first_or_create
-        student.update_attributes!(notes: order.notes, city_name: order.city_name)
+        student.update_attributes!(notes: order.notes, city_name: order.city_name, name: order.customer_name, phone_number: user.phone_number)
         order_hash[:student] = student
       end
     end
