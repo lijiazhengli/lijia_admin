@@ -324,7 +324,12 @@ class AppletsController < ApplicationController
     option[:purchased_items] = get_course_purchased_items(order_info)
     option[:user] = user if user.present?
 
-    option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
+    course = Course.find(order_info[:course_id])
+    if course.create_tenpay
+      option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id create_tenpay_order_payment_record)
+    else
+      option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
+    end
     option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
 
     p option
@@ -345,8 +350,16 @@ class AppletsController < ApplicationController
     }
     if order_info[:referral_phone_number].present?
       referral_user = User.where(phone_number: order_info[:referral_phone_number]).last
-      attrs[:referral_phone_number] = referral_user.try(:phone_number)
-      attrs[:referral_name] = referral_user.try(:name)
+      if referral_user.present?
+        attrs[:referral_phone_number] = referral_user.try(:phone_number)
+        attrs[:referral_name] = referral_user.try(:name)
+      elsif order_info[:wx_referral_phone_number].present?
+        wx_referral_user = User.where(phone_number: order_info[:wx_referral_phone_number]).last
+        if wx_referral_user.present?
+          attrs[:referral_phone_number] = wx_referral_user.try(:phone_number)
+          attrs[:referral_name] = wx_referral_user.try(:name)
+        end
+      end
     end
     attrs
   end

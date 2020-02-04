@@ -39,10 +39,13 @@
       %br
       = f.text_field :end_date, class: 'form-control', type: :date
 
-    
     .form-group
       = f.label "是否启用"
       = f.select :active, options_for_select({'是' => true, '否' => false}, @course.active), {}, class: 'form-control'
+
+    .form-group
+      = f.label "是否创建微信付款记录"
+      = f.select :create_tenpay, options_for_select({'是' => true, '否' => false}, @course.create_tenpay), {}, class: 'form-control'
 
     = f.text_field :front_image, style: 'display: none'
     = render partial: 'upload_image', locals: {item: @course, image_name: 'front_image', image_size: '首页图片(686x340)', button_name: 'front-image', input_name: 'course_front_image', upload_url: file_upload_admin_courses_path(type: 'front')}

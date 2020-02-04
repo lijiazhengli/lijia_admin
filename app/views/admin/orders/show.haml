@@ -19,7 +19,7 @@
     %td= "#{@order.referral_name}|#{@order.referral_phone_number}"
   %tr
     %th 地址
-    %td= @order.location_address
+    %td #{@order.address_province} #{@order.address_city} #{@order.address_district} #{@order.location_address}#{@order.location_title}#{@order.location_details}
   %tr
     %th 服务备注
     %td= @order.service_notes

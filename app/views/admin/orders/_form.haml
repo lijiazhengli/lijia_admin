@@ -65,10 +65,21 @@
       %br
       = f.text_field :referral_phone_number, class: 'form-control'
     - if [Order::SERVICE_ORDER, Order::PRODUCT_ORDER].include?(@order.order_type)
+
       .form-group
         = f.label "地址"
         %br
         = f.text_field :location_address, class: 'form-control'
+
+      .form-group
+        = f.label "定位地址"
+        %br
+        = f.text_field :location_title, class: 'form-control'
+
+      .form-group
+        = f.label "详细地址"
+        %br
+        = f.text_field :location_details, class: 'form-control'
     - if [Order::SERVICE_ORDER].include?(@order.order_type)
       .form-group
         = f.label "*开始日期"
@@ -78,7 +89,7 @@
         = f.label "*结束日期"
         %br
         = f.text_field :end_date, class: 'form-control', type: :date
-    - if [Order::SERVICE_ORDER, Order::PRODUCT_ORDER].include?(@order.order_type)
+    - if [Order::SERVICE_ORDER, Order::PRODUCT_ORDER, Order::COURSE_ORDER].include?(@order.order_type)
       .form-group
         = f.label "订单状态"
         = f.select :status, options_for_select(Order::STATUS.invert, @order.status), {}, class: 'form-control'
