@@ -42,15 +42,15 @@ class Order < ApplicationRecord
     )
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
     attrs["order_total_fee"] = self.order_total_fee
-    attrs["no_payed_due"] = self.no_payed_due
-    attrs["tenpay_payed_due"] = self.no_tenpay_payed_due
+    attrs["no_payed_due"] = self.no_paid_due
+    attrs["tenpay_payed_due"] = self.no_tenpay_paid_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
     product_ids = self.purchased_items.pluck(:product_id).uniq
     [attrs, product_ids]
   end
 
   def check_applet_order_status
-    return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_payed_due <= 0
+    return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_paid_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
     return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
     return [true, nil, nil]
@@ -78,12 +78,12 @@ class Order < ApplicationRecord
   end
 
 
-  def no_payed_due
+  def no_paid_due
     total_cost = self.order_payment_records.unpaid.sum(:cost).round(2)
     total_cost
   end
 
-  def no_tenpay_payed_due
+  def no_tenpay_paid_due
     total_cost = self.order_payment_records.tenpay_method.unpaid.sum(:cost).round(2)
     total_cost
   end
@@ -91,6 +91,17 @@ class Order < ApplicationRecord
   def order_total_fee
     total_cost = self.order_payment_records.sum(:cost).round(2)
     total_cost
+  end
+
+  def order_paid_due
+    total_cost = self.order_payment_records.paid.sum(:cost).round(2)
+    total_cost
+  end
+
+  def total_unpaid_fee
+    product_cost = self.purchased_items.sum('price * quantity')
+    paid_due = self.order_payed_due
+    (product_cost-paid_due).round(2)
   end
 
   def order_transfer_info(method_id)
@@ -293,10 +304,12 @@ class Order < ApplicationRecord
       order_payment_record = OrderPaymentRecord.where(out_trade_no: option[:out_trade_no]).first
       order = order_payment_record.order
       return nil if order.blank?
-      return nil if order.no_payed_due <= 0 or option[:transfer_received].to_f < order_payment_record.cost
+      return nil if order.no_paid_due <= 0 or option[:transfer_received].to_f < order_payment_record.cost
       order_payment_record.transaction_id = option[:transaction_id]
       order_attr = {}
       if order.order_type == "Product"
+        order_attr[:status] = 'paided'
+      elsif order.total_unpaid_fee <= option[:transfer_received].to_f
         order_attr[:status] = 'paided'
       else
         order_attr[:status] = 'part-paid'
