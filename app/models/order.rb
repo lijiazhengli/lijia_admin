@@ -100,7 +100,7 @@ class Order < ApplicationRecord
 
   def total_unpaid_fee
     product_cost = self.purchased_items.sum('price * quantity')
-    paid_due = self.order_payed_due
+    paid_due = self.order_paid_due
     (product_cost-paid_due).round(2)
   end
 
