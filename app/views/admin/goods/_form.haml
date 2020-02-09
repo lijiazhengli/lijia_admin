@@ -16,6 +16,11 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label "最小购买数量"
+      %br
+      = f.text_field :min_count, class: 'form-control'
+
+    .form-group
       = f.label "描述"
       %br
       = f.text_area :description, class: 'form-control'

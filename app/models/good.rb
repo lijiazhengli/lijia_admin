@@ -5,6 +5,7 @@ class Good < Product
     {
       id: self.id,
       title: self.title,
+      min_count: self.min_count,
       price: self.price,
       img_url: self.front_image
     }

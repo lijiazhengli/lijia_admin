@@ -39,6 +39,7 @@ class Product < ActiveRecord::Base
     attrs = {
       id: self.id,
       title: self.title,
+      min_count: self.min_count,
       desc: self.description,
       price: self.price,
       city_name: self.city_name,
@@ -60,6 +61,7 @@ class Product < ActiveRecord::Base
       id: self.id,
       title: self.title,
       price: self.price,
+      min_count: self.min_count,
       img_url: self.detailed_image
     }
     if self.type == 'Course'
@@ -74,6 +76,7 @@ class Product < ActiveRecord::Base
       id: self.id,
       title: self.title,
       price: self.price,
+      min_count: self.min_count,
       img_url: self.front_image
     }
   end

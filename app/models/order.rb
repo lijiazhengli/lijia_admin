@@ -31,7 +31,7 @@ class Order < ApplicationRecord
     'canceled'     => '已取消'
   }
 
-  CURRENT_STATUS = %w(unpaid paided part-paid)
+  CURRENT_STATUS = %w(unpaid paided part-paid on_the_road completed)
 
   def to_applet_order_list
     attrs = self.attributes.slice(
