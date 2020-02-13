@@ -11,9 +11,12 @@
   %table.table.table-striped.table-sm
     %thead
       %tr
-        %th 名称
+        %th 付款方式
         %th 费用类型
-        %th 数量
+        %th 金额
+        %th 商户订单号
+        %th 支付交易号
+        %th 付款时间
         %th 操作
     %tbody
       - @items.each do |item|
@@ -21,8 +24,12 @@
           %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
           %td= item.payment_method_name
           %td= item.cost
+          %td= item.out_trade_no
+          %td= item.transaction_id
+          %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
           %td
             = link_to '修改', edit_admin_order_order_payment_record_path(@order, item)
-            |
-            = link_to '删除', admin_order_order_payment_record_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
+            - unless item.timestamp
+              |
+              = link_to '删除', admin_order_order_payment_record_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
   = paginate @items

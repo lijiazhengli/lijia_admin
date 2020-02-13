@@ -49,7 +49,17 @@ class Order < ApplicationRecord
     [attrs, product_ids]
   end
 
+  def has_expire_product?
+    return false if Product.where(id: self.purchased_items.pluck(:product_id).uniq, active: false).empty?
+    true
+  end
+
   def check_applet_order_status
+    if self.has_expire_product?
+      return [false, "课程已结束报名，请查看其他课程", nil] if self.order_type == COURSE_ORDER
+      return [false, "服务已停止预约，请查看其他整理服务", nil] if self.order_type == SERVICE_ORDER
+      return [false, "订单含有已下架产品，请重新下单购买", nil] if self.order_type == PRODUCT_ORDER
+    end
     return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_paid_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
     return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
@@ -242,7 +252,7 @@ class Order < ApplicationRecord
       order = order_hash[:order]
       product_cost = order.purchased_items.sum('price * quantity')
       total_cost = product_cost.round(2)
-      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '收纳工具收入', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
+      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '自动创建付款记录', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
       order_payment_record.save!
       order_hash[:order_payment_record] = order_payment_record
     end

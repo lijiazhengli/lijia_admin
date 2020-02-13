@@ -4,7 +4,7 @@ class Admin::CoursesController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Course.order('position asc').ransack(@params)
+    @q = Course.order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
   end
 

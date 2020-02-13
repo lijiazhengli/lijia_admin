@@ -4,7 +4,7 @@ class Admin::ServicesController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Service.order(:position).ransack(@params)
+    @q = Service.order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
   end
 

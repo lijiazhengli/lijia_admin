@@ -52,6 +52,8 @@ class Product < ActiveRecord::Base
       attrs[:address] = info_extend.try(:address)
       attrs[:teachers] = self.teachers.map{|item| item.to_course_list}
     end
+
+    attrs[:exprie_product] = true unless self.active
     attrs[:product_images] = self.product_images.active.pluck(:mobile_image)
     attrs
   end

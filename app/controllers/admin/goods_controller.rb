@@ -4,7 +4,7 @@ class Admin::GoodsController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Good.order('position').ransack(@params)
+    @q = Good.order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
   end
 

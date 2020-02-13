@@ -13,7 +13,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
 
   def create
     attrs = current_record_params
-    attrs[:out_trade_no] = @order.next_payment_method_num(current_record_params[:payment_method_id]) if [Order::TENPAY_ID].include?(current_record_params[:payment_method_id].to_i)
+    attrs[:out_trade_no] = @order.next_payment_method_num(current_record_params[:payment_method_id]) if [Order::TENPAY_ID].include?(current_record_params[:payment_method_id].to_i) and current_record_params[:out_trade_no].blank?
 
     @item = @order.order_payment_records.build(current_record_params)
     if @item.save

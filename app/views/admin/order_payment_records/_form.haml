@@ -7,7 +7,7 @@
             %li= msg.join(',')
 
     .form-group
-      = f.label "名称"
+      = f.label "*付款方式"
       %br
       = f.select :payment_method_id, options_for_select(OrderPaymentRecord::PAYMENT_METHOD_ID.invert, @item.payment_method_id), {}, class: 'form-control'
     .form-group
@@ -17,15 +17,30 @@
       = f.text_field :payment_method_name, class: 'form-control'
 
     .form-group
-      = f.label "费用"
+      = f.label "*费用"
       %br
       说明： 收入填正数， 支持填负数
       = f.text_field :cost, class: 'form-control'
 
     .form-group
+      = f.label "商户订单号"
+      %br
+      说明：如未付款此项不用填写
+      = f.text_field :out_trade_no, class: 'form-control'
+
+    .form-group
+      = f.label "支付交易号"
+      %br
+      说明：如未付款此项不用填写
+      = f.text_field :transaction_id, class: 'form-control'
+
+    .form-group
       = f.label "到账时间"
       %br
       说明： 请填写顾客实际付款时间， 如未付款此项不用填写
-      = f.text_field :timestamp, class: 'form-control', type: :date
+      - if @item.timestamp.present?
+        = f.text_field :timestamp, class: 'form-control', type: :date, value: @item.timestamp.strftime("%F")
+      - else
+        = f.text_field :timestamp, class: 'form-control', type: :date
 
     = f.submit '保存', class: 'btn btn-success'
