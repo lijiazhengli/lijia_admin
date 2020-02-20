@@ -9,6 +9,7 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
+  scope :noncanceled, -> { where.not(status: ['canceled']) }
 
   TENPAY_ID = 2
 
@@ -151,6 +152,16 @@ class Order < ApplicationRecord
     option
   end
 
+  def do_completed
+    order, success, errors = Order.create_or_update_order({order: self, params: {}, methods: %w(completed_order), redis_expire_name: "order-#{self.id}"})
+    return success
+  end
+
+  def do_canceled
+    order, success, errors = Order.create_or_update_order({order: self, params: {}, methods: %w(cancel_order), redis_expire_name: "order-#{self.id}"})
+    return success
+  end
+
   class << self
     @@order_logger = Logger.new 'log/order_logger.log'
     def generate_out_trade_no
@@ -161,7 +172,7 @@ class Order < ApplicationRecord
       @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_UPDATE_ORDER', 'PARAMS' => options}.to_s)
       success = false
       allow_methods = %w(
-        check_user create_order create_course_student save_with_new_external_id update_order cancel_order create_tenpay_order_payment_record update_order_payment_record
+        check_user create_order create_course_student save_with_new_external_id update_order cancel_order completed_order create_tenpay_order_payment_record update_order_payment_record
       )
 
       all_methods = options.symbolize_keys![:methods] || []
@@ -261,6 +272,14 @@ class Order < ApplicationRecord
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
       order.update_attributes!(status: 'canceled')
+      order_hash[:order] = order
+    end
+
+    def completed_order order_hash, params
+      raise '订单不存在' if order_hash[:order].blank?
+      order = order_hash[:order]
+      order.update_attributes!(status: 'completed')
+      order_hash[:order] = order
     end
 
     def create_course_student order_hash, params

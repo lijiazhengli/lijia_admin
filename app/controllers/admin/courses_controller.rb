@@ -43,7 +43,14 @@ class Admin::CoursesController < Admin::BaseController
 
   def destroy
     @course = Course.find(params[:id])
-    redirect_to :back if @course.destroy
+    redirect_back(fallback_location: admin_courses_path) if @course.destroy
+  end
+
+  def order
+    @course = Course.find(params[:id])
+    @params = params[:q] || {}
+    @q = Order.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: @course.id}).order('orders.id desc').ransack(@params)
+    @orders = @q.result(distinct: true).page(params[:page])
   end
 
   def file_upload

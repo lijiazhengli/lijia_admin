@@ -93,5 +93,9 @@
               = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
             |
             = link_to '费用', admin_order_order_payment_records_path(item)
+            |
+            = link_to '完成', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成订单?' }
+            |
+            = link_to '取消', canceled_admin_order_path(item), :method => :put, :data => { :confirm => '确定取消订单?' }
             
   = paginate @orders

@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       member do
         put :disable
         put :enable
+        get :order
       end
       resources :course_teachers
       resources :students
@@ -70,6 +71,8 @@ Rails.application.routes.draw do
     resources :orders do
       member do
         get :base_show
+        put :completed
+        put :canceled
       end
       resources :order_arranger_assignments
       resources :order_payment_records

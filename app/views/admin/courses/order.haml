@@ -1,0 +1,60 @@
+%h2 订单列表
+- if true
+  = search_form_for @q, url: order_admin_course_path(@course), html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
+    .form-group
+      = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
+    .form-group
+      = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
+    .form-group
+      = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
+
+    .form-group
+      = f.search_field :recipient_name_cont, class: "form-control", placeholder: "收货人/学员"
+    .form-group
+      = f.search_field :recipient_phone_number_cont, class: "form-control", placeholder: "收货人/学员电话"
+
+    .form-group
+      = f.label '订单状态'
+      = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+    = f.submit '查询', class: "btn btn-secondary"
+    = link_to '新建课程订单', new_admin_order_path(order_type: 'Course'), class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @orders.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 单号
+        %th 订购人
+        %th 学员信息
+        %th 顾客城市
+        %th 状态
+        %th 推荐人
+        %th 创建时间
+        %th 操作
+    %tbody
+      - @orders.each do |item|
+        %tr
+          %td= item.external_id
+          %td= "#{item.customer_name}|#{item.customer_phone_number}"
+          %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
+          %td= "#{item.address_province} #{item.address_city}"
+          %td= Order::STATUS[item.status]
+          %td= "#{item.referral_name}|#{item.referral_phone_number}"
+          %td= item.created_at.strftime('%F %T')
+          %td
+            = link_to '修改', edit_admin_order_path(item)
+            |
+            = link_to '费用', admin_order_order_payment_records_path(item)
+            |
+            = link_to '完成课程', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成课程?' }
+            |
+            = link_to '取消课程', canceled_admin_order_path(item), :method => :put, :data => { :confirm => '取消后将不再显示，确定取消?' }
+            
+  = paginate @orders

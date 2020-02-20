@@ -68,6 +68,26 @@ class Admin::OrdersController < Admin::BaseController
     @order = Order.find(params[:id])
   end
 
+  def completed
+    p params
+    item = Order.find(params[:id])
+    p item
+    if item.do_completed
+      redirect_back(fallback_location: admin_orders_path, alert: '成功')
+    else
+      redirect_back(fallback_location: admin_orders_path, alert: '失败')
+    end
+  end
+
+  def canceled
+    item = Order.find(params[:id])
+    if item.do_canceled
+      redirect_back(fallback_location: admin_orders_path, alert: '成功')
+    else
+      redirect_back(fallback_location: admin_orders_path, alert: '失败')
+    end
+  end
+
 
   private
 

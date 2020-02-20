@@ -61,5 +61,7 @@
             |
             = link_to "学员", admin_students_path(course_id: item.id)
             |
+            = link_to '订单', order_admin_course_path(item)
+            |
             = link_to "详情图片", admin_product_product_images_path(item)
   = paginate @items
