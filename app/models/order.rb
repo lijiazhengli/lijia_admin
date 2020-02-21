@@ -262,7 +262,7 @@ class Order < ApplicationRecord
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
       product_cost = order.purchased_items.sum('price * quantity')
-      total_cost = product_cost.round(2)
+      total_cost = (product_cost * (order.zhekou || 1)).round(2)
       order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '自动创建付款记录', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
       order_payment_record.save!
       order_hash[:order_payment_record] = order_payment_record

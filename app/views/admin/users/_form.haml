@@ -1,0 +1,14 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+    .form-group
+      = f.label "*折扣"
+      %br
+      说明：0.9 代表下单时享受9折优惠（仅收纳工具订单有效），折扣信息不能大于1。
+      = f.text_field :zhekou, class: 'form-control'
+
+    = f.submit '保存', class: 'btn btn-success'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_09_090141) do
+ActiveRecord::Schema.define(version: 2020_02_21_144932) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(version: 2020_02_09_090141) do
     t.string "recipient_phone_number"
     t.string "address_district"
     t.string "applet_form_id"
+    t.float "zhekou", default: 1.0
     t.index ["external_id"], name: "index_orders_on_external_id"
     t.index ["order_type"], name: "index_orders_on_order_type"
     t.index ["purchase_source"], name: "index_orders_on_purchase_source"
@@ -271,6 +272,7 @@ ActiveRecord::Schema.define(version: 2020_02_09_090141) do
     t.string "address_city"
     t.string "address_district"
     t.string "avatar"
+    t.float "zhekou", default: 1.0
     t.index ["phone_number"], name: "index_users_on_phone_number"
     t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"

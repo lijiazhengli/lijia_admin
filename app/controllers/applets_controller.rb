@@ -94,6 +94,12 @@ class AppletsController < ApplicationController
 
   end
 
+  def load_customer_info
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    customer_info = {}
+    render json: {userInfo: user.to_applet_list}
+  end
+
   def save_user_info
     user = User.where(phone_number: params[:customer_phone_number]).last
     user.update(user_params)
@@ -242,7 +248,7 @@ class AppletsController < ApplicationController
     order_attr = base_order_params
 
     p order_attr
-    order_attr.merge!(applet_order_base_info(order_info))
+    order_attr.merge!(applet_good_base_info(order_info))
 
     if order_info[:address_id].present?
       order_attr.merge!(Address.find(order_info[:address_id]).to_applet_order_info)
@@ -379,6 +385,12 @@ class AppletsController < ApplicationController
     info
   end
 
+  def applet_good_base_info(order_info)
+    info = applet_order_base_info(order_info)
+    info[:zhekou] = order_info[:zhekou] || 1
+    info[:order_type] = 'Product'
+    info
+  end
 
   def get_purchased_items(order_attr, cart_products)
     return [order_attr, []] if cart_products.blank?

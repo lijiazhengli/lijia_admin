@@ -137,6 +137,7 @@ Rails.application.routes.draw do
       get  :login
       get  :load_address_list
       get  :load_address_info
+      get  :load_customer_info
       get  :orders
       get  :order_show
       get  :product_show
