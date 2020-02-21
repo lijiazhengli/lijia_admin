@@ -74,6 +74,7 @@ Rails.application.routes.draw do
         get :base_show
         put :completed
         put :canceled
+        put :update_status
       end
       resources :order_arranger_assignments
       resources :order_payment_records

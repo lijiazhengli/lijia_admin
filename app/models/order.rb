@@ -10,6 +10,7 @@ class Order < ApplicationRecord
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
   scope :noncanceled, -> { where.not(status: ['canceled']) }
+  scope :goods, -> { where(order_type: PRODUCT_ORDER) }
 
   TENPAY_ID = 2
 
@@ -338,6 +339,7 @@ class Order < ApplicationRecord
       order_attr = {}
       if order.order_type == "Product"
         order_attr[:status] = 'paided'
+        order_attr[:start_date] = (Time.now + 1.days).strftime("%F") if order.start_date.blank?
       elsif order.total_unpaid_fee <= option[:transfer_received].to_f
         order_attr[:status] = 'paided'
       else

@@ -89,6 +89,11 @@
         = f.label "*结束日期"
         %br
         = f.text_field :end_date, class: 'form-control', type: :date
+    - if [Order::PRODUCT_ORDER].include?(@order.order_type)
+      .form-group
+        = f.label "发货日期"
+        %br
+        = f.text_field :start_date, class: 'form-control', type: :date
     - if [Order::SERVICE_ORDER, Order::PRODUCT_ORDER, Order::COURSE_ORDER].include?(@order.order_type)
       .form-group
         = f.label "订单状态"

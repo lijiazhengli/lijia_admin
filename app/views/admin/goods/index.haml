@@ -24,6 +24,7 @@
   %table.table.table-striped.table-sm
     %thead
       %tr
+        %th 产品sku
         %th 名称
         - if false
           %th 城市名称
@@ -37,6 +38,7 @@
       - @items.each do |item|
         - @draggable = true
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_goods_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_goods_path(:id =>item.id)}")
+          %td= item.id
           %td= item.title
           - if false
             %td= item.city_name

@@ -1,26 +1,39 @@
 %h2 订单列表
-- if true
-  = search_form_for @q, url: order_admin_goods_path, html: {class: 'form-inline'} do |f|
-    .form-group
-      = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
-    .form-group
-      = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
-    .form-group
-      = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
-    .form-group
-      = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
+%h5 查询说明：
+%p 1.查询结果不包含取消订单
+%p 2.产品sku： 多个产品sku请用英文逗号分割。此条件为包含关系查询，即当输入'24,25'时，查询的是订单中有灰格牛津布百纳箱或者透明抽屉柜
+%br
+= search_form_for @q, url: order_admin_goods_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
+  .form-group
+    = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
+  .form-group
+    = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
+  .form-group
+    = f.search_field :recipient_name_cont, class: "form-control", placeholder: "收货人"
+  .form-group
+    = f.search_field :recipient_phone_number_cont, class: "form-control", placeholder: "收货人电话"
+  .form-group
+    = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: '产品sku，多个产品sku请用英文逗号分割', style: "width: 320px"
+  .form-group
+    = f.search_field :location_address_cont, class: "form-control", placeholder: "地址"
+  .form-group
+    = f.label "开始日期"
+    = f.date_field :start_date_gteq, class: "form-control"
+    = f.label "截止日期"
+    = f.date_field :start_date_lteq, class: "form-control"
 
-    .form-group
-      = f.search_field :recipient_name_cont, class: "form-control", placeholder: "收货人"
-    .form-group
-      = f.search_field :recipient_phone_number_cont, class: "form-control", placeholder: "收货人电话"
+  .form-group
+    = f.label '订单状态'
+    = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
 
-    .form-group
-      = f.label '订单状态'
-      = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+  .form-group
+    = f.search_field :address_province_cont, class: "form-control", placeholder: "省"
+    = f.search_field :address_city_cont, class: "form-control", placeholder: "市"
 
-    = f.submit '查询', class: "btn btn-secondary"
-    = link_to '新建收纳工具订单', new_admin_order_path(order_type: 'Product'), class: "btn btn-success"
+  = f.submit '查询', class: "btn btn-secondary"
+  = link_to '新建收纳工具订单', new_admin_order_path(order_type: 'Product'), class: "btn btn-success"
 
 %br
 %div
@@ -32,31 +45,44 @@
       %tr
         %th 单号
         %th 订购人
-        %th 顾客信息
-        %th 顾客城市
+        %th 收货人信息
+        %th 产品信息
+        %th 收货城市
         %th 地址
+        %th 日期
+        %th 快递名称
+        %th 快递单号
         %th 状态
-        %th 推荐人
         %th 创建时间
         %th 操作
     %tbody
       - @orders.each do |item|
         %tr
           %td= item.external_id
-          %td= "#{item.customer_name}|#{item.customer_phone_number}"
-          %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
-          %td= "#{item.address_province} #{item.address_city}"
+          %td
+            %div= item.customer_name
+            %div= item.customer_phone_number
+          %td
+            %div= item.recipient_name
+            %div= item.recipient_phone_number
+          %td
+            - item.purchased_items.each do |sub_item|
+              - product = @product_hash[sub_item.product_id]
+              - if product
+                %div #{product[:title]} x #{sub_item.quantity}
+              
+          %td
+            %div= item.address_province
+            %div= item.address_city
           %td= "#{item.address_province} #{item.address_city} #{item.address_district} #{item.location_address}#{item.location_title}#{item.location_details}"
+          %td= item.start_date
+          %td
+          %td
           %td= Order::STATUS[item.status]
-          %td= "#{item.referral_name}|#{item.referral_phone_number}"
           %td= item.created_at.strftime('%F %T')
           %td
-            = link_to '修改', edit_admin_order_path(item)
+            = link_to '已发货', update_status_admin_order_path(item), :method => :put, :data => { :confirm => '确定已发货?' }
             |
-            = link_to '费用', admin_order_order_payment_records_path(item)
-            |
-            = link_to '完成订单', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成订单?' }
-            |
-            = link_to '取消订单', canceled_admin_order_path(item), :method => :put, :data => { :confirm => '取消后将不再显示，确定取消?' }
+            = link_to '完成', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成?' }
             
   = paginate @orders

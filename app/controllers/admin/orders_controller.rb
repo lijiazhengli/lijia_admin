@@ -68,6 +68,15 @@ class Admin::OrdersController < Admin::BaseController
     @order = Order.find(params[:id])
   end
 
+  def update_status
+    item = Order.find(params[:id])
+    if item.update_attributes(status: params[:status])
+      redirect_back(fallback_location: admin_orders_path, alert: '成功')
+    else
+      redirect_back(fallback_location: admin_orders_path, alert: '失败')
+    end
+  end
+
   def completed
     p params
     item = Order.find(params[:id])
