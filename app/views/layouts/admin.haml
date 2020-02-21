@@ -45,7 +45,7 @@
             %li.nav-item
               = link_to '课程培训', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
             %li.nav-item
-              = link_to '收纳工具', admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods'}" 
+              = link_to '收纳工具', admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods' and params[:action] != 'order'}" 
             %br
             %li.nav-item
               = link_to '用户信息', admin_users_path, class: "nav-link #{'active' if params[:controller] == 'admin/users'}"
@@ -57,6 +57,9 @@
               = link_to '学员', admin_students_path, class: "nav-link #{'active' if params[:controller] == 'admin/students'}"
             %li.nav-item
               = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders'}"
+
+            %li.nav-item
+              = link_to "收纳工具订单", order_admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods' and params[:action] == 'order'}"
 
       .col-md-12.ml-sm-auto.col-lg-10.px-4{role: 'main'}
         = yield

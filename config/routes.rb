@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
     resources :goods do
       collection do
+        get :order
         post :file_upload
         put :file_upload
         patch :file_upload

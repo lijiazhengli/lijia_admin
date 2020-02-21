@@ -79,6 +79,17 @@ class Admin::GoodsController < Admin::BaseController
     end
   end
 
+  def order
+    product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
+    @params = params[:q] || {}
+    if product_ids.present?
+      @q = Order.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
+    else
+      @q = Order.noncanceled.order('orders.id desc').ransack(@params)
+    end
+    @orders = @q.result(distinct: true).page(params[:page])
+  end
+
   private
 
   def current_record_params
