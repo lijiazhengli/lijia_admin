@@ -18,6 +18,9 @@
     %th 推荐人
     %td= "#{@order.referral_name}|#{@order.referral_phone_number}"
   %tr
+    %th 收货人
+    %td= "#{@order.recipient_name}|#{@order.recipient_phone_number}"
+  %tr
     %th 地址
     %td #{@order.address_province} #{@order.address_city} #{@order.address_district} #{@order.location_address}#{@order.location_title}#{@order.location_details}
   %tr
