@@ -10,19 +10,33 @@
     %td= @order.city_name
   %tr
     %th 订购人
-    %td= "#{@order.customer_name}|#{@order.customer_phone_number}"
+    %td
+      %div #{@order.customer_name}
+      %div #{@order.customer_phone_number}
   %tr
     %th 开始和结束日期
     %td= "#{@order.start_date}~#{@order.end_date}"
   %tr
     %th 推荐人
-    %td= "#{@order.referral_name}|#{@order.referral_phone_number}"
+    %td
+      %div #{@order.referral_name}
+      %div #{@order.referral_phone_number}
   %tr
     %th 收货人
-    %td= "#{@order.recipient_name}|#{@order.recipient_phone_number}"
+    %td
+      %div #{@order.recipient_name}
+      %div #{@order.recipient_phone_number}
   %tr
     %th 地址
     %td #{@order.address_province} #{@order.address_city} #{@order.address_district} #{@order.location_address}#{@order.location_title}#{@order.location_details}
+  %tr
+    %th 产品类型
+    %td
+      - @order.purchased_items.includes(:product).each do |item|
+        - if @order.order_type == Order::SERVICE_ORDER
+          %div= item.product.title
+        - else
+          %div #{item.product.title} x #{item.quantity}
   %tr
     %th 服务备注
     %td= @order.service_notes
@@ -34,14 +48,7 @@
     %td
       - @order.order_arranger_assignments.includes(:arranger).order(:item_type).each do |item|
         %div #{OrderArrangerAssignment::ITEM_TYPE[item.item_type]}： #{item.arranger.name} 
-  %tr
-    %th 产品类型
-    %td
-      - @order.purchased_items.includes(:product).each do |item|
-        - if @order.order_type == Order::SERVICE_ORDER
-          %div= item.product.title
-        - else
-          %div #{item.product.title} x #{item.quantity}
+  
 
   %tr
     %th 付款记录

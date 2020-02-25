@@ -9,4 +9,16 @@
 
 @import "admin/base";
 
+
+@media (max-width: 768px){
+  body{
+    font-size: 0.8rem;
+  }
+  .form-control{
+    font-size: 0.8rem;
+  }
+}
+
+
+
   

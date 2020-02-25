@@ -41,7 +41,7 @@
     %tbody
       - @orders.each do |item|
         %tr
-          %td= item.external_id
+          %td= link_to item.external_id, admin_order_path(item)
           %td= "#{item.customer_name}|#{item.customer_phone_number}"
           %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
           %td= "#{item.address_province} #{item.address_city}"
