@@ -6,6 +6,8 @@
   .form-group
     = f.search_field :phone_number_cont, class: "form-control", placeholder: "电话"
   .form-group
+    = f.search_field :zhekou_lteq, class: "form-control", placeholder: "折扣"
+  .form-group
     = f.label "创建时间起"
     = f.date_field :created_at_gteq, class: "form-control"
     = f.label "创建时间止"
