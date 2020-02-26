@@ -1,4 +1,6 @@
 %h2 订单列表
+%h5 说明
+%p 1. 查询结果，不包含取消订单
 - if true
   = search_form_for @q, url: admin_orders_path, html: {class: 'form-inline'} do |f|
     .form-group

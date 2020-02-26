@@ -11,7 +11,7 @@ class Admin::OrdersController < Admin::BaseController
     if params[:user_id].present?
       @params[:customer_phone_number_cont] = (User.find(params[:user_id]).phone_number rescue '')
     end
-    @q = Order.order('id desc').ransack(@params)
+    @q = Order.noncanceled.order('id desc').ransack(@params)
     @orders = @q.result(distinct: true).page(params[:page])
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
   end

@@ -26,6 +26,7 @@
     %td
       %div #{@order.recipient_name}
       %div #{@order.recipient_phone_number}
+      %div 地址： #{@order.address_province} #{@order.address_city} #{@order.address_district} #{@order.location_address}#{@order.location_title}#{@order.location_details}
   %tr
     %th 地址
     %td #{@order.address_province} #{@order.address_city} #{@order.address_district} #{@order.location_address}#{@order.location_title}#{@order.location_details}

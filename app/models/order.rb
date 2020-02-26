@@ -7,6 +7,7 @@ class Order < ApplicationRecord
 
   has_many :purchased_items
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
+  belongs_to :user
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
   scope :noncanceled, -> { where.not(status: ['canceled']) }
@@ -272,15 +273,25 @@ class Order < ApplicationRecord
     def cancel_order order_hash, params
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
-      order.update_attributes!(status: 'canceled')
+      order.update!(status: 'canceled')
       order_hash[:order] = order
     end
 
     def completed_order order_hash, params
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
-      order.update_attributes!(status: 'completed')
+      order.update!(status: 'completed')
+      update_student_user_zhekou(order_hash, params)
       order_hash[:order] = order
+    end
+    
+    def update_student_user_zhekou(order_hash, params)
+      order = order_hash[:order]
+      return if order.order_type != Order::COURSE_ORDER
+      student = Student.where(order_id: order.id).first
+      user = order.user
+      user.update!(zhekou: COURSE_STUDENT_ZHEKOU) if student.phone_number == user.phone_number and user.zhekou > COURSE_STUDENT_ZHEKOU
+      order_hash[:user] = user
     end
 
     def create_course_student order_hash, params
@@ -290,7 +301,7 @@ class Order < ApplicationRecord
       order.purchased_items.each do |item|
         course = Course.find(item.product_id)
         student = Student.where(course_id: course.id, user_id: user.id,  order_id: order.id).first_or_create
-        student.update_attributes!(notes: order.notes, city_name: order.city_name, name: order.customer_name, phone_number: user.phone_number)
+        student.update!(notes: order.notes, city_name: order.city_name, name: order.customer_name, phone_number: user.phone_number)
         order_hash[:student] = student
       end
     end
