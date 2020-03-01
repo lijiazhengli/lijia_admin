@@ -317,12 +317,12 @@ class AppletsController < ApplicationController
   def create_course_order
     p params
 
-    
-
     order_info = params
     course = Course.find(order_info[:course_id])
 
-    if course.max_count.present? and course.available_order_count < course.max_count
+    if course.max_count.present? and course.available_order_count > course.max_count
+      render json: {success: false, errors: '课程已满额， 请选择其他课程报名'}
+    else
       user = User.where(phone_number: params[:customer_phone_number]).last
 
       order_info[:wx_ma_id] = user.wx_ma_id
@@ -355,8 +355,6 @@ class AppletsController < ApplicationController
       else
         render json: {success: false, errors: errors.values[0]}
       end
-    else
-      render json: {success: false, errors: '课程已满额， 请选择其他课程报名'}
     end
   end
 
