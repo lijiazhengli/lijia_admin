@@ -26,6 +26,7 @@
       %tr
         %th 名称
         %th 费用
+        %th 定金
         %th 城市名称
         %th 开始日期
         %th 结束日期
@@ -33,6 +34,7 @@
         %th 详细页图片
         %th 是否启用
         %th 自动创建微信付款记录
+        %th 预定人数
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
       - @items.each do |item|
@@ -40,13 +42,15 @@
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_courses_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_courses_path(:id =>item.id)}")
           %td= item.title
           %td= item.price
+          %td= item.earnest_price
           %td= item.city_name
           %td= item.start_date
           %td= item.end_date
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= item.active
+          %td= active_chinese_name(item)
           %td= item.create_tenpay
+          %th= item.max_count
           %td
             = link_to '详情', admin_course_path(item)
             |

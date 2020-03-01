@@ -21,6 +21,16 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label "定金"
+      %br
+      = f.text_field :earnest_price, class: 'form-control'
+
+    .form-group
+      = f.label "最大学员人数"
+      %br
+      = f.text_field :max_count, class: 'form-control'
+
+    .form-group
       = f.label "培训地址"
       %br
       = text_field_tag :course_address , params[:course_address], class: 'form-control'

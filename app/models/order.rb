@@ -11,6 +11,7 @@ class Order < ApplicationRecord
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
   scope :noncanceled, -> { where.not(status: ['canceled']) }
+  scope :available, -> { where(status: ['part-paid', 'paided', 'on_the_road', 'completed']) }
   scope :goods, -> { where(order_type: PRODUCT_ORDER) }
 
   TENPAY_ID = 2
@@ -46,6 +47,7 @@ class Order < ApplicationRecord
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
     attrs["order_total_fee"] = self.order_total_fee
     attrs["no_payed_due"] = self.no_paid_due
+    attrs["order_paid_due"] = self.order_paid_due
     attrs["tenpay_payed_due"] = self.no_tenpay_paid_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
     product_ids = self.purchased_items.pluck(:product_id).uniq
@@ -102,7 +104,12 @@ class Order < ApplicationRecord
   end
 
   def order_total_fee
-    total_cost = self.order_payment_records.sum(:cost).round(2)
+    if self.order_type == 'Service'
+      total_cost = self.order_payment_records.sum(:cost).round(2)
+    else
+      product_cost = self.purchased_items.sum('price * quantity')
+      total_cost = (product_cost * (self.zhekou || 1)).round(2)
+    end
     total_cost
   end
 
@@ -174,7 +181,9 @@ class Order < ApplicationRecord
       @@order_logger.info (Time.now.to_s + {'m_name' => 'CREATE_UPDATE_ORDER', 'PARAMS' => options}.to_s)
       success = false
       allow_methods = %w(
-        check_user create_order create_course_student save_with_new_external_id update_order cancel_order completed_order create_tenpay_order_payment_record update_order_payment_record
+        check_user create_order create_course_student save_with_new_external_id update_order cancel_order completed_order 
+        create_tenpay_order_payment_record create_earnest_tenpay_order_payment_record
+        update_order_payment_record
       )
 
       all_methods = options.symbolize_keys![:methods] || []
@@ -266,6 +275,19 @@ class Order < ApplicationRecord
       product_cost = order.purchased_items.sum('price * quantity')
       total_cost = (product_cost * (order.zhekou || 1)).round(2)
       order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '自动创建付款记录', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
+      order_payment_record.save!
+      order_hash[:order_payment_record] = order_payment_record
+    end
+
+    def create_earnest_tenpay_order_payment_record(order_hash, params)
+      raise '订单不存在' if order_hash[:order].blank?
+      order = order_hash[:order]
+      product_cost = 0
+      purchased_items = order.purchased_items
+      price_infos = Product.where(id: purchased_items.map(&:product_id)).map{|i| [i.id, i.earnest_price]}.to_h
+      purchased_items.each{|i| product_cost += price_infos[i.product_id] * i.quantity }
+      total_cost = (product_cost * (order.zhekou || 1)).round(2)
+      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '预付定金', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
       order_payment_record.save!
       order_hash[:order_payment_record] = order_payment_record
     end

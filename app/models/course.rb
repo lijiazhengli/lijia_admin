@@ -23,7 +23,36 @@ class Course < Product
     }
   end
 
+  def get_desc_title
+    arr = []
+    arr << get_string_date_info(self.start_date) if self.start_date.present?
+    arr << get_string_date_info(self.end_date) if self.end_date.present?
+    arr.join('-')
+  end
+
+  def get_string_date_info(str)
+    str[-5..-1].split('-').join('月') + '日'
+  end
+
+  def to_recommend_list
+    {
+      id: self.id,
+      title: self.get_desc_title
+    }
+  end
+
   def self_extend
     CourseExtend.find_or_create_by(course_id: self.id)
+  end
+
+  class << self
+    def get_recommend_infos(course_id)
+      infos = {}
+      Course.active.where.not(id: course_id).order(:city_name, :start_date).each do |course|
+        infos[course.city_name] ||= []
+        infos[course.city_name] << course.to_recommend_list
+      end
+      infos
+    end
   end
 end

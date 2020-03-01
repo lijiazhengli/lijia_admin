@@ -316,34 +316,47 @@ class AppletsController < ApplicationController
 
   def create_course_order
     p params
+
+    
+
     order_info = params
-    user = User.where(phone_number: params[:customer_phone_number]).last
-
-    order_info[:wx_ma_id] = user.wx_ma_id
-    order_attr = base_course_params
-    order_attr.merge!(applet_course_base_info(order_info))
-
-    order_attr[:user_id] = user.id
-    order_attr[:city_name] = order_attr[:city_name]
-
-    option = {order_attr: order_attr.permit!, params: order_info}
-    option[:purchased_items] = get_course_purchased_items(order_info)
-    option[:user] = user if user.present?
-
     course = Course.find(order_info[:course_id])
-    if course.create_tenpay
-      option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id create_tenpay_order_payment_record)
-    else
-      option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
-    end
-    option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
 
-    p option
-    @order, success, errors = Order.create_or_update_order(option)
-    if success
-      render json: {success: success, order: @order}
+    if course.max_count.present? and course.available_order_count < course.max_count
+      user = User.where(phone_number: params[:customer_phone_number]).last
+
+      order_info[:wx_ma_id] = user.wx_ma_id
+      order_attr = base_course_params
+      order_attr.merge!(applet_course_base_info(order_info))
+
+      order_attr[:user_id] = user.id
+      order_attr[:city_name] = order_attr[:city_name]
+
+      option = {order_attr: order_attr.permit!, params: order_info}
+      option[:purchased_items] = get_course_purchased_items(order_info)
+      option[:user] = user if user.present?
+
+      
+      if course.create_tenpay
+        if course.earnest_price and course.price > course.earnest_price
+          option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id create_earnest_tenpay_order_payment_record)
+        else
+          option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id create_tenpay_order_payment_record)
+        end
+      else
+        option[:methods] = %w(check_user create_order create_course_student save_with_new_external_id)
+      end
+      option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
+
+      p option
+      @order, success, errors = Order.create_or_update_order(option)
+      if success
+        render json: {success: success, order: @order}
+      else
+        render json: {success: false, errors: errors.values[0]}
+      end
     else
-      render json: {success: false, errors: errors.values[0]}
+      render json: {success: false, errors: '课程已满额， 请选择其他课程报名'}
     end
   end
 

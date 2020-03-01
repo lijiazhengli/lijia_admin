@@ -35,13 +35,19 @@ class Product < ActiveRecord::Base
     Product.active.where(type: current_type).map{|i| ["#{i.title}-#{i.price}", i.id]}
   end
 
+  def available_order_count
+    Order.available.includes(:purchased_items).where(purchased_items: {product_id: self.id}).sum(:quantity)
+  end
+
   def to_applet_show
     attrs = {
       id: self.id,
       title: self.title,
       min_count: self.min_count,
+      max_count: self.max_count,
       desc: self.description,
       price: self.price,
+      earnest_price: self.earnest_price,
       city_name: self.city_name,
       start_date: self.start_date,
       end_date: self.end_date,
@@ -51,6 +57,10 @@ class Product < ActiveRecord::Base
       info_extend = CourseExtend.find_by_course_id(self.id)
       attrs[:address] = info_extend.try(:address)
       attrs[:teachers] = self.teachers.map{|item| item.to_course_list}
+      attrs[:order_count] = self.available_order_count
+      attrs[:other_courses] = Course.get_recommend_infos(self.id)
+      attrs[:other_course_cities] = Course.get_recommend_infos(self.id).keys
+      attrs[:other_course_cities] = [self.city_name] + (attrs[:other_course_cities] - [self.city_name]) if attrs[:other_courses][self.city_name]
     end
 
     attrs[:exprie_product] = true unless self.active
