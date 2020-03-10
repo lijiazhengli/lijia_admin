@@ -40,7 +40,7 @@ class Order < ApplicationRecord
   def to_applet_order_list
     attrs = self.attributes.slice(
       "address_province", "address_city", "address_district", 'created_at',
-      "id", "location_title",
+      "id", "location_title", "notes",
       'order_type', "recipient_name", "recipient_phone_number", "status",
       "wx_open_id", 
     )
