@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_01_103939) do
+ActiveRecord::Schema.define(version: 2020_03_10_135851) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 2020_03_01_103939) do
     t.integer "min_count", default: 1
     t.float "earnest_price"
     t.integer "max_count"
+    t.integer "advance_days", default: 1
     t.index ["type"], name: "index_products_on_type"
   end
 

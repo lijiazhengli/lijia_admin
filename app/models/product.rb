@@ -74,7 +74,8 @@ class Product < ActiveRecord::Base
       title: self.title,
       price: self.price,
       min_count: self.min_count,
-      img_url: self.detailed_image
+      img_url: self.detailed_image,
+      advance_days: self.advance_days
     }
     if self.type == 'Course'
       info_extend = CourseExtend.find_by_course_id(self.id)
@@ -89,7 +90,8 @@ class Product < ActiveRecord::Base
       title: self.title,
       price: self.price,
       min_count: self.min_count,
-      img_url: self.front_image
+      img_url: self.front_image,
+      advance_days: self.advance_days
     }
   end
 

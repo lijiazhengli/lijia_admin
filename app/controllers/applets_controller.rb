@@ -41,9 +41,16 @@ class AppletsController < ApplicationController
 
   def cart_show
     product = Product.find(params[:id])
-    request_info = {}
-    request_info[:info] = product.to_applet_cart_show
-    request_info[:cart_info] = product.to_applet_list
+    order_start_delivery_time = Time.now
+    order_end_delivery_time = order_start_delivery_time + 30.days
+    request_info = {
+      info: product.to_applet_cart_show,
+      cart_info: product.to_applet_list,
+      orderStartTime: (order_start_delivery_time-1.hours).strftime("%Y/%m/%d %T"),
+      minValidDate: order_start_delivery_time.strftime("%F"),
+      maxValidDate: order_end_delivery_time.strftime("%F"),
+      unSelectDates: [],
+    }
     render json: request_info
   end
 
@@ -298,6 +305,10 @@ class AppletsController < ApplicationController
 
     order_attr[:user_id] = user.id
     order_attr[:city_name] = order_attr[:address_city]
+    order_attr[:start_date] = order_info[:delivery_date]
+
+    p order_attr
+
     option = {order_attr: order_attr.permit!, params: order_info}
     option[:purchased_items] = get_service_purchased_items(order_info)
     option[:user] = user if user.present?
@@ -384,6 +395,7 @@ class AppletsController < ApplicationController
   def applet_service_base_info(order_info)
     info = applet_order_base_info(order_info)
     info[:order_type] = 'Service'
+    info[:notes] = order_info[:notes]
     info
   end
 

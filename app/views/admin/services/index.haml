@@ -29,6 +29,7 @@
           %th 城市名称
         %th 费用
         %th 预约人数
+        %th 提前预约天数
         %th 首页图片
         %th 详细页图片
         %th 是否启用
@@ -42,6 +43,7 @@
             %td= item.city_name
           %td= item.price
           %td= item.count_string
+          %td= item.advance_days
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
           %td= item.active

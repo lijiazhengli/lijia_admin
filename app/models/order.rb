@@ -50,6 +50,8 @@ class Order < ApplicationRecord
     attrs["order_paid_due"] = self.order_paid_due
     attrs["tenpay_payed_due"] = self.no_tenpay_paid_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
+    attrs["order_show_date"] = self.start_date if self.start_date and self.is_service?
+    attrs["order_show_date"] = self.course_show_date if self.is_course?
     product_ids = self.purchased_items.pluck(:product_id).uniq
     [attrs, product_ids]
   end
@@ -59,11 +61,30 @@ class Order < ApplicationRecord
     true
   end
 
+  def course_show_date
+    course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last
+    return nil if course.blank?
+    "#{course.start_date} 至 #{course.end_date}"
+  end
+
+
+  def is_service?
+    self.order_type == SERVICE_ORDER
+  end
+
+  def is_course?
+    self.order_type == COURSE_ORDER
+  end
+
+  def is_product?
+    self.order_type == PRODUCT_ORDER
+  end
+
   def check_applet_order_status
     if self.has_expire_product?
-      return [false, "课程已结束报名，请查看其他课程", nil] if self.order_type == COURSE_ORDER
-      return [false, "服务已停止预约，请查看其他整理服务", nil] if self.order_type == SERVICE_ORDER
-      return [false, "订单含有已下架产品，请重新下单购买", nil] if self.order_type == PRODUCT_ORDER
+      return [false, "课程已结束报名，请查看其他课程", nil] if self.is_course?
+      return [false, "服务已停止预约，请查看其他整理服务", nil] if self.is_service?
+      return [false, "订单含有已下架产品，请重新下单购买", nil] if self.is_product?
     end
     return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_paid_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
@@ -205,7 +226,6 @@ class Order < ApplicationRecord
         Order.transaction do
           check_redis_expire_name(order_hash, options)
           select_methods.each do |method|
-            p method
             send("#{method}", order_hash, params)
           end
           p order_hash
