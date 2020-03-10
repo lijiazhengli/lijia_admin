@@ -322,7 +322,6 @@ class AppletsController < ApplicationController
     else
       render json: {success: false, errors: errors.values[0]}
     end
-    @order, success, errors = Order.create_or_update_order(option)
   end
 
   def create_course_order
