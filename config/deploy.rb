@@ -34,7 +34,7 @@ task deploy: :environment do
     invoke :'rails:db_migrate'
     command %{#{fetch(:rails)} db:seed}
     invoke :'rails:assets_precompile'
-    command %{NODE_ENV=production RAILS_ENV=production bundle exec rails webpacker:compile}
+    # command %{NODE_ENV=production RAILS_ENV=production bundle exec rails webpacker:compile}
     invoke :'deploy:cleanup'
 
     on :launch do
