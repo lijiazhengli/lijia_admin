@@ -42,6 +42,7 @@ class AppletsController < ApplicationController
   def cart_show
     product = Product.find(params[:id])
     order_start_delivery_time = Time.now
+    order_start_delivery_time = order_start_delivery_time + 1.days if order_start_delivery_time.hour >= 18
     order_end_delivery_time = order_start_delivery_time + 30.days
     request_info = {
       info: product.to_applet_cart_show,
