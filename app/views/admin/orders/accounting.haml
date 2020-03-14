@@ -2,6 +2,8 @@
 %h5 说明
 %p 1. 查询结果，不包含取消订单
 %p 2. ✅ 代表该条交易已收钱
+%p 3.服务整理、课程、收纳工具可以一起搜索， 输入其对应的sku 
+%p 4.多个sku请用英文逗号分割。此条件为包含关系查询，即当输入'1,25'时，查询的是【空间诊断】整理服务 或者 含【透明抽屉柜】收纳工具 订单
 - if true
   = search_form_for @q, url: accounting_admin_orders_path, html: {class: 'form-inline'} do |f|
     .form-group
@@ -11,9 +13,11 @@
     .form-group
       = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
     .form-group
-      = f.label "开始时间"
+      = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: 'sku，多个sku请用英文逗号分割', style: "width: 320px"
+    .form-group
+      = f.label "创建开始时间"
       = f.date_field :created_at_gteq, class: "form-control"
-      = f.label "结束时间"
+      = f.label "创建结束时间"
       = f.date_field :created_at_lteq, class: "form-control"
 
     .form-group
@@ -42,6 +46,7 @@
         %th 单号
         %th 状态
         %th 付款信息
+        %th 产品信息
         %th 推荐人
         %th 创建时间
     %tbody
@@ -58,6 +63,16 @@
                   %span= "交易号：#{sub_item.transaction_id}"
                 - if sub_item.timestamp.present?
                   %span ✅
-          %td= "#{item.referral_name}|#{item.referral_phone_number}"
+          %td
+            - item.purchased_items.each do |sub_item|
+              - product = @product_hash[sub_item.product_id]
+              - if product
+                - if item.is_product?
+                  %div #{product[:title]}x#{sub_item.quantity}
+                - else
+                  %div #{product[:title]}
+          %td
+            - if item.referral_phone_number.present?
+              = "#{item.referral_name}|#{item.referral_phone_number}"
           %td= item.created_at.strftime('%F %T')      
   = paginate @orders

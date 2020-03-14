@@ -99,16 +99,25 @@ class Admin::OrdersController < Admin::BaseController
 
   def accounting
     p params
+    product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
     @params = params[:q] || {}
     if params[:order_type].present?
       @params[:order_type_eq] = params[:order_type]
     end
 
-    @q = Order.noncanceled.includes(:order_payment_records).order('id desc').ransack(@params)
+    @params = params[:q] || {}
+    if product_ids.present?
+      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
+    else
+      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).order('orders.id desc').ransack(@params)
+    end
+
     @orders = @q.result(distinct: true).page(params[:page])
-    order_ids = @orders.map(&:id).uniq
+    order_ids = @q.result(distinct: true).map(&:id).uniq
     @order_paided_count = OrderPaymentRecord.where(order_id: order_ids).where.not(timestamp: nil).sum(:cost)
     @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)
+    product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
+    @product_hash = Product.get_product_list_hash(product_ids)
   end
 
 
