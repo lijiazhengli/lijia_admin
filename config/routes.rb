@@ -70,6 +70,9 @@ Rails.application.routes.draw do
     end
 
     resources :orders do
+      collection do
+        get :accounting
+      end
       member do
         get :base_show
         put :completed

@@ -61,7 +61,10 @@
             %li.nav-item
               = link_to '学员', admin_students_path, class: "nav-link #{'active' if params[:controller] == 'admin/students'}"
             %li.nav-item
-              = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders'}"
+              = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and !%w(accounting).include?(params[:action])}"
+
+            %li.nav-item
+              = link_to '订单收入', accounting_admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and %w(accounting).include?(params[:action])}"
 
             %li.nav-item
               = link_to "收纳工具订单", order_admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods' and params[:action] == 'order'}"

@@ -1,0 +1,63 @@
+%h2 订单收入列表
+%h5 说明
+%p 1. 查询结果，不包含取消订单
+%p 2. ✅ 代表该条交易已收钱
+- if true
+  = search_form_for @q, url: accounting_admin_orders_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
+    .form-group
+      = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
+    .form-group
+      = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
+    .form-group
+      = f.label "开始时间"
+      = f.date_field :created_at_gteq, class: "form-control"
+      = f.label "结束时间"
+      = f.date_field :created_at_lteq, class: "form-control"
+
+    .form-group
+      = f.label '订单状态'
+      = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+    .form-group
+      = f.label '订单类型'
+      = select_tag "q[order_type_eq]", options_for_select(Order::ORDER_TYPE.invert, @params[:order_type_eq]), include_blank: true, class: "form-control"
+
+    = f.submit '查询', class: "btn btn-secondary"
+
+%div
+  总数： 
+  = @orders.total_count
+%div
+  已付款：
+  = @order_paided_count.round(2)
+%div
+  未付款：
+  = @order_unpaid_count.round(2)
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 单号
+        %th 状态
+        %th 付款信息
+        %th 推荐人
+        %th 创建时间
+    %tbody
+      - @orders.each do |item|
+        %tr
+          %td= link_to item.external_id, admin_order_path(item)
+          %td= Order::STATUS[item.status]
+          %td
+            - item.order_payment_records.each do |sub_item|
+              %div
+                %span= sub_item.payment_name
+                %span= "¥#{sub_item.cost}"
+                - if sub_item.transaction_id.present?
+                  %span= "交易号：#{sub_item.transaction_id}"
+                - if sub_item.timestamp.present?
+                  %span ✅
+          %td= "#{item.referral_name}|#{item.referral_phone_number}"
+          %td= item.created_at.strftime('%F %T')      
+  = paginate @orders

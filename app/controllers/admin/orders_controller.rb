@@ -97,6 +97,20 @@ class Admin::OrdersController < Admin::BaseController
     end
   end
 
+  def accounting
+    p params
+    @params = params[:q] || {}
+    if params[:order_type].present?
+      @params[:order_type_eq] = params[:order_type]
+    end
+
+    @q = Order.noncanceled.includes(:order_payment_records).order('id desc').ransack(@params)
+    @orders = @q.result(distinct: true).page(params[:page])
+    order_ids = @orders.map(&:id).uniq
+    @order_paided_count = OrderPaymentRecord.where(order_id: order_ids).where.not(timestamp: nil).sum(:cost)
+    @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)
+  end
+
 
   private
 
