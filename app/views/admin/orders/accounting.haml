@@ -45,6 +45,7 @@
       %tr
         %th 单号
         %th 状态
+        %th 折扣
         %th 付款信息
         %th 产品信息
         %th 推荐人
@@ -54,6 +55,7 @@
         %tr
           %td= link_to item.external_id, admin_order_path(item)
           %td= Order::STATUS[item.status]
+          %td= item.zhekou
           %td
             - item.order_payment_records.each do |sub_item|
               %div
