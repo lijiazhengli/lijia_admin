@@ -143,7 +143,7 @@ class AppletsController < ApplicationController
   def load_address_list(current_address = nil)
     user = User.where(phone_number: params[:customer_phone_number]).last
     user_addresses = Address.for_user(user.id).order('id desc')
-    address_hash = user_addresses.select{|item| item.gaode_lng.present?}.map{|item| item.to_cart_info}
+    address_hash = user_addresses.map{|item| item.to_cart_info}
     render json: {addresses: address_hash, current_address: current_address || address_hash[0]}
   end
 
