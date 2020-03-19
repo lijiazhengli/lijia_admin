@@ -11,7 +11,6 @@
 %table.table.table-striped
   %tr
     %th 图片
-    %th 位置
     %th 是否显示
     %th 操作
 
@@ -20,8 +19,7 @@
       - @draggable = true
       %tr(id="product-image-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_product_product_images_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_product_product_images_path(:id =>item.id)}")
         %td= image_tag item.mobile_image, style: 'width: 100px'
-        %td= item.position
-        %td= item.active
+        %td= active_chinese_name(item)
         %td
           = link_to '修改', edit_admin_product_product_image_path(@product, item)
           |

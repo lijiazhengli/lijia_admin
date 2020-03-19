@@ -29,11 +29,13 @@
         - if false
           %th 城市名称
         %th 费用
+        %th 定金
         %th 预约人数
         %th 提前预约天数
         %th 首页图片
         %th 详细页图片
         %th 是否启用
+        %th 自动创建微信付款记录
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
       - @items.each do |item|
@@ -44,11 +46,13 @@
           - if false
             %td= item.city_name
           %td= item.price
+          %td= item.earnest_price
           %td= item.count_string
           %td= item.advance_days
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= item.active
+          %td= active_chinese_name(item)
+          %td= show_active_chinese_name(item.create_tenpay)
           %td
             = link_to '修改', edit_admin_service_path(item)
             |

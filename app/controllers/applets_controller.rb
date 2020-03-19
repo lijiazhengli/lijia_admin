@@ -292,6 +292,7 @@ class AppletsController < ApplicationController
     p params
     order_info = params[:orderInfo]
     user = User.where(phone_number: order_info[:customer_phone_number]).last
+    service = Service.find(order_info[:service_id])
 
 
     order_info[:wx_ma_id] = user.wx_ma_id
@@ -314,7 +315,16 @@ class AppletsController < ApplicationController
     option[:purchased_items] = get_service_purchased_items(order_info)
     option[:user] = user if user.present?
 
-    option[:methods] = %w(check_user create_order save_with_new_external_id)
+    if service.create_tenpay
+      if service.earnest_price and service.price > service.earnest_price
+        option[:methods] = %w(check_user create_order save_with_new_external_id create_earnest_tenpay_order_payment_record)
+      else
+        option[:methods] = %w(check_user create_order save_with_new_external_id create_tenpay_order_payment_record)
+      end
+    else
+      option[:methods] = %w(check_user create_order save_with_new_external_id)
+    end
+
     option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
     p option
     @order, success, errors = Order.create_or_update_order(option)
@@ -435,7 +445,11 @@ class AppletsController < ApplicationController
   def get_service_purchased_items(order_info)
     return [] if order_info[:service_id].blank?
     service = Service.find(order_info[:service_id])
-    [{product_id: service.id, quantity: order_info[:service_quantity] || 1}]
+    if service.create_tenpay
+      [{product_id: service.id, quantity: order_info[:service_quantity] || 1, price: service.price}]
+    else
+      [{product_id: service.id, quantity: order_info[:service_quantity] || 1}]
+    end
   end
 
   def get_course_purchased_items(order_info)

@@ -126,7 +126,8 @@ class Order < ApplicationRecord
 
   def order_total_fee
     if self.order_type == 'Service'
-      total_cost = self.order_payment_records.sum(:cost).round(2)
+      total_cost = self.purchased_items.sum('price * quantity')
+      total_cost = self.order_payment_records.sum(:cost).round(2) if total_cost <= 0
     else
       product_cost = self.purchased_items.sum('price * quantity')
       total_cost = (product_cost * (self.zhekou || 1)).round(2)

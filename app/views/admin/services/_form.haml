@@ -16,6 +16,11 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label "定金"
+      %br
+      = f.text_field :earnest_price, class: 'form-control'
+
+    .form-group
       = f.label "预约人数"
       %br
       = f.text_field :count_string, class: 'form-control'
@@ -29,6 +34,10 @@
       = f.label "描述"
       %br
       = f.text_area :description, class: 'form-control'
+
+    .form-group
+      = f.label "是否创建微信付款记录"
+      = f.select :create_tenpay, options_for_select({'是' => true, '否' => false}, @service.create_tenpay), {}, class: 'form-control'
 
 
     .form-group

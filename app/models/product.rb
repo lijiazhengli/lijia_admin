@@ -73,6 +73,7 @@ class Product < ActiveRecord::Base
       id: self.id,
       title: self.title,
       price: self.price,
+      earnest_price: self.earnest_price,
       min_count: self.min_count,
       img_url: self.front_image,
       advance_days: self.advance_days

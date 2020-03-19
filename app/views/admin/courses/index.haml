@@ -51,7 +51,7 @@
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
           %td= active_chinese_name(item)
-          %td= item.create_tenpay
+          %td= show_active_chinese_name(item.create_tenpay)
           %th= item.max_count
           %td
             = link_to '详情', admin_course_path(item)
