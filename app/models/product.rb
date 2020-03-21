@@ -2,6 +2,12 @@ class Product < ActiveRecord::Base
   has_many :product_images
   scope :active, -> { where(active: true) }
 
+  GOOD_TYPE = {
+    'Service'    => '整理服务',
+    'Course'     => '课程培训',
+    'Good'       => '收纳工具'
+  }
+
 
   def up_serial(target_id)
     self.class.transaction do

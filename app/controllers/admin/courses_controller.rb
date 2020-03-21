@@ -1,6 +1,7 @@
 class Admin::CoursesController < Admin::BaseController
   layout 'admin'
   skip_before_action :admin_required, only: [:file_upload]
+  before_action :admin_senior_stockholder_required, only: [:index, :new, :create, :update, :edit, :destroy]
 
   def index
     @params = params[:q] || {}

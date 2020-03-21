@@ -1,0 +1,37 @@
+%h2 产品sku查询
+
+= search_form_for @q, url: admin_products_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :id_cont, class: "form-control", placeholder: "产品sku"
+  .form-group
+    = f.search_field :title_cont, class: "form-control", placeholder: "整理服务、课程、收纳工具名称", style: "width: 300px"
+
+  .form-group
+    = f.label '类型'
+    = select_tag "q[type_eq]", options_for_select(Product::GOOD_TYPE.invert, @params[:type_eq]), include_blank: true, class: "form-control"
+
+  = f.submit '查询', class: "btn btn-secondary"
+
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th sku
+        %th 名称
+        %th 类型
+        %th 费用
+        %th 定金
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.id
+          %td= item.title
+          %td= Product::GOOD_TYPE[item.type]
+          %td= item.price
+          %td= item.earnest_price
+  = paginate @items

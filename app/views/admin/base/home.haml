@@ -26,3 +26,6 @@
           %td sit
 .table-responsive
   %h2 欢迎来到莉家管理系统！
+  - if flash[:role_message].present?
+    %h3.alert.alert-warning
+      = flash[:role_message]

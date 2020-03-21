@@ -40,35 +40,12 @@
                 %a.nav-link
                   //%span.fa.fa-user-o
                   用户信息
-            
-            %li.nav-item
-              = link_to '介绍信息', admin_introduces_path, class: "nav-link #{'active' if params[:controller] == 'admin/introduces'}" 
-            %li.nav-item
-              = link_to '图片信息', admin_ad_images_path, class: "nav-link #{'active' if params[:controller] == 'admin/ad_images'}"
-            %li.nav-item
-              = link_to '整理服务', admin_services_path, class: "nav-link #{'active' if params[:controller] == 'admin/services'}"
-            %li.nav-item
-              = link_to '课程培训', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
-            %li.nav-item
-              = link_to '收纳工具', admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods' and params[:action] != 'order'}" 
-            %br
-            %li.nav-item
-              = link_to '用户信息', admin_users_path, class: "nav-link #{'active' if params[:controller] == 'admin/users'}"
-            %li.nav-item
-              = link_to '整理师', admin_arrangers_path, class: "nav-link #{'active' if params[:controller] == 'admin/arrangers'}"
-            %li.nav-item
-              = link_to '讲师', admin_teachers_path, class: "nav-link #{'active' if params[:controller] == 'admin/teachers'}"
-            %li.nav-item
-              = link_to '学员', admin_students_path, class: "nav-link #{'active' if params[:controller] == 'admin/students'}"
-            %li.nav-item
-              = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and !%w(accounting).include?(params[:action])}"
 
-            %li.nav-item
-              = link_to '订单收入', accounting_admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and %w(accounting).include?(params[:action])}"
+            - if @admin.senior_stockholder?
+              = render 'layouts/admin_for_senior_stockholder'
 
-            %li.nav-item
-              = link_to "收纳工具订单", order_admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods' and params[:action] == 'order'}"
-      }
+            - if @admin.admin_customer_service?
+              = render 'layouts/admin_for_customer_service'
 
       .col-10.col-sm-10.col-md-10{role: 'main', style: "margin-left: 14%;padding-top: 25px;padding-right: 0px;"}
         = yield

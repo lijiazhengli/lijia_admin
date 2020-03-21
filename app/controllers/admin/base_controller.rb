@@ -56,4 +56,21 @@ class Admin::BaseController < ApplicationController
       render json: {status: 0, message: 'success', download_url: "#{ENV['QINIU_URL']}#{result['key']}"}
     end
   end
+
+
+  protected
+
+  def admin_customer_service_required
+    unless @admin.admin_owner? or @admin.senior_stockholder? or @admin.admin_customer_service?
+      flash[:role_message] = '您没有访问权限， 请联系IT开通权限'
+      redirect_to admin_home_url
+    end
+  end
+
+  def admin_senior_stockholder_required
+    unless @admin.admin_owner? or @admin.senior_stockholder?
+      flash[:role_message] = '您没有访问权限， 请联系IT开通权限'
+      redirect_to admin_home_url
+    end
+  end
 end
