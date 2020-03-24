@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_10_135851) do
+ActiveRecord::Schema.define(version: 2020_03_24_150055) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -94,6 +94,17 @@ ActiveRecord::Schema.define(version: 2020_03_10_135851) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "delivery_orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "order_id"
+    t.string "status", default: "new"
+    t.string "express_name"
+    t.string "express_no", limit: 100
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["express_no"], name: "index_delivery_orders_on_express_no"
+    t.index ["order_id"], name: "index_delivery_orders_on_order_id"
   end
 
   create_table "external_ids", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -213,6 +224,7 @@ ActiveRecord::Schema.define(version: 2020_03_10_135851) do
     t.float "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "delivery_order_id"
     t.index ["order_id"], name: "index_purchased_items_on_order_id"
   end
 

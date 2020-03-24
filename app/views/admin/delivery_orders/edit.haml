@@ -1,0 +1,5 @@
+%h3 修改配送单
+
+= link_to '返回', admin_order_delivery_orders_path(@order), class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_order_delivery_order_path(@order,@item)}

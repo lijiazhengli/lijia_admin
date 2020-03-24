@@ -1,6 +1,7 @@
 class PurchasedItem < ActiveRecord::Base
   belongs_to :order
   belongs_to :product
+  has_one :delivery_order
 
   def to_quantity_order_list
     {

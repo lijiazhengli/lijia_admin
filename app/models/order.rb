@@ -9,6 +9,8 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
   belongs_to :user
 
+  has_many :delivery_orders
+
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
   scope :noncanceled, -> { where.not(status: ['canceled']) }
   scope :available, -> { where(status: ['part-paid', 'paided', 'on_the_road', 'completed']) }

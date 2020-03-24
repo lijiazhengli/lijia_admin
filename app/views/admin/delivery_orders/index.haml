@@ -1,0 +1,30 @@
+%h2 订单的配送列表
+
+= link_to '返回', admin_orders_path, class: "btn btn-secondary"
+= link_to "新建配送单", new_admin_order_delivery_order_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 订单编号
+        %th 配送单状态
+        %th 快递名称
+        %th 快递单号
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= @order.external_id
+          %td= DeliveryOrder::STATUS[item.status]
+          %td= item.express_name
+          %td= item.express_no
+          %td
+            = link_to '修改', edit_admin_order_delivery_order_path(@order, item)
+            |
+            = link_to '删除', admin_order_delivery_order_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items

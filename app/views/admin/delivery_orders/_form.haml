@@ -1,0 +1,32 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+
+    - @purchased_items.each do |i|
+      - @check = @item.purchased_item_ids.include?(i.id)
+      %label.checkbox-inline
+        %input(type='checkbox' name='delivery_order[purchased_item_ids][]' value="#{i.id}" checked=@check  class='select_single city')= "#{@product_hash[i.product_id]}x#{i.quantity}"
+
+    .form-group
+      = f.label "配送单状态"
+      = f.select :status, options_for_select(DeliveryOrder::STATUS.invert, @item.status), {}, class: 'form-control'
+
+    .form-group
+      = f.label "快递名称"
+      %br
+      = f.text_field :express_name, class: 'form-control'
+
+    .form-group
+      = f.label "快递单号"
+      %br
+      = f.text_field :express_no, class: 'form-control'
+
+
+    = f.submit '保存', class: 'btn btn-success'
+
+:javascript
+  $('.select2').selectpicker();

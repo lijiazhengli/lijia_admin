@@ -79,6 +79,7 @@ Rails.application.routes.draw do
         put :canceled
         put :update_status
       end
+      resources :delivery_orders
       resources :order_arranger_assignments
       resources :order_payment_records
       resources :purchased_items

@@ -97,6 +97,9 @@
               = link_to "服务人员", admin_order_order_arranger_assignments_path(item)
             |
             = link_to '费用', admin_order_order_payment_records_path(item)
+            - if item.order_type == Order::PRODUCT_ORDER
+              |
+              = link_to '配送单', admin_order_delivery_orders_path(item)
             |
             = link_to '完成', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成订单?' }
             |
