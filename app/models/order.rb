@@ -54,6 +54,7 @@ class Order < ApplicationRecord
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
     attrs["order_show_date"] = self.start_date if self.start_date and self.is_service?
     attrs["order_show_date"] = self.course_show_date if self.is_course?
+    attrs["show_delivery_button"] = true if self.delivery_orders.size > 0
     product_ids = self.purchased_items.pluck(:product_id).uniq
     [attrs, product_ids]
   end

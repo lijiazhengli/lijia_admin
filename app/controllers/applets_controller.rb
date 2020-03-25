@@ -1,6 +1,29 @@
 class AppletsController < ApplicationController
   protect_from_forgery
 
+  def login
+    request = Wx::MiniApplet.get_open_id_by(params[:code])
+    #request['session_key']用于 wx.checkSession， 检查登陆是否已过期
+    Rails.logger.info "----#{Time.now.strftime("%F %T")}-----update_product_logger_params: #{request.inspect}"
+    user_info = {}
+    if request['openid'].present?
+      user = User.find_by_wx_ma_id(request['openid'])
+      user = User.find_by_wx_union_id(request['unionid']) if user.blank? and request['unionid'].present?
+      user_info.merge!(wx_union_id: request['unionid'], customerPhoneNumber: user.phone_number) if user.present?
+      if user.blank?
+        phone_number = Wx::MiniApplet.decryptData(request['session_key'], params)
+        if phone_number.present?
+          user = User.find_or_create_source_user(phone_number, 'weixin_applet', {wx_ma_id: request['openid']})
+          user.update(wx_ma_id: request['openid']) if user.wx_ma_id.blank?
+          user_info.merge!(customerPhoneNumber: user.phone_number) 
+        end
+      end
+      user_info.merge!(wx_mp_id: request['openid'])
+      user_info.merge!(wx_union_id: request['unionid']) if request['unionid'].present?
+    end
+    render json: user_info
+  end
+
   def index
     request_info = {}
     request_info[:pages_slideshows] = AdImage.applet_home.map{|item| item.to_applet_list}
@@ -64,27 +87,20 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
-  def login
-    request = Wx::MiniApplet.get_open_id_by(params[:code])
-    #request['session_key']用于 wx.checkSession， 检查登陆是否已过期
-    Rails.logger.info "----#{Time.now.strftime("%F %T")}-----update_product_logger_params: #{request.inspect}"
-    user_info = {}
-    if request['openid'].present?
-      user = User.find_by_wx_ma_id(request['openid'])
-      user = User.find_by_wx_union_id(request['unionid']) if user.blank? and request['unionid'].present?
-      user_info.merge!(wx_union_id: request['unionid'], customerPhoneNumber: user.phone_number) if user.present?
-      if user.blank?
-        phone_number = Wx::MiniApplet.decryptData(request['session_key'], params)
-        if phone_number.present?
-          user = User.find_or_create_source_user(phone_number, 'weixin_applet', {wx_ma_id: request['openid']})
-          user.update(wx_ma_id: request['openid']) if user.wx_ma_id.blank?
-          user_info.merge!(customerPhoneNumber: user.phone_number) 
-        end
-      end
-      user_info.merge!(wx_mp_id: request['openid'])
-      user_info.merge!(wx_union_id: request['unionid']) if request['unionid'].present?
+   def order_show
+    p params
+    delivery_orders = []
+    if params[:id].present?
+      order = Order.find(params[:id])
+      delivery_orders = order.delivery_orders.noncanceled.includes(:purchased_items).map{|d| d.to_applet_list}
+      order_product_ids = order.purchased_items.pluck(:product_id)
     end
-    render json: user_info
+    products = Product.get_product_list_hash(order_product_ids.uniq)
+    if order.present?
+      render json: {order: order, products: products, delivery_orders: delivery_orders}
+    else
+      render json: {emptyPageNotice: '暂无订单'}
+    end
   end
 
   def user_info
