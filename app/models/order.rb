@@ -32,12 +32,14 @@ class Order < ApplicationRecord
     'unpaid'       => '待支付',
     'part-paid'    => '部分付款',
     'paided'       => '已支付',
+    'confirming'       => '确认中',
+    'confirmed'       => '已确认',
     'on_the_road'    => '已发货',
     'completed'    => '已完成',
     'canceled'     => '已取消'
   }
 
-  CURRENT_STATUS = %w(unpaid paided part-paid on_the_road completed)
+  CURRENT_STATUS = %w(unpaid paided part-paid confirming confirmed on_the_road completed)
 
   def to_applet_order_list
     attrs = self.attributes.slice(
