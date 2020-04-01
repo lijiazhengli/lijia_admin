@@ -78,6 +78,17 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
+  def cart_base_show
+    request_info = {
+      undelivery_info: {
+        inprovince_names: QUANGUO_PRODUCT_INDELIVERY_PROVINCE_NAME,
+        incity_names: QUANGUO_PRODUCT_INDELIVERY_CITY_NAME,
+        inarea_names: QUANGUO_PRODUCT_INDELIVERY_AREA_NAME
+      }
+    }
+    render json: request_info
+  end
+
   def product_show
     product = Product.find(params[:id])
     request_info = {}
