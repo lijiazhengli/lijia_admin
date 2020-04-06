@@ -19,8 +19,8 @@
 %li.nav-item
   = link_to '学员', admin_students_path, class: "nav-link #{'active' if params[:controller] == 'admin/students'}"
 
-
-
+%li.nav-item
+  = link_to '加盟信息', admin_franchises_path, class: "nav-link #{'active' if params[:controller] == 'admin/franchise'}"
 
 %li.nav-item
   = link_to '产品sku查询', admin_products_path, class: "nav-link #{'active' if params[:controller] == 'admin/products' and %w(index).include?(params[:action])}"

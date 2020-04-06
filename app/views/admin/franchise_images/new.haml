@@ -1,0 +1,5 @@
+%h3 新建加盟详细图片
+
+= link_to '返回', admin_franchise_franchise_images_path(@parent), class: 'btn btn-success'
+
+= render :partial => 'form', :locals => {url: admin_franchise_franchise_images_path(@parent)}

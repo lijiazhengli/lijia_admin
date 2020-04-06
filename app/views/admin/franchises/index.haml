@@ -1,0 +1,57 @@
+%h2 加盟列表
+- if true
+  = search_form_for @q, url: admin_franchises_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :title_cont, class: "form-control", placeholder: "加盟团队名称"
+    .form-group
+      = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
+
+    .form-group
+      = f.search_field :user_name_cont, class: "form-control", placeholder: "联系人"
+    .form-group
+      = f.search_field :phone_number_cont, class: "form-control", placeholder: "联系电话"
+
+    .form-group
+      = f.label '订单状态'
+      = select_tag "q[status_eq]", options_for_select(Franchise::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+    = f.submit '查询', class: "btn btn-secondary"
+    = link_to '新建加盟信息', new_admin_franchise_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 加盟团队名称
+        %th 城市
+        %th 联系人
+        %th 邮箱
+        %th 首页图片
+        %th 详细页图片
+        %th 是否启用
+        %th 操作
+    %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+      - @items.each do |item|
+        - @draggable = true
+        %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_franchises_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_franchises_path(:id =>item.id)}")
+          %td= item.title
+          %td= item.city_name
+          %td= "#{item.user_name}|#{item.phone_number}"
+          %td= item.email
+          %td= image_tag(item.front_image || '', width: '100px')
+          %td= image_tag(item.detailed_image || '', width: '100px')
+          %td= active_chinese_name(item)
+          %td
+            - if item.active
+              = link_to '关闭', disable_admin_franchise_path(item), :method => :put
+            - else
+              = link_to '启用', enable_admin_franchise_path(item), :method => :put
+            |
+            = link_to '修改', edit_admin_franchise_path(item)
+            |
+            = link_to "详情图片", admin_franchise_franchise_images_path(item)
+  = paginate @items

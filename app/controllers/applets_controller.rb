@@ -59,6 +59,7 @@ class AppletsController < ApplicationController
     request_info[:home_introduces] = Introduce.applet_home.map{|item| item.to_applet_list}
     request_info[:team_introduces] = Introduce.applet_team.map{|item| item.to_applet_list}
     request_info[:teacher_introduces] = Teacher.applet_home.map{|item| item.to_applet_list}
+    request_info[:franchise_introduces] = Introduce.applet_franchise.limit(1).map{|item| item.to_applet_list}
     render json: request_info
   end
 
@@ -271,6 +272,19 @@ class AppletsController < ApplicationController
       :address_district,
       :sex
     )
+  end
+
+  def create_apply_order
+    p params
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    apply_info = base_apply_params
+    apply_info[:user_id] = user.try(:id)
+    apply, success, errors = Franchise.create_apply_for_applet(apply_info)
+    if success
+      render json: {success: true}
+    else
+      render json: {success: false, errors: '加盟申请创建失败， 请稍后再试'}
+    end
   end
 
   def create_order
@@ -507,6 +521,16 @@ class AppletsController < ApplicationController
       :city_name,
       :applet_form_id,
       :user_id
+    )
+  end
+
+  def base_apply_params
+    params.permit(
+      :user_name,
+      :phone_number,
+      :email,
+      :city_name,
+      :applet_form_id
     )
   end
 

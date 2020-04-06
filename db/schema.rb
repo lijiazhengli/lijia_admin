@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_150055) do
+ActiveRecord::Schema.define(version: 2020_04_06_113742) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -112,6 +112,37 @@ ActiveRecord::Schema.define(version: 2020_03_24_150055) do
     t.string "date"
     t.integer "number", default: 0
     t.index ["prefix", "date"], name: "index_external_ids_on_prefix_and_date"
+  end
+
+  create_table "franchise_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "franchise_id"
+    t.string "mobile_image"
+    t.integer "position"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["franchise_id", "active"], name: "index_franchise_images_on_franchise_id_and_active"
+  end
+
+  create_table "franchises", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "title"
+    t.string "user_name"
+    t.string "phone_number"
+    t.string "email"
+    t.string "front_image"
+    t.string "detailed_image"
+    t.string "status", default: "unconfirmed"
+    t.string "city_name"
+    t.text "desc"
+    t.boolean "active"
+    t.integer "position"
+    t.string "applet_form_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "apply_msg"
+    t.text "apply_notes"
+    t.index ["user_id", "active"], name: "index_franchises_on_user_id_and_active"
   end
 
   create_table "introduces", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

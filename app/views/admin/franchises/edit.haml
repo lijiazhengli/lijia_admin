@@ -1,0 +1,5 @@
+%h3 修改加盟信息
+
+= link_to '返回', admin_franchises_path, class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_franchise_path(@item)}

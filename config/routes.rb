@@ -46,6 +46,35 @@ Rails.application.routes.draw do
       resources :students
     end
 
+    resources :franchises do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
+        get :order
+      end
+      resources :franchise_images do
+        collection do
+          post :file_upload
+          put :file_upload
+          patch :file_upload
+          put :up_serial
+          put :down_serial
+        end
+        member do
+          put :disable
+          put :enable
+        end
+      end
+
+    end
+
     resources :goods do
       collection do
         get :order
@@ -134,6 +163,7 @@ Rails.application.routes.draw do
       post :check_order_status
       post :cancel_order
       get  :course_index
+      post :create_apply_order
       post :create_order
       post :create_course_order
       post :create_service_order

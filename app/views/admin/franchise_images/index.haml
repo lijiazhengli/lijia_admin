@@ -1,0 +1,27 @@
+%h3 加盟详细图片列表
+= link_to '新建加盟图片', new_admin_franchise_franchise_image_path(@parent), class: "btn btn-success"
+= link_to '返回', admin_franchises_path, class: "btn btn-success"
+
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th 图片
+      %th 是否显示
+      %th 操作
+
+  %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+    - @items.each do |item|
+      - @draggable = true
+      %tr(id="franchise-image-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_franchise_franchise_images_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_franchise_franchise_images_path(:id =>item.id)}")
+        %td= image_tag item.mobile_image, style: 'width: 100px'
+        %td= active_chinese_name(item)
+        %td
+          = link_to '修改', edit_admin_franchise_franchise_image_path(@parent, item)
+          |
+          - if item.active
+            = link_to '关闭', disable_admin_franchise_franchise_image_path(@parent,item), :method => :put
+          - else
+            = link_to '启用', enable_admin_franchise_franchise_image_path(@parent,item), :method => :put
+          |
+          = link_to '删除', admin_franchise_franchise_image_path(@parent, item), method: :delete, data: { :confirm => '确定删除吗？' }

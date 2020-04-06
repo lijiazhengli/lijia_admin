@@ -1,0 +1,66 @@
+.col-md-6
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+    .form-group
+      = f.label "*加盟团队名称"
+      %br
+      = f.text_field :title, class: 'form-control'
+
+    .form-group
+      = f.label "城市"
+      %br
+      = f.text_field :city_name, class: 'form-control'
+
+    .form-group
+      = f.label "联系人"
+      %br
+      = f.text_field :user_name, class: 'form-control'
+
+    .form-group
+      = f.label "联系电话"
+      %br
+      = f.text_field :phone_number, class: 'form-control'
+
+    .form-group
+      = f.label "邮箱"
+      %br
+      = f.text_field :email, class: 'form-control'
+
+    .form-group
+      = f.label "描述"
+      %br
+      = f.text_area :desc, class: 'form-control'
+
+    .form-group
+      = f.label "状态"
+      = f.select :status, options_for_select(Franchise::STATUS.invert, @item.status), {}, class: 'form-control'
+
+    .form-group
+      = f.label '申请留言'
+      %br
+      = f.text_area :apply_msg, class: 'form-control'
+
+    .form-group
+      = f.label '备注'
+      %br
+      = f.text_area :apply_notes, class: 'form-control'
+
+    .form-group
+      = f.label "是否启用"
+      = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
+
+
+    = f.text_field :front_image, style: 'display: none'
+    = render partial: 'upload_image', locals: {item: @item, image_name: 'front_image', image_size: '首页图片(686x340)', button_name: 'front-image', input_name: 'franchise_front_image', upload_url: file_upload_admin_franchises_path(type: 'front')}
+
+    = f.text_field :detailed_image, style: 'display: none'
+    = render partial: 'upload_image', locals: {item: @item, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'franchise_detailed_image', upload_url: file_upload_admin_franchises_path(type: 'detailed')}
+    = f.submit '保存', class: 'btn btn-success'
+
+
+
+
