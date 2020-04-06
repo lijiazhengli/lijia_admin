@@ -169,6 +169,8 @@ Rails.application.routes.draw do
       post :create_service_order
       get  :crm_info
       post :delete_user_address
+      get  :franchise_index
+      get  :franchise_show
       get  :good_index
       get  :home_show
       get  :login
@@ -183,6 +185,7 @@ Rails.application.routes.draw do
       post :save_address
       post :save_user_info
       get  :user_info
+      get  :user_franchises
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

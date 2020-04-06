@@ -1,6 +1,6 @@
 class Admin::FranchisesController < Admin::BaseController
   layout 'admin'
-  skip_before_action :admin_required, only: [:file_upload]
+  skip_before_action :admin_required, only: [:file_upload, :up_serial, :down_serial]
   before_action :admin_senior_stockholder_required, only: [:index, :new, :create, :update, :edit]
 
   def index

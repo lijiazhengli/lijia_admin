@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many  :orders
+  has_many  :franchises
 
   def get_applet_sex
     self.sex ? "#{self.sex}" : '0'
@@ -22,6 +23,7 @@ class User < ApplicationRecord
     attrs[:sex] = self.get_applet_sex
     orders = self.orders.current_orders.select(:order_type)
     Order::ORDER_TYPE.keys.each{|item| attrs["#{item.downcase}_count".to_sym] = orders.select{|i| i.order_type == item}.size}
+    attrs[:franchise_count] = self.franchises.available.count
     attrs
   end
 

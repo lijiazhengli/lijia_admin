@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_113742) do
+ActiveRecord::Schema.define(version: 2020_04_06_164613) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_113742) do
   create_table "franchise_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "franchise_id"
     t.string "mobile_image"
-    t.integer "position"
+    t.integer "position", default: 999
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_113742) do
     t.string "city_name"
     t.text "desc"
     t.boolean "active"
-    t.integer "position"
+    t.integer "position", default: 999
     t.string "applet_form_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_113742) do
     t.integer "product_id"
     t.string "type"
     t.string "mobile_image"
-    t.integer "position"
+    t.integer "position", default: 999
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -301,7 +301,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_113742) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "mobile_image"
     t.string "tag"
-    t.integer "position"
+    t.integer "position", default: 999
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

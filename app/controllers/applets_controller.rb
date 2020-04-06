@@ -33,10 +33,10 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
-  def service_index
+  def franchise_index
     request_info = {}
-    request_info[:pages_slideshows] = AdImage.applet_service.map{|item| item.to_applet_list}
-    request_info[:services] = Service.applet_home.map{|item| item.to_applet_list}
+    request_info[:pages_slideshows] = []
+    request_info[:franchises] = Franchise.applet_home.map{|item| item.to_applet_list}
     render json: request_info
   end
 
@@ -54,12 +54,27 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
+  def franchise_show
+    item = Franchise.find(params[:id])
+    request_info = {}
+    request_info[:info] = item.to_applet_show
+    render json: request_info
+  end
+
   def home_show
     request_info = {}
     request_info[:home_introduces] = Introduce.applet_home.map{|item| item.to_applet_list}
     request_info[:team_introduces] = Introduce.applet_team.map{|item| item.to_applet_list}
     request_info[:teacher_introduces] = Teacher.applet_home.map{|item| item.to_applet_list}
     request_info[:franchise_introduces] = Introduce.applet_franchise.limit(1).map{|item| item.to_applet_list}
+    render json: request_info
+  end
+
+
+  def service_index
+    request_info = {}
+    request_info[:pages_slideshows] = AdImage.applet_service.map{|item| item.to_applet_list}
+    request_info[:services] = Service.applet_home.map{|item| item.to_applet_list}
     render json: request_info
   end
 
@@ -209,6 +224,18 @@ class AppletsController < ApplicationController
       render json: attr_info
     else
       render json: {orders: [], products: {}, emptyPageNotice: '暂无订单'}
+    end
+  end
+
+  def user_franchises
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    if user.present?
+      attr_info = {}
+      attr_info[:franchises] = user.franchises.map{|item| item.to_order_list}
+      attr_info[:emptyPageNotice] = '暂无加盟申请' if attr_info[:franchises].blank?
+      render json: attr_info
+    else
+      render json: {orders: [], products: {}, emptyPageNotice: '暂无加盟申请'}
     end
   end
 
