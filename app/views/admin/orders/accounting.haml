@@ -44,6 +44,7 @@
     %thead
       %tr
         %th 单号
+        %th 城市
         %th 状态
         %th 折扣
         %th 付款信息
@@ -54,6 +55,7 @@
       - @orders.each do |item|
         %tr
           %td= link_to item.external_id, admin_order_path(item)
+          %td= item.city_name || item.address_city
           %td= Order::STATUS[item.status]
           %td= item.zhekou
           %td

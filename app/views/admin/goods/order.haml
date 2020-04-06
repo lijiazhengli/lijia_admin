@@ -63,7 +63,7 @@
           %td
             %div= item.recipient_name
             %div= item.recipient_phone_number
-          %td= "#{item.address_province} #{item.address_city} #{item.address_district} #{item.location_address}#{item.location_title}#{item.location_details}"
+          %td= "#{item.full_address}"
           %td
             - item.purchased_items.each do |sub_item|
               - product = @product_hash[sub_item.product_id]
@@ -77,7 +77,7 @@
           %td= Order::STATUS[item.status]
           %td= item.created_at.strftime('%F %T')
           %td
-            = link_to '已发货', update_status_admin_order_path(item), :method => :put, :data => { :confirm => '确定已发货?' }
+            = link_to '已发货', update_status_admin_order_path(item.id, status: 'on_the_road'), :method => :put, :data => { :confirm => '确定已发货?' }
             |
             = link_to '完成', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成?' }
             

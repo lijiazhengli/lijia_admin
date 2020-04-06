@@ -13,7 +13,7 @@ class Order < ApplicationRecord
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
   scope :noncanceled, -> { where.not(status: ['canceled']) }
-  scope :available, -> { where(status: ['part-paid', 'paided', 'on_the_road', 'completed']) }
+  scope :available, -> { where(status: ['part-paid', 'paided', 'confirming', 'confirmed', 'on_the_road', 'completed']) }
   scope :goods, -> { where(order_type: PRODUCT_ORDER) }
 
   TENPAY_ID = 2
@@ -65,6 +65,10 @@ class Order < ApplicationRecord
   def has_expire_product?
     return false if Product.where(id: self.purchased_items.pluck(:product_id).uniq, active: false).empty?
     true
+  end
+
+  def full_address
+    "#{self.address_province}#{self.address_city}#{self.address_district}#{self.location_title}#{self.location_details}"
   end
 
   def course_show_date
