@@ -6,7 +6,7 @@
     = f.label '图片类型'
     = select_tag "q[ad_type_eq]", options_for_select(Introduce::ITEM_TYPE.invert, @params[:ad_type_eq]), include_blank: true, class: "form-control"
   = f.submit '查询', class: "btn btn-secondary"
-  = link_to '新建图片', new_admin_introduce_path, class: "btn btn-success"
+  = link_to '新建介绍信息', new_admin_introduce_path, class: "btn btn-success"
 
 %br
 %div

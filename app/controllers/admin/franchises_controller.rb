@@ -22,7 +22,6 @@ class Admin::FranchisesController < Admin::BaseController
   def create
     @item = Franchise.new(current_record_params)
     if @item.save
-      @item.self_extend.update(address: params[:course_address])
       redirect_to admin_franchises_path
     else
       render :new
