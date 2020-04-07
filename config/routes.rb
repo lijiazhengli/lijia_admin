@@ -161,6 +161,7 @@ Rails.application.routes.draw do
       get  :cart_base_show
       get  :cart_show
       post :check_order_status
+      post :cancel_franchise
       post :cancel_order
       get  :course_index
       post :create_apply_order

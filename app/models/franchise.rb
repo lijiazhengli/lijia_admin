@@ -1,6 +1,7 @@
 class Franchise < ApplicationRecord
   has_many :franchise_images
   scope :available, -> { where(status: ['unconfirmed', 'confirming', 'completed']) }
+  scope :inavailable, -> { where(status: ['canceled']) }
   scope :applet_home, -> {where(active: true).order(:position)}
 
   STATUS = {
@@ -78,6 +79,15 @@ class Franchise < ApplicationRecord
         return [apply, true, nil]
       rescue Exception => e
         return [nil, false, '创建失败']
+      end
+    end
+
+    def cancel_apply_for_applet(item)
+      begin
+        item.update!(status: 'canceled')
+        return [item, true, nil]
+      rescue Exception => e
+        return [nil, false, '取消失败，请联系客服']
       end
     end
   end

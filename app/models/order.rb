@@ -58,6 +58,7 @@ class Order < ApplicationRecord
     attrs["order_show_date"] = self.start_date if self.start_date and self.is_service?
     attrs["order_show_date"] = self.course_show_date if self.is_course?
     attrs["show_delivery_button"] = true if self.delivery_orders.size > 0
+    attrs['full_address'] = self.full_address
     product_ids = self.purchased_items.pluck(:product_id).uniq
     [attrs, product_ids]
   end
@@ -68,7 +69,7 @@ class Order < ApplicationRecord
   end
 
   def full_address
-    "#{self.address_province}#{self.address_city}#{self.address_district}#{self.location_title}#{self.location_details}"
+    "#{self.address_province} #{self.address_city} #{self.address_district} #{self.location_title}#{self.location_details}"
   end
 
   def course_show_date

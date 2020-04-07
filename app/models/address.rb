@@ -9,6 +9,10 @@ class Address < ApplicationRecord
     self.sex ? "#{self.sex}" : '0'
   end
 
+  def full_address
+    "#{self.address_province} #{self.address_city} #{self.address_district} #{self.location_title}#{self.location_details}"
+  end
+
   def to_cart_info
     attrs = {}
     attrs[:address_id] =  self.id
@@ -17,6 +21,7 @@ class Address < ApplicationRecord
       attrs[info.to_sym] =  self.send(info)
     end
     attrs[:is_default] = self.get_is_default
+    attrs[:full_address] = self.full_address
     attrs[:sex] = self.get_applet_sex
     attrs
   end

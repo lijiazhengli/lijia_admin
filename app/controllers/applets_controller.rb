@@ -231,8 +231,10 @@ class AppletsController < ApplicationController
     user = User.where(phone_number: params[:customer_phone_number]).last
     if user.present?
       attr_info = {}
-      attr_info[:franchises] = user.franchises.map{|item| item.to_order_list}
-      attr_info[:emptyPageNotice] = '暂无加盟申请' if attr_info[:franchises].blank?
+      franchises = user.franchises.available.order('updated_at desc').map{|item| item.to_order_list}
+      franchises += user.franchises.inavailable.order('id desc').map{|item| item.to_order_list}
+      attr_info[:franchises] = franchises
+      attr_info[:emptyPageNotice] = '暂无加盟申请' if franchises.blank?
       render json: attr_info
     else
       render json: {orders: [], products: {}, emptyPageNotice: '暂无加盟申请'}
@@ -247,6 +249,16 @@ class AppletsController < ApplicationController
       render json: {success: success, errors: errors.values[0]}
     else
       render json: {success: false, errors: '订单信息错误'}
+    end
+  end
+
+  def cancel_franchise
+    item = Franchise.find(params[:id]) rescue nil
+    if item
+      item, success, errors = Franchise.cancel_apply_for_applet(item)
+      render json: {success: success, errors: errors}
+    else
+      render json: {success: false, errors: '加盟申请信息错误'}
     end
   end
 
