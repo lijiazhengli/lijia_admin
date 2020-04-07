@@ -72,6 +72,16 @@ class Franchise < ApplicationRecord
     attrs
   end
 
+  def do_completed
+    success = self.update!(status: 'completed')
+    return success
+  end
+
+  def do_canceled
+    success = self.update!(status: 'canceled')
+    return success
+  end
+
   class << self
     def create_apply_for_applet(info)
       begin

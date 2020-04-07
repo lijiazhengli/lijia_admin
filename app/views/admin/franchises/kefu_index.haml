@@ -1,0 +1,50 @@
+%h2 加盟列表
+- if true
+  = search_form_for @q, url: kefu_index_admin_franchises_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :id_eq, class: "form-control", placeholder: "申请id"
+    .form-group
+      = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
+
+    .form-group
+      = f.search_field :user_name_cont, class: "form-control", placeholder: "联系人"
+    .form-group
+      = f.search_field :phone_number_cont, class: "form-control", placeholder: "联系电话"
+
+    .form-group
+      = f.label '申请状态'
+      = select_tag "q[status_eq]", options_for_select(Franchise::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+    = f.submit '查询', class: "btn btn-secondary"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 申请id
+        %th 城市
+        %th 联系人
+        %th 邮箱
+        %th 状态
+        %th 是否启用
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= link_to item.id, admin_franchise_path(item)
+          %td= item.city_name
+          %td= "#{item.user_name}|#{item.phone_number}"
+          %td= item.email
+          %td= Franchise::STATUS[item.status]
+          %td= active_chinese_name(item)
+          %td
+            = link_to '详情', admin_franchise_path(item)
+            |
+            = link_to '确认中', update_status_admin_franchise_path(item.id, status: 'confirming'), :method => :put, :data => { :confirm => '申请设为确认中?' }
+            |
+            = link_to '取消', canceled_admin_franchise_path(item), :method => :put, :data => { :confirm => '确定取消申请?' }
+  = paginate @items

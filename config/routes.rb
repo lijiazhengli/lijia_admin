@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
     resources :franchises do
       collection do
+        get  :kefu_index
         post :file_upload
         put :file_upload
         patch :file_upload
@@ -58,6 +59,9 @@ Rails.application.routes.draw do
         put :disable
         put :enable
         get :order
+        put :completed
+        put :canceled
+        put :update_status
       end
       resources :franchise_images do
         collection do

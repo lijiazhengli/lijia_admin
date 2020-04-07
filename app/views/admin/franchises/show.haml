@@ -1,3 +1,33 @@
+%table.table.table-bordered
+  %tr
+    %th 城市
+    %td= @item.city_name
+
+  %tr
+    %th 联系人
+    %td
+      %div #{@item.user_name}
+      %div #{@item.phone_number}
+  %tr
+    %th 邮箱
+    %td= @item.email
+
+  %tr
+    %th 状态
+    %td= Franchise::STATUS[@item.status]
+
+  %tr
+    %th 是否启用
+    %td= active_chinese_name(@item)
+
+  %tr
+    %th 申请留言
+    %td= @item.apply_msg
+  %tr
+    %th 备注
+    %td= @item.apply_notes
+
+
 
 
 

@@ -2,6 +2,8 @@
 - if true
   = search_form_for @q, url: admin_franchises_path, html: {class: 'form-inline'} do |f|
     .form-group
+      = f.search_field :id_eq, class: "form-control", placeholder: "申请id"
+    .form-group
       = f.search_field :title_cont, class: "form-control", placeholder: "加盟团队名称"
     .form-group
       = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
@@ -12,8 +14,12 @@
       = f.search_field :phone_number_cont, class: "form-control", placeholder: "联系电话"
 
     .form-group
-      = f.label '订单状态'
+      = f.label '申请状态'
       = select_tag "q[status_eq]", options_for_select(Franchise::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+    .form-group
+      = f.label '是否启用'
+      = select_tag "q[active_eq]", options_for_select({'是' => true}, @params[:active_eq]), include_blank: true, class: "form-control"
 
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建加盟信息', new_admin_franchise_path, class: "btn btn-success"
@@ -26,24 +32,28 @@
   %table.table.table-striped.table-sm
     %thead
       %tr
+        %th 申请id
         %th 加盟团队名称
         %th 城市
         %th 联系人
         %th 邮箱
         %th 首页图片
         %th 详细页图片
+        %th 状态
         %th 是否启用
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
       - @items.each do |item|
         - @draggable = true
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_franchises_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_franchises_path(:id =>item.id)}")
+          %td= link_to item.id, admin_franchise_path(item)
           %td= item.title
           %td= item.city_name
           %td= "#{item.user_name}|#{item.phone_number}"
           %td= item.email
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
+          %td= Franchise::STATUS[item.status]
           %td= active_chinese_name(item)
           %td
             - if item.active
@@ -51,7 +61,13 @@
             - else
               = link_to '启用', enable_admin_franchise_path(item), :method => :put
             |
+            = link_to '详情', admin_franchise_path(item)
+            |
             = link_to '修改', edit_admin_franchise_path(item)
             |
             = link_to "详情图片", admin_franchise_franchise_images_path(item)
+            |
+            = link_to '完成', completed_admin_franchise_path(item), :method => :put, :data => { :confirm => '确定完成申请?' }
+            |
+            = link_to '取消', canceled_admin_franchise_path(item), :method => :put, :data => { :confirm => '确定取消申请?' }
   = paginate @items
