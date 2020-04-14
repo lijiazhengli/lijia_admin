@@ -266,7 +266,7 @@ class AppletsController < ApplicationController
     order = Order.find(params[:order_id]) rescue nil
     if order.blank?
       success = false
-      errors = '付款失败，请致电客服热线4008-3-14159'
+      errors = '付款失败，请访问【我的】联系客服'
     else
       success, errors, new_status = order.check_applet_order_status
     end
@@ -275,7 +275,7 @@ class AppletsController < ApplicationController
       if weixin_option.present?
         render json: {success: true, weixin_option: weixin_option}
       else
-        render json: {success: false, errors: '付款失败，请致电客服热线4008-3-14159'}
+        render json: {success: false, errors: '付款失败，请访问【我的】联系客服'}
       end
     else
       render json: {success: success, errors: errors, new_status: new_status}
