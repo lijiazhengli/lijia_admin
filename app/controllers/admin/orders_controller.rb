@@ -107,9 +107,9 @@ class Admin::OrdersController < Admin::BaseController
 
     @params = params[:q] || {}
     if product_ids.present?
-      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
+      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
     else
-      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).order('orders.id desc').ransack(@params)
+      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').order('orders.id desc').ransack(@params)
     end
 
     @orders = @q.result(distinct: true).page(params[:page])
