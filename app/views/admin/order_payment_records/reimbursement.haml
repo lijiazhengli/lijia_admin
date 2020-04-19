@@ -1,0 +1,35 @@
+
+%h2 订单退款记录列表
+
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 订单号
+        %th 订单状态
+        %th 退款申请者
+        %th 退款申请日期
+        %th 原支付记录交易号
+        %th 金额
+        %th 退款方式
+        %th 退款理由
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.order.external_id
+          %td= Order::STATUS[item.order.status]
+          %td= @admins_hash[item.admin_id]
+          %td= item.created_at.present? ? item.created_at.strftime("%F %H:%M") : ''
+          %td= item.transaction_id
+          %td= item.cost
+          %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
+          %td= item.remark
+          %td
+            = link_to '退款', confirm_refund_admin_order_payment_records_path(id: item.id), :method => :post, :data => { :confirm => '确定退款?' }, class: "btn btn-success"
+ 
+
+  = paginate @items

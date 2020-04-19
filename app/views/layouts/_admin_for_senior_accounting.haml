@@ -1,2 +1,8 @@
 %li.nav-item
-  = link_to '订单收款', admin_order_payment_records_path, class: "nav-link #{'active' if params[:controller] == 'admin/order_payment_records' and !%w(edit new).include?(params[:action])}"
+  = link_to '订单收款', admin_order_payment_records_path, class: "nav-link #{'active' if params[:controller] == 'admin/order_payment_records' and %w(index).include?(params[:action])}"
+
+%li.nav-item
+  = link_to '在线退款', reimbursement_admin_order_payment_records_path, class: "nav-link #{'active' if params[:controller] == 'admin/order_payment_records' and %w(reimbursement).include?(params[:action])}"
+
+
+  

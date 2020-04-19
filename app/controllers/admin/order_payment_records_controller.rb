@@ -11,7 +11,6 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
       @params = params[:q] || {}
       @q = OrderPaymentRecord.includes(:order).references(:order).where('orders.status != ?', 'canceled').ransack(@params)
       @items = @q.result(distinct: true).page(params[:page])
-
     end
   end
 
@@ -57,6 +56,26 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     else
       redirect_back(fallback_location: admin_order_payment_records_path, alert: '失败')
     end 
+  end
+
+  def refund
+    @item = OrderPaymentRecord.find(params[:order_payment_record_id])
+    cost = params[:cost].to_i
+    max_due = OrderPaymentRecord.where(transaction_id: @item.transaction_id).sum(:cost)
+
+    if cost < 0 and max_due >= -cost and @item.create_refund_record(@admin, params)
+      redirect_back(fallback_location: admin_order_order_payment_records_path(@item.order), alert: '成功')
+    else
+      redirect_back(fallback_location: admin_order_order_payment_records_path(@item.order), alert: '失败')
+    end
+  end
+
+  def reimbursement
+    @items = OrderPaymentRecord.includes(:order).where(timestamp: nil).where('order_payment_records.cost < ?', 0).page(params[:page])
+    @admins_hash = Admin.where(id: @items.map(&:admin_id)).pluck(:id, :name).to_h
+  end
+
+  def confirm_refund
   end
 
   def edit

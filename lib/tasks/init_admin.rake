@@ -76,6 +76,7 @@ namespace :admin do
     }.each do |role_name, description|
       Role.where(name: role_name, description: description).first_or_create
     end
+
     role = Role.find_by_name('senior_accounting')
 
     {

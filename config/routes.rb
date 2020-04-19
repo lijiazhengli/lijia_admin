@@ -120,8 +120,11 @@ Rails.application.routes.draw do
 
     resources :order_payment_records, only: [:index, :show] do
       collection do
-        post :received
         put :cancel
+        post :confirm_refund
+        post :received
+        post :refund
+        get  :reimbursement
       end
     end
 
