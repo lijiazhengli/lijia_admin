@@ -1,9 +1,21 @@
-%h2 订单费用列表
+%h2 订单收款列表
 
-= link_to '返回', admin_orders_path, class: "btn btn-secondary"
-= link_to "新建订单费用", new_admin_order_order_payment_record_path, class: "btn btn-success"
+= search_form_for @q, url: admin_order_payment_records_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :out_trade_no_cont, class: "form-control", placeholder: "商户号"
+  .form-group
+    = f.search_field :transaction_id_cont, class: "form-control", placeholder: "交易号"
+  .form-group
+    = f.search_field :cost_eq, class: "form-control", placeholder: "金额"
+
+  = f.submit '查询', class: "btn btn-secondary"
 
 %br
+%h5 说明
+%p 1. 查询结果，不包含取消订单
+%p 2. ✅ 代表该条交易已收钱
+
+
 %div
   总数： 
   = @items.total_count
@@ -11,25 +23,78 @@
   %table.table.table-striped.table-sm
     %thead
       %tr
+        %th 订单号
         %th 付款方式
         %th 费用类型
         %th 金额
-        %th 商户订单号
-        %th 支付交易号
+        %th 付款信息（商户号/交易号）
         %th 付款时间
         %th 操作
     %tbody
       - @items.each do |item|
         %tr
+          %td= item.order.external_id
           %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
           %td= item.payment_method_name
           %td= item.cost
-          %td= item.out_trade_no
-          %td= item.transaction_id
+          %td
+
+            %div
+              %span= item.out_trade_no
+              - if item.timestamp.present?
+                %span ✅
+            %div= item.transaction_id
           %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
           %td
-            = link_to '修改', edit_admin_order_order_payment_record_path(@order, item)
-            - unless item.timestamp
-              |
-              = link_to '删除', admin_order_order_payment_record_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
+            - if item.timestamp.present?
+              = link_to '取消收款', cancel_admin_order_payment_records_path(id: item.id), :method => :put, :data => { :confirm => '确定取消收款?' }, class: "btn btn-danger"
+            - else
+              %span.btn.btn-success{:onclick => "receivedOnClick(#{item.id})"} 收到钱了
+
   = paginate @items
+
+.v2-pop-container.v2-new-container#update-date-form
+  .sub-content.black-color
+    .pop-title
+      到账日期
+      .right-icon{onclick: "showOrHidePopForm()"} X
+    = form_tag received_admin_order_payment_records_path, method: 'post', class: "form-inline-dome" do
+      = hidden_field_tag 'order_payment_record_id'
+      .form-inline.margin-t10
+        = label_tag "收款日期"
+        = text_field_tag :date_string, Time.now.strftime("%F"), type: :date, class: 'form-control'
+
+      .form-inline.margin-t20#form-save-btn
+        %a.col-6.btn.btn-secondary.btn-100width{:onclick => "showOrHidePopForm()"} 取消
+        %a.col-6.btn.btn-success.btn-100width{:onclick => "updateItemDate()", :title => '保存'} 保存
+
+      .form-inline.margin-t20#form-save-loading{style: "display: none;"}
+        %a.btn.btn-brown.btn-100width
+          %span.fa.fa-spin.fa-refresh
+
+:javascript
+
+  function receivedOnClick(item_id){
+    document.getElementById("order_payment_record_id").value = item_id;
+    showOrHidePopForm();
+
+  }
+
+  function showOrHidePopForm(){
+    var this_form = document.getElementById('update-date-form');
+    var display = this_form.style.display;
+    if(!display || display == 'none')
+      this_form.style.display = "block";
+    else
+      this_form.style.display = "none";
+  }
+
+  function updateItemDate(){
+    var this_form = document.getElementsByClassName('form-inline-dome')[0];
+    var apply_btn = document.getElementById('form-save-btn')
+    apply_btn.style.display = "none"
+    var apply_btn = document.getElementById('form-save-loading')
+    apply_btn.style.display = "block"
+    this_form.submit();
+    return false;
+  }

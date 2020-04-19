@@ -118,6 +118,13 @@ Rails.application.routes.draw do
       resources :purchased_items
     end
 
+    resources :order_payment_records, only: [:index, :show] do
+      collection do
+        post :received
+        put :cancel
+      end
+    end
+
     resources :products do
       resources :product_images do
         collection do

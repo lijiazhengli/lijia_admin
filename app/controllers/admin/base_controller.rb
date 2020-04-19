@@ -73,4 +73,12 @@ class Admin::BaseController < ApplicationController
       redirect_to admin_home_url
     end
   end
+
+  def admin_senior_accounting_required
+    unless @admin.admin_owner? or @admin.senior_accounting?
+      flash[:role_message] = '您没有访问权限， 请联系IT开通权限'
+      redirect_to admin_home_url
+    end
+  end
+
 end

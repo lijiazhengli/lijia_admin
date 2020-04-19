@@ -1,9 +1,18 @@
 class Admin::OrderPaymentRecordsController < Admin::BaseController
   layout 'admin'
   before_action :get_order
+  skip_before_action :admin_required, only: [:received, :cancel]
 
   def index
-    @items = @order.order_payment_records.page(params[:page])
+    if @order.present?
+      @items = @order.order_payment_records.page(params[:page])
+      render :order_index
+    else
+      @params = params[:q] || {}
+      @q = OrderPaymentRecord.includes(:order).references(:order).where('orders.status != ?', 'canceled').ransack(@params)
+      @items = @q.result(distinct: true).page(params[:page])
+
+    end
   end
 
   def new
@@ -32,6 +41,24 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     end
   end
 
+  def received
+    @item = OrderPaymentRecord.find(params[:order_payment_record_id])
+    if @item.update_attributes(timestamp: params[:date_string])
+      redirect_back(fallback_location: admin_order_payment_records_path, alert: '成功')
+    else
+      redirect_back(fallback_location: admin_order_payment_records_path, alert: '失败')
+    end 
+  end
+
+  def cancel
+    @item = OrderPaymentRecord.find(params[:id])
+    if @item.update_attributes(timestamp: nil)
+      redirect_back(fallback_location: admin_order_payment_records_path, alert: '成功')
+    else
+      redirect_back(fallback_location: admin_order_payment_records_path, alert: '失败')
+    end 
+  end
+
   def edit
     @item = OrderPaymentRecord.find(params[:id])
   end
@@ -48,6 +75,6 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   end
 
   def get_order
-    @order = Order.find(params[:order_id])
+    @order = Order.find(params[:order_id]) rescue nil
   end
 end

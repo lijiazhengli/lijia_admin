@@ -70,6 +70,28 @@ namespace :admin do
   end
 
   desc '更新整理师信息'
+  task :init_role_200419 => :environment do
+    { 
+      senior_accounting: '财务',
+    }.each do |role_name, description|
+      Role.where(name: role_name, description: description).first_or_create
+    end
+    role = Role.find_by_name('senior_accounting')
+
+    {
+      'tangling' => '唐玲',
+      'bolei' => '薄蕾',
+      'jiaoyuxin' => '焦雨欣'
+
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.present?
+        admin.role_assignments.create!(role_id: role.id)
+      end
+    end
+  end
+
+  desc '更新整理师信息'
   task :init_admin_200321 => :environment do
     realm = "Lijia"
     password = "lijia99"

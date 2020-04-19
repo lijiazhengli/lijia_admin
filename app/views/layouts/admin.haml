@@ -48,6 +48,9 @@
             - if @admin.admin_customer_service?
               = render 'layouts/admin_for_customer_service'
 
+            - if @admin.senior_accounting?
+              = render 'layouts/admin_for_senior_accounting'
+
       .col-10.col-sm-10.col-md-10{role: 'main', style: "margin-left: 14%;padding-top: 25px;padding-right: 0px;"}
         = yield
     %footer#footer

@@ -1,0 +1,35 @@
+%h2 订单费用列表
+
+= link_to '返回', admin_orders_path, class: "btn btn-secondary"
+= link_to "新建订单费用", new_admin_order_order_payment_record_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 付款方式
+        %th 费用类型
+        %th 金额
+        %th 商户订单号
+        %th 支付交易号
+        %th 付款时间
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
+          %td= item.payment_method_name
+          %td= item.cost
+          %td= item.out_trade_no
+          %td= item.transaction_id
+          %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
+          %td
+            - unless item.timestamp
+              = link_to '修改', edit_admin_order_order_payment_record_path(@order, item)
+              |
+              = link_to '删除', admin_order_order_payment_record_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items
