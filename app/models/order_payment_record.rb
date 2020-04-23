@@ -15,6 +15,7 @@ class OrderPaymentRecord < ActiveRecord::Base
       order_id: self.order_id,
       payment_method_id: self.payment_method_id,
       cost: params[:cost],
+      payment_method_name: "#{PAYMENT_METHOD_ID[self.id]}退款",
       out_trade_no: self.out_trade_no,
       transaction_id: self.transaction_id,
       remark: params[:remark]

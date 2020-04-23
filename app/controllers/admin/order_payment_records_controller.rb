@@ -9,7 +9,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
       render :order_index
     else
       @params = params[:q] || {}
-      @q = OrderPaymentRecord.includes(:order).references(:order).where('orders.status != ?', 'canceled').ransack(@params)
+      @q = OrderPaymentRecord.includes(:order).references(:order).where('orders.status != ? and order_payment_records.transaction_id != ?', 'canceled', '').order('order_payment_records.updated_at desc').ransack(@params)
       @items = @q.result(distinct: true).page(params[:page])
     end
   end
@@ -59,8 +59,9 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   end
 
   def refund
+
     @item = OrderPaymentRecord.find(params[:order_payment_record_id])
-    cost = params[:cost].to_i
+    cost = params[:cost].to_f
     max_due = OrderPaymentRecord.where(transaction_id: @item.transaction_id).sum(:cost)
 
     if cost < 0 and max_due >= -cost and @item.create_refund_record(@admin, params)

@@ -1,0 +1,11 @@
+- flash.each do |name, msg|
+  - notify_type = name == 'alert' ? 'alert-danger' : 'alert-success'
+  - if msg.is_a?(String)
+    .alert{class: notify_type}
+      .close{"data-dismiss" => "alert"} &#215;
+      = content_tag :div, msg, id: "flash_#{name}"
+  - if msg.is_a?(Hash)
+    .alert{class: notify_type}
+      .close{"data-dismiss" => "alert"} &#215;
+      - msg.each do |key,value|      
+        = content_tag :div, value, id: "flash_#{key}"

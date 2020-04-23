@@ -44,4 +44,9 @@
         - else
           = f.text_field :timestamp, class: 'form-control', type: :date
 
+    .form-group
+      = f.label "备注"
+      %br
+      = f.text_field :remark, class: 'form-control'
+
     = f.submit '保存', class: 'btn btn-success'

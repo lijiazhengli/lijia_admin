@@ -17,6 +17,7 @@
         %th 商户订单号
         %th 支付交易号
         %th 付款时间
+        %th 备注
         %th 操作
     %tbody
       - @items.each do |item|
@@ -27,6 +28,7 @@
           %td= item.out_trade_no
           %td= item.transaction_id
           %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
+          %td= item.remark
           %td
             - unless item.timestamp
               = link_to '修改', edit_admin_order_order_payment_record_path(@order, item)
@@ -53,8 +55,10 @@
         = text_area_tag 'remark', '', class: "form-control", id: "remark"
 
       .form-inline.margin-t20#form-save-btn
-        %a.col-6.btn.btn-secondary.btn-100width{:onclick => "showOrHidePopForm()"} 取消
-        %a.col-6.btn.btn-success.btn-100width{:onclick => "updateItemDate()", :title => '保存'} 保存
+        %a.col-6
+          .btn.btn-secondary.btn-100width{:onclick => "showOrHidePopForm()"} 取消
+        %a.col-6
+          .btn.btn-success.btn-100width{:onclick => "updateItemDate()", :title => '保存'} 保存
 
       .form-inline.margin-t20#form-save-loading{style: "display: none;"}
         %a.btn.btn-brown.btn-100width
@@ -79,10 +83,10 @@
 
   function updateItemDate(){
     var this_form = document.getElementsByClassName('form-inline-dome')[0];
-    var apply_btn = document.getElementById('form-save-btn')
-    apply_btn.style.display = "none"
-    var apply_btn = document.getElementById('form-save-loading')
-    apply_btn.style.display = "block"
+    var apply_btn = document.getElementById('form-save-btn');
+    apply_btn.style.display = "none";
+    var apply_btn = document.getElementById('form-save-loading');
+    apply_btn.style.display = "block";
     this_form.submit();
     return false;
   }
