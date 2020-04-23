@@ -25,17 +25,27 @@
           %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
           %td= item.payment_method_name
           %td= item.cost
-          %td= item.out_trade_no
-          %td= item.transaction_id
+          - if item.cost > 0
+            %td= item.out_trade_no
+            %td= item.transaction_id
+          - else item.cost < 0
+            %td
+              %div= item.out_trade_no
+              %div.gray-color=item.batch_no
+            %td
+              %div= item.transaction_id
+              %div.gray-color=item.refund_id
           %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
           %td= item.remark
           %td
-            - unless item.timestamp
+            - if !item.timestamp
               = link_to '修改', edit_admin_order_order_payment_record_path(@order, item)
               |
               = link_to '删除', admin_order_order_payment_record_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }
-            - else
+            - elsif item.cost > 0
               %span.btn.btn-success{:onclick => "refundOnClick(#{item.id})"} 创建退款记录
+            - elsif item.cost < 0
+              %span 已退款
   = paginate @items
 
 

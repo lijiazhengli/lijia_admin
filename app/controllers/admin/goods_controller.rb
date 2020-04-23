@@ -64,7 +64,7 @@ class Admin::GoodsController < Admin::BaseController
   def enable
     item = Good.find(params[:id])
     if item.enable
-      redirect_to admin_goods_path, alert: '成功'
+      redirect_to admin_goods_path, notice: '成功'
     else
       redirect_to admin_goods_path, alert: '失败'
     end
@@ -73,7 +73,7 @@ class Admin::GoodsController < Admin::BaseController
   def disable
     item = Good.find(params[:id])
     if item.disable
-      redirect_to admin_goods_path, alert: '成功'
+      redirect_to admin_goods_path, notice: '成功'
     else
       redirect_to admin_goods_path, alert: '失败'
     end

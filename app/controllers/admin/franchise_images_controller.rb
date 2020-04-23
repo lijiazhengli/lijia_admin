@@ -63,7 +63,7 @@ class Admin::FranchiseImagesController < Admin::BaseController
   def enable
     item = FranchiseImage.find(params[:id])
     if item.enable
-      redirect_to admin_franchise_franchise_images_path(@parent), alert: '成功'
+      redirect_to admin_franchise_franchise_images_path(@parent), notice: '成功'
     else
       redirect_to admin_franchise_franchise_images_path(@parent), alert: '失败'
     end
@@ -72,7 +72,7 @@ class Admin::FranchiseImagesController < Admin::BaseController
   def disable
     item = FranchiseImage.find(params[:id])
     if item.disable
-      redirect_to admin_franchise_franchise_images_path(@parent), alert: '成功'
+      redirect_to admin_franchise_franchise_images_path(@parent), notice: '成功'
     else
       redirect_to admin_franchise_franchise_images_path(@parent), alert: '失败'
     end

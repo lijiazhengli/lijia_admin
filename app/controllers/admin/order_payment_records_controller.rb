@@ -43,7 +43,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   def received
     @item = OrderPaymentRecord.find(params[:order_payment_record_id])
     if @item.update_attributes(timestamp: params[:date_string])
-      redirect_back(fallback_location: admin_order_payment_records_path, alert: '成功')
+      redirect_back(fallback_location: admin_order_payment_records_path, notice: '成功')
     else
       redirect_back(fallback_location: admin_order_payment_records_path, alert: '失败')
     end 
@@ -52,7 +52,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   def cancel
     @item = OrderPaymentRecord.find(params[:id])
     if @item.update_attributes(timestamp: nil)
-      redirect_back(fallback_location: admin_order_payment_records_path, alert: '成功')
+      redirect_back(fallback_location: admin_order_payment_records_path, notice: '成功')
     else
       redirect_back(fallback_location: admin_order_payment_records_path, alert: '失败')
     end 
@@ -65,7 +65,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     max_due = OrderPaymentRecord.where(transaction_id: @item.transaction_id).sum(:cost)
 
     if cost < 0 and max_due >= -cost and @item.create_refund_record(@admin, params)
-      redirect_back(fallback_location: admin_order_order_payment_records_path(@item.order), alert: '成功')
+      redirect_back(fallback_location: admin_order_order_payment_records_path(@item.order), notice: '成功')
     else
       redirect_back(fallback_location: admin_order_order_payment_records_path(@item.order), alert: '失败')
     end
@@ -77,6 +77,14 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   end
 
   def confirm_refund
+    p params
+    item = OrderPaymentRecord.find(params[:id])
+    success, msg = item.reimbursement
+    if success
+      redirect_back(fallback_location: admin_order_payment_records_path, notice: '退款成功！')
+    else
+      redirect_back(fallback_location: admin_order_payment_records_path, alert: msg)
+    end 
   end
 
   def edit

@@ -63,7 +63,7 @@ class Admin::ProductImagesController < Admin::BaseController
   def enable
     item = ProductImage.find(params[:id])
     if item.enable
-      redirect_to admin_product_product_images_path(@product), alert: '成功'
+      redirect_to admin_product_product_images_path(@product), notice: '成功'
     else
       redirect_to admin_product_product_images_path(@product), alert: '失败'
     end
@@ -72,7 +72,7 @@ class Admin::ProductImagesController < Admin::BaseController
   def disable
     item = ProductImage.find(params[:id])
     if item.disable
-      redirect_to admin_product_product_images_path(@product), alert: '成功'
+      redirect_to admin_product_product_images_path(@product), notice: '成功'
     else
       redirect_to admin_product_product_images_path(@product), alert: '失败'
     end

@@ -78,7 +78,7 @@ class Admin::CoursesController < Admin::BaseController
   def enable
     item = Course.find(params[:id])
     if item.enable
-      redirect_to admin_courses_path, alert: '成功'
+      redirect_to admin_courses_path, notice: '成功'
     else
       redirect_to admin_courses_path, alert: '失败'
     end
@@ -87,7 +87,7 @@ class Admin::CoursesController < Admin::BaseController
   def disable
     item = Course.find(params[:id])
     if item.disable
-      redirect_to admin_courses_path, alert: '成功'
+      redirect_to admin_courses_path, notice: '成功'
     else
       redirect_to admin_courses_path, alert: '失败'
     end

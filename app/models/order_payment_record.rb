@@ -31,18 +31,21 @@ class OrderPaymentRecord < ActiveRecord::Base
   end
 
   def reimbursement
-    return '订单已经退款！' if self.timestamp.present?
+    success = false
+    msg = nil
+    return [false, '订单已经退款！'] if self.timestamp.present?
     params = {
       transaction_id: self.transaction_id,
       out_refund_no: self.batch_no,
-      total_fee: (-self.pay_cost * 100).to_i,
+      total_fee: (self.pay_cost * 100).to_i,
       refund_fee: (-self.cost * 100).to_i,
     }
     result = WxPay::Service.invoke_refund params, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']}
     if result['return_code'] == "SUCCESS" && result['result_code'] == "SUCCESS"
-      return self.update_attributes(timestamp: Time.now)
+      success = self.update_attributes(timestamp: Time.now, refund_id: result['refund_id'])
     else
-      return false
+      msg = "#{self.payment_method_name}失败"
     end
+    [success, msg]
   end
 end

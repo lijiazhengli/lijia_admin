@@ -69,7 +69,7 @@ class Admin::FranchisesController < Admin::BaseController
   def enable
     item = Franchise.find(params[:id])
     if item.enable
-      redirect_to admin_franchises_path, alert: '成功'
+      redirect_to admin_franchises_path, notice: '成功'
     else
       redirect_to admin_franchises_path, alert: '失败'
     end
@@ -78,7 +78,7 @@ class Admin::FranchisesController < Admin::BaseController
   def disable
     item = Franchise.find(params[:id])
     if item.disable
-      redirect_to admin_franchises_path, alert: '成功'
+      redirect_to admin_franchises_path, notice: '成功'
     else
       redirect_to admin_franchises_path, alert: '失败'
     end
@@ -87,7 +87,7 @@ class Admin::FranchisesController < Admin::BaseController
   def update_status
     item = Franchise.find(params[:id])
     if item.update_attributes(status: params[:status])
-      redirect_back(fallback_location: admin_orders_path, alert: '成功')
+      redirect_back(fallback_location: admin_orders_path, notice: '成功')
     else
       redirect_back(fallback_location: admin_orders_path, alert: '失败')
     end

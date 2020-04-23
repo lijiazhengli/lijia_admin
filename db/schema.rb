@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_19_152658) do
+ActiveRecord::Schema.define(version: 2020_04_23_161004) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 2020_04_19_152658) do
     t.text "remark"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "refund_id"
     t.index ["batch_no"], name: "index_order_payment_records_on_batch_no"
     t.index ["order_id"], name: "index_order_payment_records_on_order_id"
     t.index ["transaction_id"], name: "index_order_payment_records_on_transaction_id"

@@ -64,7 +64,7 @@ class Admin::ServicesController < Admin::BaseController
   def enable
     item = Service.find(params[:id])
     if item.enable
-      redirect_to admin_services_path, alert: '成功'
+      redirect_to admin_services_path, notice: '成功'
     else
       redirect_to admin_services_path, alert: '失败'
     end
@@ -73,7 +73,7 @@ class Admin::ServicesController < Admin::BaseController
   def disable
     item = Service.find(params[:id])
     if item.disable
-      redirect_to admin_services_path, alert: '成功'
+      redirect_to admin_services_path, notice: '成功'
     else
       redirect_to admin_services_path, alert: '失败'
     end
