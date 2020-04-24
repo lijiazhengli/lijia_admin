@@ -2,6 +2,10 @@ class User < ApplicationRecord
   has_many  :orders
   has_many  :franchises
 
+  COURSE_STUDENT_ZHEKOU = 0.8
+  PARTNER_ZHEKOU = 0.6
+  ZHEKOU = {1 => '普通客人', 0.8 => '学员', 0.6 => '合伙人'}
+
   def get_applet_sex
     self.sex ? "#{self.sex}" : '0'
   end

@@ -38,7 +38,11 @@ class Product < ActiveRecord::Base
 
   def self.get_purchased_items(order_type)
     current_type =  order_type == Order::PRODUCT_ORDER ? 'Good' : order_type
-    Product.active.where(type: current_type).map{|i| ["#{i.title}-#{i.price}", i.id]}
+    if order_type == 'Course'
+      Product.where(type: current_type).map{|i| ["#{i.title}-#{i.price}", i.id]}
+    else
+      Product.active.where(type: current_type).map{|i| ["#{i.title}-#{i.price}", i.id]}
+    end
   end
 
   def available_order_count

@@ -71,29 +71,28 @@ class Admin::OrdersController < Admin::BaseController
   def update_status
     item = Order.find(params[:id])
     if item.update_attributes(status: params[:status])
-      redirect_back(fallback_location: admin_orders_path, notice: '成功')
+      redirect_back(fallback_location: admin_orders_path, notice: '操作成功')
     else
-      redirect_back(fallback_location: admin_orders_path, alert: '失败')
+      redirect_back(fallback_location: admin_orders_path, alert: '操作失败')
     end
   end
 
   def completed
-    p params
     item = Order.find(params[:id])
-    p item
     if item.do_completed
-      redirect_back(fallback_location: admin_orders_path, notice: '成功')
+      redirect_back(fallback_location: admin_orders_path, notice: '已操作完成')
     else
-      redirect_back(fallback_location: admin_orders_path, alert: '失败')
+      redirect_back(fallback_location: admin_orders_path, alert: '操作失败')
     end
   end
 
   def canceled
     item = Order.find(params[:id])
-    if item.do_canceled
-      redirect_back(fallback_location: admin_orders_path, notice: '成功')
+    success, errors = item.do_canceled
+    if success
+      redirect_back(fallback_location: admin_orders_path, notice: '取消成功')
     else
-      redirect_back(fallback_location: admin_orders_path, alert: '失败')
+      redirect_back(fallback_location: admin_orders_path, alert: errors)
     end
   end
 

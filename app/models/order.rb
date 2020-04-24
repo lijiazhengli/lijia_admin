@@ -201,7 +201,7 @@ class Order < ApplicationRecord
 
   def do_canceled
     order, success, errors = Order.create_or_update_order({order: self, params: {}, methods: %w(cancel_order), redis_expire_name: "order-#{self.id}"})
-    return success
+    return [success, errors]
   end
 
   class << self
@@ -327,6 +327,8 @@ class Order < ApplicationRecord
     def cancel_order order_hash, params
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
+      paid_due = order.order_paid_due
+      raise '不能取消付款记录大于0的订单' if paid_due > 0
       order.update!(status: 'canceled')
       order_hash[:order] = order
     end
@@ -342,6 +344,7 @@ class Order < ApplicationRecord
     def update_student_user_zhekou(order_hash, params)
       order = order_hash[:order]
       return if order.order_type != Order::COURSE_ORDER
+      return if CourseExtend.where(course_id: order.purchased_items.pluck(:product_id), has_student_zhekou: true).empty?
       student = Student.where(order_id: order.id).first
       user = order.user
       user.update!(zhekou: COURSE_STUDENT_ZHEKOU) if student.phone_number == user.phone_number and user.zhekou > COURSE_STUDENT_ZHEKOU

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_23_161004) do
+ActiveRecord::Schema.define(version: 2020_04_24_145658) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_04_23_161004) do
     t.string "address"
     t.decimal "gaode_lng", precision: 11, scale: 8
     t.decimal "gaode_lat", precision: 11, scale: 8
+    t.boolean "has_student_zhekou", default: false
     t.index ["course_id"], name: "index_course_extends_on_course_id"
   end
 
