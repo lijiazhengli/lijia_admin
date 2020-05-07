@@ -1,5 +1,8 @@
 
 %h2 订单退款记录列表
+%h5 说明
+%p 1. 点击退款后，退款金额原路退还至客户付款帐户
+%p 2. 请谨慎操作【退款】，操作成功后，钱直接打入客户帐户中，不能撤回。
 
 %div
   总数： 
@@ -29,7 +32,7 @@
           %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
           %td= item.remark
           %td
-            = link_to '退款', confirm_refund_admin_order_payment_records_path(id: item.id), :method => :post, :data => { :confirm => '确定退款?' }, class: "btn btn-success"
+            = link_to '退款', confirm_refund_admin_order_payment_records_path(id: item.id), :method => :post, :data => { :confirm => '点击退款后，退款金额将直接打入客户帐户中，不能撤回，您确定退款?' }, class: "btn btn-success"
  
 
   = paginate @items

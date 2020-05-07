@@ -16,7 +16,7 @@
         %th 金额
         %th 商户订单号
         %th 支付交易号
-        %th 付款时间
+        %th 付款/退款时间
         %th 备注
         %th 操作
     %tbody
@@ -61,7 +61,7 @@
         = text_field_tag :cost, '', class: 'form-control'
 
       .form-inline.margin-t10
-        = label_tag "退款理由"
+        = label_tag "退款原因"
         = text_area_tag 'remark', '', class: "form-control", id: "remark"
 
       .form-inline.margin-t20#form-save-btn
