@@ -32,6 +32,11 @@
     = f.search_field :address_province_cont, class: "form-control", placeholder: "省"
     = f.search_field :address_city_cont, class: "form-control", placeholder: "市"
 
+  .form-group
+    = f.label '排序方式'
+    = select_tag "sort_type", options_for_select({'创建时间' => 'orders.id', '修改时间' => 'orders.updated_at'}, params[:sort_type]), include_blank: false, class: "form-control"
+    = select_tag "sort_order_type", options_for_select({'降序' => 'desc', '升序' => 'asc'}, params[:sort_order_type]), include_blank: false, class: "form-control"
+
   = f.submit '查询', class: "btn btn-secondary"
   = link_to '新建收纳工具订单', new_admin_order_path(order_type: 'Product'), class: "btn btn-success"
 
@@ -52,6 +57,7 @@
         %th 收货城市
         %th 状态
         %th 创建时间
+        %th 修改时间
         %th 操作
     %tbody
       - @orders.each do |item|
@@ -76,6 +82,7 @@
             %div= item.address_city
           %td= Order::STATUS[item.status]
           %td= item.created_at.strftime('%F %T')
+          %td= item.updated_at.strftime('%F %T')
           %td
             = link_to '已发货', update_status_admin_order_path(item.id, status: 'on_the_road'), :method => :put, :data => { :confirm => '确定已发货?' }
             |

@@ -45,6 +45,7 @@
     .form-group
       = f.label '排序方式'
       = select_tag "sort_type", options_for_select({'创建时间' => 'id', '修改时间' => 'updated_at'}, params[:sort_type]), include_blank: false, class: "form-control"
+      = select_tag "sort_order_type", options_for_select({'降序' => 'desc', '升序' => 'asc'}, params[:sort_order_type]), include_blank: false, class: "form-control"
 
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建整理服务订单', new_admin_order_path, class: "btn btn-success"
@@ -78,6 +79,7 @@
         %th 推荐人
         %th 折扣
         %th 创建时间
+        %th 修改时间
         %th 操作
     %tbody
       - @orders.each do |item|
@@ -92,6 +94,7 @@
           %td= "#{item.referral_name}|#{item.referral_phone_number}"
           %td= item.zhekou
           %td= item.created_at.strftime('%F %T')
+          %td= item.updated_at.strftime('%F %T')
           %td
             = link_to '详情', admin_order_path(item)
             |

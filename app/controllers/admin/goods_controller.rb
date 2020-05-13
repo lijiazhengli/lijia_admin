@@ -80,6 +80,10 @@ class Admin::GoodsController < Admin::BaseController
   end
 
   def order
+    params[:sort_type] ||= 'orders.id'
+    params[:sort_order_type] ||= 'desc'
+
+
     product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
     @params = params[:q] || {}
 
@@ -88,9 +92,9 @@ class Admin::GoodsController < Admin::BaseController
     end
 
     if product_ids.present?
-      @q = Order.goods.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
+      @q = Order.goods.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
     else
-      @q = Order.goods.noncanceled.includes(:purchased_items).order('orders.id desc').ransack(@params)
+      @q = Order.goods.noncanceled.includes(:purchased_items).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
     end
     @orders = @q.result(distinct: true).page(params[:page])
     @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
