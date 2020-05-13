@@ -8,7 +8,7 @@
     .form-group
       = f.search_field :location_address_cont, class: "form-control", placeholder: "地址"
     .form-group
-      = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
+      = text_field_tag :customer_name_cont, params[:customer_name_cont], class: "form-control", placeholder: "订购人"
     .form-group
       = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
     .form-group
@@ -42,6 +42,10 @@
       = f.label '订单类型'
       = select_tag "q[order_type_eq]", options_for_select(Order::ORDER_TYPE.invert, @params[:order_type_eq]), include_blank: true, class: "form-control"
 
+    .form-group
+      = f.label '排序方式'
+      = select_tag "sort_type", options_for_select({'创建时间' => 'id', '修改时间' => 'updated_at'}, params[:sort_type]), include_blank: false, class: "form-control"
+
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建整理服务订单', new_admin_order_path, class: "btn btn-success"
     = link_to '新建课程订单', new_admin_order_path(order_type: 'Course'), class: "btn btn-success"
@@ -59,7 +63,7 @@
 %br
 %div
   总数： 
-  = @orders.total_count
+  = @orders.try(:total_count) || 0
 .table-responsive
   %table.table.table-striped.table-sm
     %thead
@@ -80,7 +84,7 @@
         %tr
           %td= link_to item.external_id, admin_order_path(item)
           %td= @admins_hash[item.admin_id]
-          %td= "#{item.customer_name}|#{item.customer_phone_number}"
+          %td= "#{@users_hash[item.user_id]}|#{item.customer_phone_number}"
           %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
           %td= item.city_name
           %td= Order::STATUS[item.status]
@@ -107,4 +111,5 @@
             |
             = link_to '取消', canceled_admin_order_path(item), :method => :put, :data => { :confirm => '确定取消订单?' }
             
-  = paginate @orders
+  - if @orders.present?  
+    = paginate @orders

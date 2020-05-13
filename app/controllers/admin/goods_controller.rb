@@ -82,13 +82,20 @@ class Admin::GoodsController < Admin::BaseController
   def order
     product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
     @params = params[:q] || {}
+
+    if params[:customer_name_cont].present?
+      @params[:user_id_in] = User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
+    end
+
     if product_ids.present?
       @q = Order.goods.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
     else
       @q = Order.goods.noncanceled.includes(:purchased_items).order('orders.id desc').ransack(@params)
     end
     @orders = @q.result(distinct: true).page(params[:page])
+    @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
+    @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
     @product_hash = Product.get_product_list_hash(product_ids)
   end
 

@@ -9,7 +9,7 @@
   .form-group
     = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: '产品sku，多个产品sku请用英文逗号分割', style: "width: 320px"
   .form-group
-    = f.search_field :customer_name_cont, class: "form-control", placeholder: "订购人"
+    = text_field_tag :customer_name_cont, params[:customer_name_cont], class: "form-control", placeholder: "订购人"
   .form-group
     = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
   .form-group
@@ -38,7 +38,7 @@
 %br
 %div
   总数： 
-  = @orders.total_count
+  = @orders.try(:total_count) || 0
 .table-responsive
   %table.table.table-striped.table-sm
     %thead
@@ -58,7 +58,7 @@
         %tr
           %td= link_to item.external_id, admin_order_path(item)
           %td
-            %div= item.customer_name
+            %div= @users_hash[item.user_id]
             %div= item.customer_phone_number
           %td
             %div= item.recipient_name
@@ -80,5 +80,6 @@
             = link_to '已发货', update_status_admin_order_path(item.id, status: 'on_the_road'), :method => :put, :data => { :confirm => '确定已发货?' }
             |
             = link_to '完成', completed_admin_order_path(item), :method => :put, :data => { :confirm => '确定完成?' }
-            
-  = paginate @orders
+    
+  - if @orders.present?  
+    = paginate @orders

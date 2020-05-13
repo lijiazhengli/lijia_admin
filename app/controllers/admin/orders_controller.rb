@@ -2,17 +2,26 @@ class Admin::OrdersController < Admin::BaseController
   layout 'admin'
 
   def index
-    p params
+    params[:sort_type] ||= 'id'
     @params = params[:q] || {}
     if params[:order_type].present?
       @params[:order_type_eq] = params[:order_type]
     end
 
+    user_ids = []
+
     if params[:user_id].present?
+      user_ids << params[:user_id].to_i
       @params[:customer_phone_number_cont] = (User.find(params[:user_id]).phone_number rescue '')
     end
-    @q = Order.noncanceled.order('id desc').ransack(@params)
+    if params[:customer_name_cont].present?
+      user_ids += User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
+    end
+    @params[:user_id_in] = user_ids
+    @q = Order.noncanceled.order("#{params[:sort_type]} desc").ransack(@params)
     @orders = @q.result(distinct: true).page(params[:page])
+    @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
+    @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
   end
 
