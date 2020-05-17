@@ -192,6 +192,7 @@ Rails.application.routes.draw do
       get  :load_address_list
       get  :load_address_info
       get  :load_customer_info
+      get  :load_product_infos
       get  :orders
       get  :order_show
       get  :product_show

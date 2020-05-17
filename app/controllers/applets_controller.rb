@@ -78,6 +78,18 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
+  def load_product_infos
+    products = []
+    product_info = (JSON.parse(params[:product_info]) || {})
+    product_ids = product_info.keys
+    Product.where(id: product_ids).each do |product|
+      info = product.to_applet_list
+      info[:quantity] = product_info[product.id.to_s] || info[:min_count] || 1
+      products << info
+    end
+    render json: {products: products}
+  end
+
   def cart_show
     product = Product.find(params[:id])
     order_start_delivery_time = Time.now
