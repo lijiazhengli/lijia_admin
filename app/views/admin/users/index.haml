@@ -35,8 +35,9 @@
           %td= item.zhekou
           %td= item.created_at.strftime('%F %T')
           %td
-            = link_to '修改', edit_admin_user_path(item)
-            |
+            - if @admin.senior_stockholder?
+              = link_to '修改', edit_admin_user_path(item)
+              |
             = link_to '订单', admin_orders_path(user_id: item.id)
             |
             = link_to '整理服务', admin_orders_path(order_type: 'Service', user_id: item.id)

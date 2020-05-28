@@ -32,6 +32,7 @@
         %th 用户id
         %th 姓名
         %th 电话
+        %th 折扣
         %th 城市
         %th 职业
         %th 职业规划
@@ -42,12 +43,13 @@
         %tr
           %td= item.course.title
           %td= item.user_id
-          - if false
+          - if true
             - user = item.user
-            %td= item.order.try(:customer_name)
+            %td= user.name || item.name
             %td= user.phone_number
-          %td= item.name
-          %td= item.phone_number
+            %td= user.zhekou
+          / %td= item.name
+          / %td= item.phone_number
           %td= item.city_name
           %td= item.careers
           %td= item.career_plan
