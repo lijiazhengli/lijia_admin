@@ -5,21 +5,23 @@ class exports.Lijiaweb.SwiperLijia
   @init: ->
     if $('.pc-slideshows-swiper').length > 0
       @_binding_pc_slideshows_swiper()
+    if $('.pc-button-swiper').length > 0
+      @_binding_pc_button_swiper()
     if $('.page-slideshows-swiper').length > 0
       @_binding_page_slideshows_swiper()
     if $('.mobile-slideshows-swiper').length > 0
       @_binding_mobile_slideshows_swiper()
     if $('.gallery-top').length > 0
       @_binding_gallery_swiper()
-  @_binding_page_slideshows_swiper: ->
-    pcSwiper = new Swiper('.page-slideshows-swiper',
-      nextButton: '.swiper-button-next'
-      prevButton: '.swiper-button-prev'
-      slidesPerView: 4
+  @_binding_pc_button_swiper: ->
+    pcButtonSwiper = new Swiper('.pc-button-swiper',
+      navigation:
+        nextEl: '.swiper-button-next'
+        prevEl: '.swiper-button-prev'
+      slidesPerView: 3
+      spaceBetween: 15
     )
-    if $('.page-slideshows-swiper').length > 0
-      $(window).resize ->
-        pcSwiper.update()
+
   @_binding_pc_slideshows_swiper: ->
     pcSwiper = new Swiper('.pc-slideshows-swiper',
       autoplay: true

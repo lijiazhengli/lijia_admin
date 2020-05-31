@@ -13,10 +13,10 @@ $lijia-red: #FF7670;
 $lijia-bg-gray: #FAFAFA;
 
 // 灰色文字： #666666
-$lijia-font-gray: #FAFAFA;
+$lijia-font-gray: #666666;
 
 // 页面灰色值： #f2f2f2
-$lijia-body-gray: #FAFAFA;
+$lijia-body-gray: #f2f2f2;
 
 
 // 黑色文字颜色：#333333
@@ -36,8 +36,10 @@ $lijia-bg-black: #1B1B1B;
 @import "third/swiper-lijia";
 @import "shared/main";
 @import "shared/base";
-
 @import "shared/nav";
+
+
+@import "shared/home";
 
 //@import "font-awesome-sprockets";
 //@import "font-awesome";

@@ -3,12 +3,30 @@
     - @slideshows.each do |item|
       .swiper-slide
         %a{href: ''}
-          %img{src: item.pc_image, style: 'width: 100%', title: item.title, alt: item.title}
+          = image_tag(item.pc_image, title: item.title, alt: item.title)
   .swiper-pagination.pc-swiper-pagination
 
 .white-list-content
   .center-img
     = image_tag('home/youshi.png', title: '莉家整理优势', alt: "莉家整理六大核心优势")
+.service-list-content
+  .container.margin-b20.margin-t20
+    .row
+      .col-md-12.center-text
+        .line-title.title-font 预约整理
+      .swiper-container.pc-button-swiper.margin-t20
+        .swiper-wrapper
+          - @services.each do |item|
+            .col-md-4.margin-t10.swiper-slide
+              .service-image-list-content
+                = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                .service-info-content
+                  .title= item.title
+                  .desc= item.description[0..20]
+        .swiper-button-next
+        .swiper-button-prev
+
+
 
 :javascript
   $(document).ready(function(){
