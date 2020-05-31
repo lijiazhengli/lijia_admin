@@ -18,4 +18,32 @@
     = csrf_meta_tags
     = csp_meta_tag 
   %body
+    .navbar-nav.fixed-top.nav-header-container
+      .pc-brown-container
+        .container
+          %a.nav-logo{href: "/"}= image_tag('logo.png')
+          .nav-ul
+            %li.right-li
+              %a.nav-font-color{href: "#"} 首页
+              %a.nav-font-color{href: "#"} 整理服务
+              %a.nav-font-color{href: "#"} 培训课程
+              %a.nav-font-color{href: "#"} 品牌介绍
+              %a.nav-font-color{href: "#"} 联系我们
+    %div{style: 'height: 50px;'}
     = yield
+    .navbar-nav.nav-footer-container
+      .container
+        .footer-left
+          %div 联系我们
+          .footer-phone.font-18px 185 1894 9882
+          .small-font 北京顺义区林荫路誉天下别墅1期1-2栋
+        .footer-right
+          .contact-img
+            = image_tag('weixin.jpg')
+            .small-font 微信公众号
+          .contact-img
+            = image_tag('contact.jpg')
+            .small-font 联系我们
+      .copy
+        %a.info{href: "http://www.beian.miit.gov.cn"} Copyright 2018-#{(DateTime.now + 1.year).year} 莉家整理，京ICP备18063945号-1
+

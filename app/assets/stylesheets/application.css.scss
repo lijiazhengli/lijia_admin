@@ -1,0 +1,40 @@
+// 浅红： #FFF3F3
+$lijia-light-red: #FFF3F3;
+
+
+// 渐变浅色：#FF948C
+$lijia-left-red: #FF7670;
+$lijia-right-red: #FF7670;
+
+// 外发光颜色值：#FF7670
+$lijia-red: #FF7670;
+
+// 灰色背景： #FAFAFA
+$lijia-bg-gray: #FAFAFA;
+
+// 灰色文字： #666666
+$lijia-font-gray: #FAFAFA;
+
+// 页面灰色值： #f2f2f2
+$lijia-body-gray: #FAFAFA;
+
+
+// 黑色文字颜色：#333333
+$lijia-font: #333333;
+
+// 导航黑色文字：#252828
+$lijia-nav-font: #252828;
+
+
+// 黑色背景颜色：#1B1B1B
+$lijia-bg-black: #1B1B1B;
+
+@import "third/bootstrap";
+@import "third/bootstrap-dashboard";
+@import "shared/main";
+@import "shared/base";
+
+@import "shared/nav";
+
+//@import "font-awesome-sprockets";
+//@import "font-awesome";
