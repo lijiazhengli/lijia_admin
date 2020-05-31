@@ -5,6 +5,16 @@ class Introduce < ApplicationRecord
   scope :applet_franchise, -> {where(item_type: "applet_franchise", active: true)}
   scope :web_home, -> {where(item_type: "web_home", active: true)}  
 
+  def to_web_list
+    {
+      title: self.title,
+      tag: self.tag,
+      img_url: self.pc_image,
+      img_url: self.mobile_image,
+      desc: self.description
+    }
+  end
+
   def to_applet_list
     {
       title: self.title,

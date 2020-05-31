@@ -1,0 +1,26 @@
+.swiper-container{
+  width: 100%;
+}
+
+.swiper-container .swiper-slide img{
+  height: auto;
+  line-height: 1;
+  max-width: 100%;
+}
+
+.swiper-pagination-bullet{
+  background: #FFFFFF none repeat scroll 0 0;
+  opacity: 1;
+}
+.swiper-pagination-bullet-active{
+  background: #FF7670 none repeat scroll 0 0;
+  border: 1px solid white;
+  opacity: 1;
+}
+
+.swiper-container.gallery-top .swiper-wrapper .swiper-slide{
+  opacity: 0.5;
+}
+.swiper-container.gallery-top .swiper-wrapper .swiper-slide-active{
+  opacity: 1;
+}
