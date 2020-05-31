@@ -30,6 +30,9 @@
 
     = f.text_field :mobile_image, style: 'display: none'
     = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '手机图片(686x340)', button_name: 'mobile-image', input_name: 'introduce_mobile_image', upload_url: file_upload_admin_introduces_path(type: 'mobile')}
+
+    = f.text_field :pc_image, style: 'display: none'
+    = render partial: 'upload_image', locals: {item: @item, image_name: 'pc_image', image_size: '电脑图片(1920x840)', button_name: 'pc-image', input_name: 'introduce_pc_image', upload_url: file_upload_admin_introduces_path(type: 'pc')}
     = f.submit '保存', class: 'btn btn-success'
 
 

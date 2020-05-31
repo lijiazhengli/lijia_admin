@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_145658) do
+ActiveRecord::Schema.define(version: 2020_05_31_114045) do
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "tag"
+    t.string "pc_image"
     t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 
@@ -254,6 +255,8 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.float "earnest_price"
     t.integer "max_count"
     t.integer "advance_days", default: 1
+    t.string "pc_front_image"
+    t.string "pc_detailed_image"
     t.index ["type"], name: "index_products_on_type"
   end
 
