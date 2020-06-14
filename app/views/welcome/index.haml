@@ -23,7 +23,10 @@
                 = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
                 .service-info-content
                   .title= item.title
-                  .desc= item.description[0..20]
+                  .desc= item.description
+                  .margin-t10
+                    %span.red-reverse-bg.btn-span 立即预约
+                    %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.count_string || 999}"
         .swiper-button-next
         .swiper-button-prev
 
@@ -32,7 +35,7 @@
     .row
       .col-md-12.center-text
         .line-title.title-font 培训课程
-        .sub-title-font 职业整理师,实操经验丰富的讲师亲自带队，现场教学
+        .sub-title-font 职业整理师，实操经验丰富的讲师亲自带队，现场教学
 
 .gray-list-content
   .container.margin-b20.margin-t20
