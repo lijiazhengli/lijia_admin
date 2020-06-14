@@ -1,6 +1,6 @@
 class Product < ActiveRecord::Base
   has_many :product_images
-  scope :active, -> { where(active: true) }
+  scope :active, -> { where(active: true).order(:position) }
 
   GOOD_TYPE = {
     'Service'    => '整理服务',
