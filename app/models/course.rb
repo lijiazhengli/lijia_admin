@@ -45,6 +45,10 @@ class Course < Product
     CourseExtend.find_or_create_by(course_id: self.id)
   end
 
+  def course_show_time
+    "#{self.show_start_date}-#{self.show_end_date}"
+  end
+
   class << self
     def get_recommend_infos(course_id)
       infos = {}
