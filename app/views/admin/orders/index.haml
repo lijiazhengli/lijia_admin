@@ -73,6 +73,7 @@
         %th 创建人
         %th 订购人
         %th 收货人（学员）信息
+        %th 产品信息
         %th 城市
         %th 状态
         %th 开始和结束日期
@@ -88,6 +89,14 @@
           %td= @admins_hash[item.admin_id]
           %td= "#{@users_hash[item.user_id]}|#{item.customer_phone_number}"
           %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
+          %td
+            - item.purchased_items.each do |sub_item|
+              - product = @product_hash[sub_item.product_id]
+              - if product
+                - if item.order_type == Order::PRODUCT_ORDER
+                  %div #{product[:title]}x#{sub_item.quantity}
+                - else
+                  %div #{product[:title]}
           %td= item.city_name
           %td= Order::STATUS[item.status]
           %td= "#{item.start_date}~#{item.end_date}"

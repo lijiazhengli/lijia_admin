@@ -20,11 +20,13 @@ class Admin::OrdersController < Admin::BaseController
       user_ids += User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
     end
     @params[:user_id_in] = user_ids
-    @q = Order.noncanceled.order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
+    @q = Order.noncanceled.includes(:purchased_items).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
     @orders = @q.result(distinct: true).page(params[:page])
     @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
     @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
+    product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id)
+    @product_hash = Product.get_product_list_hash(product_ids)
   end
 
   def new
