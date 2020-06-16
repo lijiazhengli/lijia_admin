@@ -31,6 +31,7 @@
         %th 价格
         %th 最小购买数量
         %th 首页图片
+        %th 电脑首页图片
         %th 详细页图片
         %th 是否启用
         %th 操作
@@ -45,8 +46,9 @@
           %td= item.price
           %td= item.min_count
           %td= image_tag(item.front_image || '', width: '100px')
+          %td= image_tag(item.pc_front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= item.active
+          %td= active_chinese_name(item)
           %td
             = link_to '修改', edit_admin_good_path(item)
             |

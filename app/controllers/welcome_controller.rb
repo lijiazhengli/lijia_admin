@@ -4,5 +4,6 @@ class WelcomeController < ApplicationController
   	products = Product.active
   	@services = products.select{|item| item.type == 'Service'}
   	@courses = products.select{|item| item.type == 'Course'}
+  	@goods = products.select{|item| item.type == 'Good'}
   end
 end

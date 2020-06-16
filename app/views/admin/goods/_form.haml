@@ -32,6 +32,10 @@
     = f.text_field :front_image, style: 'display: none'
     = render partial: 'upload_image', locals: {item: @good, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'good_front_image', upload_url: file_upload_admin_goods_path(type: 'front')}
 
+    .form-group
+      = f.text_field :pc_front_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_front_image', image_size: '电脑首页图片(300x200)', button_name: 'pc-front-image', input_name: 'good_pc_front_image', upload_url: file_upload_admin_goods_path(type: 'pc-front')}
+
     = f.text_field :detailed_image, style: 'display: none'
     = render partial: 'upload_image', locals: {item: @good, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'good_detailed_image', upload_url: file_upload_admin_goods_path(type: 'detailed')}
 
