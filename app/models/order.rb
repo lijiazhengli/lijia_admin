@@ -43,10 +43,10 @@ class Order < ApplicationRecord
 
   def to_applet_order_list
     attrs = self.attributes.slice(
-      "address_province", "address_city", "address_district", 'created_at',
+      "address_province", "address_city", "address_district", 'created_at', 'external_id',
       "id", 'location_address', "location_title", 'location_details', "notes",
       'order_type', "recipient_name", "recipient_phone_number", "status",
-      "wx_open_id", 
+      "wx_open_id"
     )
 
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
