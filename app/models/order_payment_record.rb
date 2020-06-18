@@ -37,8 +37,8 @@ class OrderPaymentRecord < ActiveRecord::Base
     params = {
       transaction_id: self.transaction_id,
       out_refund_no: self.batch_no,
-      total_fee: (self.pay_cost * 100).to_i,
-      refund_fee: (-self.cost * 100).to_i,
+      total_fee: (self.pay_cost * 100).round,
+      refund_fee: (-self.cost * 100).round,
     }
     result = WxPay::Service.invoke_refund params, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']}
     if result['return_code'] == "SUCCESS" && result['result_code'] == "SUCCESS"
