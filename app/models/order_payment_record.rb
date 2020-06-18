@@ -27,7 +27,7 @@ class OrderPaymentRecord < ActiveRecord::Base
 
   # 退款记录对应的支付记录的支付金额
   def pay_cost
-    OrderPaymentRecord.where("cost > ? and transaction_id=?", 0, self.transaction_id).first.try(:cost)
+    OrderPaymentRecord.where("cost > ? and transaction_id=?", 0, self.transaction_id).first.try(:cost).round(2)
   end
 
   def reimbursement
