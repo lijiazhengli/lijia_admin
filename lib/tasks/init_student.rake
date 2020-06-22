@@ -28,7 +28,7 @@ namespace :student do
     User.where(phone_number: phone_number).update_all!(zhekou: 0.6)
   end
 
-  tast :init_canceled_order_student => :environment do
+  task :init_canceled_order_student => :environment do
     o_ids = Order.where(order_type: 'Course', status: 'canceled').pluck(:id)
     Student.where(order_id: o_ids).destroy_all
   end
