@@ -9,6 +9,8 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
   belongs_to :user
 
+  has_one :student
+
   has_many :delivery_orders
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
@@ -329,6 +331,7 @@ class Order < ApplicationRecord
       order = order_hash[:order]
       paid_due = order.order_paid_due
       raise '不能取消付款记录大于0的订单' if paid_due > 0
+      order.student.destroy
       order.update!(status: 'canceled')
       order_hash[:order] = order
     end
