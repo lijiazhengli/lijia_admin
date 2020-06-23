@@ -40,3 +40,5 @@ yarn-debug.log*
 /config/application.yml
 /config/puma.rb
 yarn.lock
+
+/public/ckeditor_assets/*
