@@ -331,7 +331,7 @@ class Order < ApplicationRecord
       order = order_hash[:order]
       paid_due = order.order_paid_due
       raise '不能取消付款记录大于0的订单' if paid_due > 0
-      order.student.destroy
+      order.student.destroy if self.is_course?
       order.update!(status: 'canceled')
       order_hash[:order] = order
     end
