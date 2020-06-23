@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
   root 'welcome#index'
   #root "admin/base#admin_login"
   get 'welcome/index'

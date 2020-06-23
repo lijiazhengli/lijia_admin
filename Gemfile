@@ -58,7 +58,7 @@ gem 'jquery-fileupload-rails'
 gem 'wx_pay'
 
 gem "mini_magick"
-
+gem 'paperclip'
 gem 'ckeditor'
 
 group :development, :test do
