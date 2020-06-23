@@ -118,7 +118,8 @@ class AppletsController < ApplicationController
   end
 
   def product_show
-    product = Product.find(params[:id])
+    product = Product.find(params[:id]) rescue nil
+    product = Product.active.first if product.blank?
     request_info = {}
     request_info[:info] = product.to_applet_show
     request_info[:cart_info] = product.to_applet_list
