@@ -101,7 +101,7 @@ class Order < ApplicationRecord
     end
     return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_paid_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
-    return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
+    return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid' or self.status != 'part-paid'
     return [true, nil, nil]
   end
 
