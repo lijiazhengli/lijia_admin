@@ -34,6 +34,7 @@
         %th 首页图片
         %th 电脑首页图片
         %th 详细页图片
+        %th 电脑详细页图片
         %th 是否启用
         %th 自动创建微信付款记录
         %th 预定人数
@@ -52,6 +53,7 @@
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.pc_front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
+          %td= image_tag(item.pc_detailed_image || '', width: '100px')
           %td= active_chinese_name(item)
           %td= show_active_chinese_name(item.create_tenpay)
           %th= item.max_count

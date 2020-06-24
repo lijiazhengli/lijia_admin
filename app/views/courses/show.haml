@@ -1,0 +1,53 @@
+.banner-list-content
+  = image_tag @product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img'
+  .center-title.white-text.center-text
+    %span.line-white-title= @product.title
+
+.gray-list-content
+  .container.margin-b20
+    .row
+      .col-md-12.white-show-content.margin-nt100.course-show-content
+        .margin-t10
+          %span 培训费：
+          %span.red-text ¥#{@product.price}
+          %span.margin-l5 报名人数：
+          %span #{@product.max_count}/#{@product.available_order_count}
+        .price.price-content
+          %span.red-text ¥
+          %span.red-text.current-price= @product.earnest_price
+          %span.margin-l5.gray-text 定金
+          %span.red-reverse-bg.btn-span.right-span 立即预约
+        .margin-t10.gray-text
+          %span.with-icon-span
+            %span.icon-addicon.icon-15.left-icon
+            %span.font-small 开课城市：#{@product.city_name}
+          %span.with-icon-span.margin-l15
+            %span.icon-time.icon-15.left-icon
+            %span.font-small 时间安排：#{@product.course_short_time}
+          %span.with-icon-span.margin-l15
+            %span.icon-addicon.icon-15.left-icon
+            %span.font-small 详细地址：#{@product_extend.address}
+
+      .col-md-12.white-show-content.margin-t20.course-show-content
+        .title-content 课程介绍
+        .desc-content
+          = raw(@product.web_content)
+      .col-md-12
+        .swiper-container.pc-course-swiper.margin-t20
+          .swiper-wrapper
+            - @other_products.each do |item|
+              .col-md-3.swiper-slideF
+                .service-image-list-content.margin-t10.margin-b10.gray-shadow
+                  %a{href: "#{course_path(item)}"}
+                    = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                  .course-info-content
+                    .title= item.title
+                    .gray-text.font-small= item.course_short_time
+                    .right-span= item.city_name
+          .swiper-button-next
+          .swiper-button-prev
+
+:javascript
+  $(document).ready(function(){
+    Lijiaweb.SwiperLijia.init();
+  });

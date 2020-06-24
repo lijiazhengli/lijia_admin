@@ -1,5 +1,5 @@
 .banner-list-content
-  = image_tag @product.pc_detailed_image, title: @product.title, alt: @product.title, class: 'banner-img'
+  = image_tag @product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img'
   .center-title.white-text.center-text
     %span 整理、让生活更轻松
     %br
@@ -18,13 +18,12 @@
   .container.margin-b20.margin-t20
     .row
       .col-md-8.service-show-content
-        .title-content
-          .title=@product.title
-          .price.margin-t10.price-content
-            %span.red-text ¥
-            %span.red-text.title= @product.earnest_price
-            %span.margin-l5.gray-text 定金
-            %span.red-reverse-bg.btn-span.right-span 立即预约
+        .title=@product.title
+        .price.margin-t10.price-content
+          %span.red-text ¥
+          %span.red-text.title= @product.earnest_price
+          %span.margin-l5.gray-text 定金
+          %span.red-reverse-bg.btn-span.right-span 立即预约
         .desc-content
           = raw(@product.web_content)
 

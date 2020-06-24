@@ -4,6 +4,12 @@
   padding-bottom: 2%
   padding-top: 2%
 
+.white-show-content
+  background-color: white
+  border-radius: 10px
+  color: $lijia-font
+  padding: 15px
+
 .gray-list-content
   background-color: $lijia-bg-gray
   padding: 0px
@@ -66,16 +72,33 @@
   border-top: 2px solid $lijia-font
   display: inline-block
   vertical-align: middle
+  margin-right: 5px
 .line-title:after
   content: ""
   width: 10px
   border-top: 2px solid $lijia-font
   display: inline-block
   vertical-align: middle
-.line-title:before
-  margin-right: 5px
+  margin-left: 5px
 
-.line-title:after
+
+.line-white-title
+  color: white
+  text-align: center
+  display: inline-block
+.line-white-title:before
+  content: ""
+  width: 10px
+  border-top: 2px solid white
+  display: inline-block
+  vertical-align: middle
+  margin-right: 5px
+.line-white-title:after
+  content: ""
+  width: 10px
+  border-top: 2px solid white
+  display: inline-block
+  vertical-align: middle
   margin-left: 5px
 
 .title-font
@@ -105,14 +128,29 @@
   .center-title
     font-size: 26px
     position: absolute
-    top: 40%
+    top: 35%
     width: 100%
 
   .banner-img
     max-width: 100%
 
+.with-icon-span
+  position: relative
+  padding-left: 20px
+  .left-icon
+    position: absolute
+    top: 1px
+    left: 0
+
+.desc-content
+  margin: 20px 0
+
 .title
   font-size: 16px
+
+
+.current-price
+  font-size: 200%
 
 .rigth-span
   float: right
@@ -135,6 +173,12 @@
 
 .margin-l5
   margin-left: 5px
+
+.margin-l15
+  margin-left: 15px
+
+.margin-nt100
+  margin-top: -100px
 
 .margin-t5
   margin-top: 5px

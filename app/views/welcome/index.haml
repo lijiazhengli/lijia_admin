@@ -40,7 +40,8 @@
       .col-md-12.padding-0px
         - @courses.each do |item|
           .col-md-6.course-image-list-content.margin-t20
-            = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
+            %a{href: "#{course_path(item)}"}
+              = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
             .info-content.red-shadow
               .title= item.title
               .content

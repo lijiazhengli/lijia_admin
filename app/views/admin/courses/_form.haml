@@ -1,4 +1,4 @@
-.col-md-6
+.col-md-12
   = form_for @course, url: url do |f|
     - if @course.errors.any?
       .form-group
@@ -36,9 +36,14 @@
       = text_field_tag :course_address , params[:course_address], class: 'form-control'
 
     .form-group
-      = f.label "描述"
+      = f.label "简介"
       %br
       = f.text_area :description, class: 'form-control'
+
+    .form-group
+      = f.label "详细描述"
+      %br
+      = f.cktext_area :web_content, ckeditor: { language: 'zh-cn'}
 
     .form-group
       = f.label "*开始日期"
@@ -70,5 +75,10 @@
     .form-group
       = f.text_field :detailed_image, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @course, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'course_detailed_image', upload_url: file_upload_admin_courses_path(type: 'detailed')}
+
+    .form-group
+      = f.text_field :pc_detailed_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @course, image_name: 'pc_detailed_image', image_size: '电脑详细页图片(1920x400)', button_name: 'pc-detailed-image', input_name: 'course_pc_detailed_image', upload_url: file_upload_admin_courses_path(type: 'pc-detailed')}
+
     = f.submit '保存', class: 'btn btn-success'
 

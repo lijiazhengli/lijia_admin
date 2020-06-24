@@ -49,6 +49,10 @@ class Course < Product
     "#{self.show_start_date}-#{self.show_end_date}"
   end
 
+  def course_short_time
+    "#{self.show_start_date[5..-1]}-#{self.show_end_date[5..-1]}"
+  end
+
   class << self
     def get_recommend_infos(course_id)
       infos = {}

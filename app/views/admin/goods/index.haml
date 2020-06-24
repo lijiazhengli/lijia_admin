@@ -33,6 +33,7 @@
         %th 首页图片
         %th 电脑首页图片
         %th 详细页图片
+        %th 电脑详细页图片
         %th 是否启用
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
@@ -48,6 +49,7 @@
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.pc_front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')
+          %td= image_tag(item.pc_detailed_image || '', width: '100px')
           %td= active_chinese_name(item)
           %td
             = link_to '修改', edit_admin_good_path(item)
