@@ -11,6 +11,13 @@
       = f.text_field :title, class: 'form-control'
 
     .form-group
+      = f.label "短描述"
+      %br
+      不操过20个汉字
+      %br
+      = f.text_field :sub_title, class: 'form-control'
+
+    .form-group
       = f.label "费用"
       %br
       = f.text_field :price, class: 'form-control'

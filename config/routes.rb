@@ -129,6 +129,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :pages
+
     resources :products do
       resources :product_images do
         collection do
@@ -210,6 +212,9 @@ Rails.application.routes.draw do
   end
 
   resources :goods, only: [:index, :show] do
+  end
+
+  resources :pages, only: [:show] do
   end
 
   resources :services, only: [:index, :show] do

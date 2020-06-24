@@ -14,8 +14,8 @@
     .row
       .col-md-12.center-text
         .line-title.title-font 预约整理
-        .sub-title-font 衣橱整理、空间规划、 搬家打包、全屋整理 莉家致力于解决您的收纳难题
-      .swiper-container.pc-button-swiper.margin-t20
+        .sub-title-font.margin-t5 衣橱整理、空间规划、 搬家打包、全屋整理 莉家致力于解决您的收纳难题
+      .swiper-container.pc-button-swiper.margin-t20.hidden-xs
         .swiper-wrapper
           - @services.each do |item|
             .col-md-4.swiper-slide.md-32width
@@ -31,12 +31,25 @@
         .swiper-button-next
         .swiper-button-prev
 
+      .margin-t20.d-md-none
+        - @services.each do |item|
+          .col-md-12
+            .service-image-list-content.margin-t10.margin-b10.gray-shadow
+              %a{href: "#{service_path(item)}"}
+                = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+              .service-info-content
+                .title= item.title
+                .desc= item.description
+                .margin-t10
+                  %span.red-reverse-bg.btn-span 立即预约
+                  %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.count_string || 999}"
+
 .white-list-content
   .container.margin-b20.margin-t20
     .row
       .col-md-12.center-text
         .line-title.title-font 培训课程
-        .sub-title-font 职业整理师，实操经验丰富的讲师亲自带队，现场教学
+        .sub-title-font.margin-t5 职业整理师，实操经验丰富的讲师亲自带队，现场教学
       .col-md-12.padding-0px
         - @courses.each do |item|
           .col-md-6.course-image-list-content.margin-t20
@@ -44,11 +57,11 @@
               = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
             .info-content.red-shadow
               .title= item.title
-              .content
+              .content.margin-t10
                 %span.red-span.left-span
                   %span.icon-15.icon-marker.left-icon
                   %span.font-small= item.city_name
-                %span.margin-l5= item.course_show_time
+                %span.margin-l5= item.course_short_time
               %span.right-span.red-text.font-18px= "¥ #{item.price}"
 
 
@@ -57,7 +70,7 @@
     .row
       .col-md-12.center-text
         .line-title.title-font 收纳工具
-        .sub-title-font 合理的使用收纳工具，会让我们的整理工作更加有条理
+        .sub-title-font.margin-t5 合理的使用收纳工具，会让我们的整理工作更加有条理
       .col-md-12.padding-0px
         - @goods.each do |item|
           .col-md-3.good-image-list-content.margin-t20.gray-shadow

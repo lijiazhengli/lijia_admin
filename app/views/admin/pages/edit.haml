@@ -1,0 +1,5 @@
+%h3 修改网页
+
+= link_to '返回', admin_pages_path, class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_page_path(@item)}

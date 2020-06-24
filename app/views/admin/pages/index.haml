@@ -1,0 +1,35 @@
+%h2 网页列表
+= search_form_for @q, url: admin_pages_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :title_cont, class: "form-control", placeholder: "名称"
+  .form-group
+    = f.search_field :url_cont, class: "form-control", placeholder: "网址"
+  = f.submit '查询', class: "btn btn-secondary"
+  = link_to '新建网页', new_admin_page_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 名称
+        %th 网址
+        %th 是否启用
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.title
+          %td= item.url
+          %td= active_chinese_name(item)
+          %td
+            = link_to '修改', edit_admin_page_path(item)
+            |
+            = link_to '删除', admin_page_path(item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items
+
+
+

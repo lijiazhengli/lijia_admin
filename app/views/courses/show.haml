@@ -10,8 +10,10 @@
         .margin-t10
           %span 培训费：
           %span.red-text ¥#{@product.price}
-          %span.margin-l5 报名人数：
-          %span #{@product.max_count}/#{@product.available_order_count}
+          %span.margin-l10 报名人数：
+          %span #{@product.max_count}
+          %span /
+          %span #{@product.available_order_count}
         .price.price-content
           %span.red-text ¥
           %span.red-text.current-price= @product.earnest_price
