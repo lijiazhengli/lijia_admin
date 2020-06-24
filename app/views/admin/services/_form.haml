@@ -60,6 +60,13 @@
       = f.text_field :detailed_image, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @service, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'service_detailed_image', upload_url: file_upload_admin_services_path(type: 'detailed')}
 
+    .form-group
+      = f.text_field :pc_detailed_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @service, image_name: 'pc_detailed_image', image_size: '电脑详细页图片(1920x400)', button_name: 'pc-detailed-image', input_name: 'service_pc_detailed_image', upload_url: file_upload_admin_services_path(type: 'pc-detailed')}
+
+
+      
+
 
 
     = f.submit '保存', class: 'btn btn-success'

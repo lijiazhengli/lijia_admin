@@ -13,10 +13,13 @@ $lijia-red: #FF948C;
 $lijia-bg-gray: #FAFAFA;
 
 // 灰色文字： #666666
-$lijia-font-gray: #666666;
+$lijia-font-gray: rgba(0, 0, 0, 0.6);
 
 // 页面灰色值： #f2f2f2
 $lijia-body-gray: #f2f2f2;
+
+// 灰色分割线 #D2D2D2
+$lijia-border-gray: #D2D2D2;
 
 
 // 黑色文字颜色：#333333
@@ -38,6 +41,7 @@ $lijia-bg-black: #1B1B1B;
 @import "shared/base";
 @import "shared/base-icon";
 @import "shared/nav";
+@import "shared/service";
 
 
 @import "shared/home";
