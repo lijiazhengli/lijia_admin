@@ -28,10 +28,6 @@
             %span.icon-addicon.icon-15.left-icon
             %span.font-small 详细地址：#{@product_extend.address}
 
-      .col-md-12.white-show-content.margin-t20.course-show-content
-        .title-content 课程介绍
-        .desc-content
-          = raw(@product.web_content)
       .col-md-12
         .swiper-container.pc-course-swiper.margin-t20
           .swiper-wrapper
@@ -46,6 +42,12 @@
                     .right-span= item.city_name
           .swiper-button-next
           .swiper-button-prev
+
+      .col-md-12.white-show-content.margin-t20.course-show-content
+        .title-content 课程介绍
+        .desc-content
+          = raw(@product.web_content)
+      
 
 :javascript
   $(document).ready(function(){

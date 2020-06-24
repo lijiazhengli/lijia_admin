@@ -1,0 +1,38 @@
+.banner-list-content
+  = image_tag @product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img'
+  .center-title.white-text.center-text
+    %span.line-white-title 收纳工具、让整理更高效
+
+.gray-list-content
+  .container.margin-b20
+    .row
+      .col-md-12.white-show-content.margin-nt100.course-show-content
+        .margin-t10.title=@product.title
+        .price.price-content
+          %span.red-text ¥
+          %span.red-text.current-price= @product.price
+          %span.red-reverse-bg.btn-span.right-span 立即预约
+
+        .desc-content
+          = raw(@product.web_content)
+
+      .col-md-12
+        .swiper-container.pc-course-swiper.margin-t20
+          .swiper-wrapper
+            - @other_products.each do |item|
+              .col-md-3.swiper-slideF
+                .service-image-list-content.margin-t10.margin-b10.gray-shadow
+                  %a{href: "#{good_path(item)}"}
+                    = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                  .course-info-content
+                    .title= item.title
+                    .red-text.font-small ¥#{item.price}
+                    .right-span.icon-45.icon-cart
+          .swiper-button-next
+          .swiper-button-prev
+      
+
+:javascript
+  $(document).ready(function(){
+    Lijiaweb.SwiperLijia.init();
+  });
