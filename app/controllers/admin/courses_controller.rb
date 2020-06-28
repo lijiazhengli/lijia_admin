@@ -5,7 +5,7 @@ class Admin::CoursesController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Course.order('active desc, position asc').ransack(@params)
+    @q = Course.includes(:course_extend).order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
   end
 
@@ -42,7 +42,6 @@ class Admin::CoursesController < Admin::BaseController
     item_extend = @course.self_extend
     params[:course_address] = item_extend.address
     params[:has_student_zhekou] = item_extend.has_student_zhekou
-    
   end
 
   def destroy
