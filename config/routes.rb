@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     end
 
     resources :courses do
+      resources :course_extends
       collection do
         post :file_upload
         put :file_upload

@@ -75,6 +75,7 @@ class Order < ApplicationRecord
   end
 
   def course_show_date
+    return "#{self.start_date} 至 #{self.end_date}" if self.start_date.present? and self.end_date.present?
     course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last
     return nil if course.blank?
     "#{course.start_date} 至 #{course.end_date}"

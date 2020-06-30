@@ -66,6 +66,18 @@ class Product < ActiveRecord::Base
     if self.type == 'Course'
       info_extend = CourseExtend.find_by_course_id(self.id)
       attrs[:address] = info_extend.try(:address)
+      if info_extend.present? and info_extend.show_city_list
+        city_infos_list = info_extend.city_infos_list
+        if city_infos_list.present?
+          course_city_infos = {}
+          course_city_infos[:show_city_list] = info_extend.show_city_list
+          course_city_infos[:city_infos_list] = city_infos_list
+          course_city_infos[:course_city] = self.city_name
+          course_city_infos[:cities] = city_infos_list.keys
+          course_city_infos[:course_date] = city_infos_list[self.city_name][0]
+          attrs[:course_city_infos] = course_city_infos
+        end
+      end
       attrs[:teachers] = self.teachers.map{|item| item.to_course_list}
       attrs[:order_count] = self.available_order_count
       attrs[:other_courses] = Course.get_recommend_infos(self.id)
