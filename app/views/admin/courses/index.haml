@@ -38,6 +38,7 @@
         %th 是否启用
         %th 自动创建微信付款记录
         %th 预定人数
+        %th 是否享受学员折扣
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
       - @items.each do |item|
@@ -57,6 +58,7 @@
           %td= active_chinese_name(item)
           %td= show_active_chinese_name(item.create_tenpay)
           %th= item.max_count
+          %th= show_active_chinese_name(item.course_extend.has_student_zhekou)
           %td
             = link_to '详情', admin_course_path(item)
             |
@@ -74,4 +76,6 @@
             = link_to '订单', order_admin_course_path(item)
             |
             = link_to "详情图片", admin_product_product_images_path(item)
+            |
+            = link_to '课程额外信息', admin_course_course_extends_path(item)
   = paginate @items

@@ -9,6 +9,8 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :purchased_items, allow_destroy: true
   belongs_to :user
 
+  has_one :student
+
   has_many :delivery_orders
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
@@ -43,10 +45,10 @@ class Order < ApplicationRecord
 
   def to_applet_order_list
     attrs = self.attributes.slice(
-      "address_province", "address_city", "address_district", 'created_at',
+      "address_province", "address_city", "address_district", 'created_at', 'external_id',
       "id", 'location_address', "location_title", 'location_details', "notes",
       'order_type', "recipient_name", "recipient_phone_number", "status",
-      "wx_open_id", 
+      "wx_open_id"
     )
 
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
@@ -57,6 +59,8 @@ class Order < ApplicationRecord
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
     attrs["order_show_date"] = self.start_date if self.start_date and self.is_service?
     attrs["order_show_date"] = self.course_show_date if self.is_course?
+    attrs["order_show_city"] = self.order_show_city if self.is_course?
+    
     attrs["show_delivery_button"] = true if self.delivery_orders.size > 0
     attrs['full_address'] = self.full_address
     product_ids = self.purchased_items.pluck(:product_id).uniq
@@ -73,9 +77,16 @@ class Order < ApplicationRecord
   end
 
   def course_show_date
+    return "#{self.start_date} 至 #{self.end_date}" if self.start_date.present? and self.end_date.present?
     course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last
     return nil if course.blank?
     "#{course.start_date} 至 #{course.end_date}"
+  end
+
+  def order_show_city
+    return "#{self.city_name}" if self.city_name.present?
+    course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last
+    "#{course.city_name}"
   end
 
 
@@ -99,7 +110,7 @@ class Order < ApplicationRecord
     end
     return [false, "订单已经完成付款，请勿重复付款", 'paided'] if self.status == 'paided' or self.no_paid_due <= 0
     return [false, "抱歉您的订单已失效，如需购买请重新下单", 'canceled'] if self.status == 'canceled'
-    return [false, "付款失败，如需帮助请联系客服", nil] if self.status != 'unpaid'
+    return [false, "付款失败，如需帮助请联系客服", nil] unless ['unpaid', 'part-paid'].include?(self.status)
     return [true, nil, nil]
   end
 
@@ -329,6 +340,7 @@ class Order < ApplicationRecord
       order = order_hash[:order]
       paid_due = order.order_paid_due
       raise '不能取消付款记录大于0的订单' if paid_due > 0
+      order.student.destroy if order.is_course?
       order.update!(status: 'canceled')
       order_hash[:order] = order
     end

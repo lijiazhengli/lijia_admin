@@ -24,6 +24,9 @@
 .DS_Store
 
 /public/assets
+/public/ckeditor_assets/*
+
+
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.

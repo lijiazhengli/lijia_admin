@@ -1,0 +1,23 @@
+%h3 修改 #{@course.title} 额外信息
+
+= link_to '返回', admin_course_path, class: "btn btn-secondary"
+
+.col-md-6
+  = form_for @item, url: admin_course_course_extend_path(@course, @item) do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+
+    .form-group
+      = f.label "是否选择城市和日期"
+      = f.select :show_city_list, options_for_select({'是' => true, '否' => false}, @item.show_city_list), {}, class: 'form-control'
+
+    .form-group
+      = f.label "介绍"
+      %br
+      %span {"城市名":"1开始日期-1结束日期;2开始日期-2结束日期", "城市名2":"1开始日期-1结束日期;2开始日期-2结束日期"}， 例如：北京课程时间为：6月29-6月30，7月11-7月14，上海课程时间为：7月1-7月3， 优惠信息填写 {"北京":"06.29-06.30;07.11-07.14", "上海":"07.01-07.03"}
+      = f.text_area :city_and_date, class: 'form-control'
+
+    = f.submit '保存', class: 'btn btn-success'

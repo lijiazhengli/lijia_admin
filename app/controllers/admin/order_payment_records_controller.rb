@@ -62,7 +62,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
 
     @item = OrderPaymentRecord.find(params[:order_payment_record_id])
     cost = params[:cost].to_f
-    max_due = OrderPaymentRecord.where(transaction_id: @item.transaction_id).sum(:cost)
+    max_due = OrderPaymentRecord.where(transaction_id: @item.transaction_id).sum(:cost).round(2)
 
     if cost < 0 and max_due >= -cost and @item.create_refund_record(@admin, params)
       redirect_back(fallback_location: admin_order_order_payment_records_path(@item.order), notice: '成功')

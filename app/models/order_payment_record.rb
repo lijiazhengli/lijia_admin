@@ -27,7 +27,7 @@ class OrderPaymentRecord < ActiveRecord::Base
 
   # 退款记录对应的支付记录的支付金额
   def pay_cost
-    OrderPaymentRecord.where("cost > ? and transaction_id=?", 0, self.transaction_id).first.try(:cost)
+    OrderPaymentRecord.where("cost > ? and transaction_id=?", 0, self.transaction_id).first.try(:cost).round(2)
   end
 
   def reimbursement
@@ -37,8 +37,8 @@ class OrderPaymentRecord < ActiveRecord::Base
     params = {
       transaction_id: self.transaction_id,
       out_refund_no: self.batch_no,
-      total_fee: (self.pay_cost * 100).to_i,
-      refund_fee: (-self.cost * 100).to_i,
+      total_fee: (self.pay_cost * 100).round,
+      refund_fee: (-self.cost * 100).round,
     }
     result = WxPay::Service.invoke_refund params, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']}
     if result['return_code'] == "SUCCESS" && result['result_code'] == "SUCCESS"

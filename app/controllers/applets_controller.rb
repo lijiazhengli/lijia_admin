@@ -118,7 +118,8 @@ class AppletsController < ApplicationController
   end
 
   def product_show
-    product = Product.find(params[:id])
+    product = Product.find(params[:id]) rescue nil
+    product = Product.active.first if product.blank?
     request_info = {}
     request_info[:info] = product.to_applet_show
     request_info[:cart_info] = product.to_applet_list
@@ -507,7 +508,21 @@ class AppletsController < ApplicationController
     info[:address_city] = order_info[:address_city]
     info[:address_district] = order_info[:address_district]
     info[:order_type] = 'Course'
+    info[:city_name] = order_info[:course_city] if order_info[:course_city].present?
+    if order_info[:course_date].present?
+      course_dates = order_info[:course_date].split('-')
+      info[:start_date] = update_date_with_year(course_dates[0])
+      info[:end_date] = update_date_with_year(course_dates[1])
+      info[:start_date] = "#{Time.now.year}-#{info[:start_date][5..-1]}" if info[:start_date] > info[:end_date]
+    end
     info
+  end
+
+  def update_date_with_year(date)
+    t = Time.now
+    y_date = "#{t.year}-#{date.gsub('.', '-')}"
+    y_date = "#{t.year + 1}-#{date.gsub('.', '-')}" if y_date < t.strftime('%F')
+    y_date
   end
 
   def applet_good_base_info(order_info)
