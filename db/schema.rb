@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_214211) do
+ActiveRecord::Schema.define(version: 2020_07_02_110831) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_214211) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "pc_image"
     t.index ["ad_type", "active"], name: "index_ad_images_on_ad_type_and_active"
   end
 
@@ -101,6 +102,8 @@ ActiveRecord::Schema.define(version: 2020_06_24_214211) do
     t.decimal "gaode_lng", precision: 11, scale: 8
     t.decimal "gaode_lat", precision: 11, scale: 8
     t.boolean "has_student_zhekou", default: false
+    t.text "city_and_date"
+    t.boolean "show_city_list", default: false
     t.index ["course_id"], name: "index_course_extends_on_course_id"
   end
 

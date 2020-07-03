@@ -28,8 +28,8 @@
         %tr
           %td= item.title
           %td= item.tag
-          %td= Introduce::ITEM_TYPE[item.item_type]
-          %td= image_tag(item.mobile_image, width: '100px')
+          %td= Introduce::ITEM_TYPE[item.item_type]          
+          %td= item.mobile_image ? image_tag(item.mobile_image, width: '100px') : ''
           %td= item.pc_image ? image_tag(item.pc_image, width: '100px') : ''
           %td= active_chinese_name(item)
           %td

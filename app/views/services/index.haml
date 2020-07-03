@@ -1,0 +1,22 @@
+.banner-list-content
+  - if @ad_image
+    = image_tag @ad_image.pc_image || '', title: @ad_image.title, alt: @ad_image.title, class: 'banner-img'
+  .center-title.white-text.center-text
+    %span 整理、让生活更轻松
+    %br
+    %span.font-small Organize and make life easier
+.white-list-content
+  .container.margin-b20.margin-t20
+    .row
+      .col-md-12.center-text
+        .line-title.title-font 整理服务流程
+  .center-img
+    = image_tag 'service/sub_title.png', title: '莉家整理服务流程', alt: "莉家整理服务核心流程"
+
+
+.gray-list-content
+  .container.margin-b20.margin-t20
+    .row
+      .col-md-12.center-text
+        .line-title.title-font 整理服务
+      .col-md-12.padding-0px.margin-t20

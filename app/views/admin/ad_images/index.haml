@@ -20,6 +20,7 @@
         %th 图片类型
         %th 链接
         %th 手机图片
+        %th 电脑图片
         %th 是否启用
         %th 操作
     %tbody
@@ -28,7 +29,8 @@
           %td= item.title
           %td= AdImage::AD_TYPE[item.ad_type]
           %td= item.url
-          %td= image_tag(item.mobile_image, width: '100px')
+          %td= item.mobile_image ? image_tag(item.mobile_image, width: '100px') : ''
+          %td= item.pc_image ? image_tag(item.pc_image, width: '100px') : ''
           %td= item.active
           %td
             = link_to '修改', edit_admin_ad_image_path(item)

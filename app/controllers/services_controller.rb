@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   def index
+  	@ad_image = AdImage.where(ad_type: "web_service", active: true).last
   end
   def show
     p params
