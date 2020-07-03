@@ -72,9 +72,10 @@ class Product < ActiveRecord::Base
           course_city_infos = {}
           course_city_infos[:show_city_list] = info_extend.show_city_list
           course_city_infos[:city_infos_list] = city_infos_list
-          course_city_infos[:course_city] = self.city_name
           course_city_infos[:cities] = city_infos_list.keys
-          course_city_infos[:course_date] = city_infos_list[self.city_name][0]
+          current_city_name = self.city_name.present?  ?  self.city_name : course_city_infos[:cities][0]
+          course_city_infos[:course_city] = current_city_name
+          course_city_infos[:course_date] = city_infos_list[current_city_name][0]
           attrs[:course_city_infos] = course_city_infos
         end
       end
