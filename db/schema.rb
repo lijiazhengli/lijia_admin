@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_145658) do
+ActiveRecord::Schema.define(version: 2020_07_06_085558) do
+
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "ad_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -20,6 +41,7 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "pc_image"
     t.index ["ad_type", "active"], name: "index_ad_images_on_ad_type_and_active"
   end
 
@@ -63,12 +85,26 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.index ["orders_count"], name: "index_arrangers_on_orders_count"
   end
 
+  create_table "ckeditor_assets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "data_file_name", null: false
+    t.string "data_content_type"
+    t.integer "data_file_size"
+    t.string "data_fingerprint"
+    t.string "type", limit: 30
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_ckeditor_assets_on_type"
+  end
+
   create_table "course_extends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "course_id"
     t.string "address"
     t.decimal "gaode_lng", precision: 11, scale: 8
     t.decimal "gaode_lat", precision: 11, scale: 8
     t.boolean "has_student_zhekou", default: false
+    t.text "city_and_date"
+    t.boolean "show_city_list", default: false
+    t.text "city_and_address"
     t.index ["course_id"], name: "index_course_extends_on_course_id"
   end
 
@@ -155,6 +191,7 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "tag"
+    t.string "pc_image"
     t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 
@@ -224,6 +261,16 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.index ["start_date"], name: "index_orders_on_start_date"
   end
 
+  create_table "pages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "url", limit: 50
+    t.string "title"
+    t.text "content"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["url"], name: "index_pages_on_url"
+  end
+
   create_table "product_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "product_id"
     t.string "type"
@@ -254,6 +301,10 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.float "earnest_price"
     t.integer "max_count"
     t.integer "advance_days", default: 1
+    t.string "pc_front_image"
+    t.string "pc_detailed_image"
+    t.text "web_content"
+    t.string "sub_title"
     t.index ["type"], name: "index_products_on_type"
   end
 
@@ -333,4 +384,5 @@ ActiveRecord::Schema.define(version: 2020_04_24_145658) do
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 end

@@ -60,6 +60,7 @@ class Order < ApplicationRecord
     attrs["order_show_date"] = self.start_date if self.start_date and self.is_service?
     attrs["order_show_date"] = self.course_show_date if self.is_course?
     attrs["order_show_city"] = self.order_show_city if self.is_course?
+    attrs["order_show_address"] = self.course_show_address if self.is_course?
     
     attrs["show_delivery_button"] = true if self.delivery_orders.size > 0
     attrs['full_address'] = self.full_address
@@ -87,6 +88,14 @@ class Order < ApplicationRecord
     return "#{self.city_name}" if self.city_name.present?
     course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last
     "#{course.city_name}"
+  end
+
+  def course_show_address
+    info_extend = CourseExtend.where(course_id: self.purchased_items.pluck(:product_id).uniq).last
+    return nil if info_extend.blank?
+    return info_extend.address unless info_extend.show_city_list
+    address_lists = info_extend.city_address_info_list || {}
+    address_lists[self.city_name]
   end
 
 

@@ -10,4 +10,12 @@ class CourseExtend < ApplicationRecord
     end
     result
   end
+
+  def city_address_info_list
+    result = {}
+    if self.city_and_address.present?
+      result = JSON.parse(self.city_and_address)
+    end
+    result
+  end
 end
