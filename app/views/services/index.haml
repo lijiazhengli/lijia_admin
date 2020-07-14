@@ -19,4 +19,29 @@
     .row
       .col-md-12.center-text
         .line-title.title-font 整理服务
-      .col-md-12.padding-0px.margin-t20
+      .col-md-12.padding-0px.margin-t20.service-index-content
+        .left-content
+          - @products.each_with_index do |product, index|
+            .left-product-list.servic-left-content{class: "servic-left-#{product.id} #{'current' if index == 0}", "data-id" => "#{product.id}", :onclick =>"showOtherRightInfo('#{product.id}', 'servic')"}
+              .title= product.title
+              .sub-title= product.sub_title
+
+        - @products.each_with_index do |product, index|
+          .right-content.servic-right-content{class: "servic-right-#{product.id} #{'right-current' if index == 0}", style: "min-height: #{100*@products.size + 50}px"}
+            .title.center-text.black-text= product.title
+            .sub-title.center-text.gray-text= product.sub_title
+
+            - if product.pc_detailed_image
+              .margin-t20
+                = image_tag product.pc_detailed_image || '', title: product.title, alt: product.title, class: 'circle-img'
+            .margin-t20
+              - (product.description || '').split("\r\n").each do |info|
+                %p= info
+
+            .margin-t20.center-text
+              %a.title.black-text{href: "#{service_path(product)}"}  点击查看详细介绍 >>
+
+            .margin-t20
+              .cursor-text.red-reverse-bg.btn-100span 立即预约
+
+

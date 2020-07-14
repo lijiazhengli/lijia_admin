@@ -4,3 +4,4 @@
 //= require third/swiper.min
 
 //= require swiper_lijia
+//= require base/index
