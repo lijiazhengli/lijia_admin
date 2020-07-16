@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
-  root 'welcome#index'
+  root 'home#index'
   #root "admin/base#admin_login"
-  get 'welcome/index'
+
+  get '/information', to: "home#info"
 
   post '/wx_payment', to: 'weixin#wx_verify'
 

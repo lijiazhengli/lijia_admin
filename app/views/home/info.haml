@@ -1,0 +1,29 @@
+- if @info.present?
+  .banner-list-content
+    = image_tag @info.pc_image || '', title: @info.title, alt: @info.title, class: 'banner-img'
+.gray-list-content
+  .container.margin-b20.info-show-content
+    .row
+      .col-md-12.white-show-content.margin-nt100
+        .center-text.title-list
+          %span.info-title 莉家整理
+        .margin-t20
+          - (@info.description || '').split("\r\n").each do |info|
+            %p= info
+
+      .col-md-12.white-show-content.margin-t20
+        .center-text.title-list-nborder
+          %span.info-title 讲师介绍
+
+      .col-md-12.white-show-content.margin-t20
+        .center-text.title-list-nborder
+          %span.info-title 优秀整理团队
+
+      .col-md-12.white-show-content.margin-t20
+        .center-text.title-list-nborder
+          %span.info-title 城市加盟
+        .margin-t20
+          = image_tag @franchise.pc_image || '', title: @franchise.title, alt: @franchise.title, class: 'circle-img'
+        .margin-t20
+          - (@franchise.description || '').split("\r\n").each do |info|
+            %p= info
