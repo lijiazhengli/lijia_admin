@@ -65,7 +65,7 @@ class AppletsController < ApplicationController
     request_info = {}
     request_info[:home_introduces] = Introduce.applet_home.map{|item| item.to_applet_list}
     request_info[:team_introduces] = Introduce.applet_team.map{|item| item.to_applet_list}
-    request_info[:teacher_introduces] = Teacher.applet_home.map{|item| item.to_applet_list}
+    request_info[:teacher_introduces] = Teacher.current_active.map{|item| item.to_applet_list}
     request_info[:franchise_introduces] = Introduce.applet_franchise.limit(1).map{|item| item.to_applet_list}
     render json: request_info
   end

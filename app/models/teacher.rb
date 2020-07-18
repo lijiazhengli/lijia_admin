@@ -1,5 +1,5 @@
 class Teacher < ApplicationRecord
-  scope :applet_home, -> {where(active: true).order(:position)}
+  scope :current_active, -> {where(active: true).order(:position)}
 
   def to_applet_list
     {

@@ -11,5 +11,6 @@ class HomeController < ApplicationController
     web_info  = Introduce.web_info
     @info = web_info.select{|i| i.item_type == 'home_info'}.first
     @franchise = web_info.select{|i| i.item_type == 'franchise'}.first
+    @teachers = Teacher.current_active
   end
 end
