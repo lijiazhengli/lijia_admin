@@ -9,6 +9,9 @@ class exports.Lijiaweb.SwiperLijia
       @_binding_pc_button_swiper()
     if $('.pc-course-swiper').length > 0
       @_binding_pc_course_swiper()
+
+    if $('.mb-course-swiper').length > 0
+      @_binding_mb_course_swiper()
     if $('.page-slideshows-swiper').length > 0
       @_binding_page_slideshows_swiper()
     if $('.mobile-slideshows-swiper').length > 0
@@ -31,6 +34,15 @@ class exports.Lijiaweb.SwiperLijia
         prevEl: '.swiper-button-prev'
       slidesPerView: 4
       spaceBetween: 15
+    )
+
+  @_binding_mb_course_swiper: ->
+    pcButtonSwiper = new Swiper('.mb-course-swiper',
+      navigation:
+        nextEl: '.swiper-button-next'
+        prevEl: '.swiper-button-prev'
+      slidesPerView: 2
+      spaceBetween: 10
     )
 
   @_binding_pc_slideshows_swiper: ->

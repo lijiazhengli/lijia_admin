@@ -16,11 +16,11 @@
         .desc-content
           = raw(@product.web_content)
 
-      .col-md-12
+      .col-md-12.mb-padding-0px.d-none.d-sm-block
         .swiper-container.pc-course-swiper.margin-t20
           .swiper-wrapper
             - @other_products.each do |item|
-              .col-md-3.swiper-slideF
+              .col-xs-6.col-md-3.swiper-slide
                 .service-image-list-content.margin-t10.margin-b10.gray-shadow
                   %a{href: "#{good_path(item)}"}
                     = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
@@ -30,7 +30,22 @@
                     .right-span.icon-45.icon-cart
           .swiper-button-next
           .swiper-button-prev
-      
+
+      .col-md-12.mb-padding-0px.d-sm-none
+        .swiper-container.mb-course-swiper.margin-t20
+          .swiper-wrapper
+            - @other_products.each do |item|
+              .col-xs-6.col-md-3.swiper-slide
+                .service-image-list-content.margin-t10.margin-b10.gray-shadow
+                  %a{href: "#{good_path(item)}"}
+                    = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                  .course-info-content
+                    .title= item.title
+                    .red-text.font-small ¥#{item.price}
+                    .right-span.icon-45.icon-cart
+          .swiper-button-next
+          .swiper-button-prev
+
 
 :javascript
   $(document).ready(function(){

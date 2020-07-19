@@ -1,12 +1,14 @@
 .banner-list-content
   = image_tag @product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img'
-  .center-title.white-text.center-text
+  .center-title.white-text.center-text.d-none.d-sm-block
     %span.line-white-title= @product.title
 
 .gray-list-content
   .container.margin-b20
     .row
       .col-md-12.white-show-content.margin-nt100.course-show-content
+        .margin-t10.center-text
+          %span.title= @product.title
         .margin-t10
           %span 培训费：
           %span.red-text ¥#{@product.price}
@@ -30,11 +32,26 @@
             %span.icon-addicon.icon-15.left-icon
             %span.font-small 详细地址：#{@product_extend.address}
 
-      .col-md-12
+      .col-md-12.mb-padding-0px.d-none.d-sm-block
         .swiper-container.pc-course-swiper.margin-t20
           .swiper-wrapper
             - @other_products.each do |item|
-              .col-md-3.swiper-slideF
+              .col-xs-6.col-md-3.swiper-slide
+                .service-image-list-content.margin-t10.margin-b10.gray-shadow
+                  %a{href: "#{course_path(item)}"}
+                    = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                  .course-info-content
+                    .title= item.title
+                    .gray-text.font-small= item.course_short_time
+                    .right-span= item.city_name
+          .swiper-button-next
+          .swiper-button-prev
+
+      .col-md-12.mb-padding-0px.d-sm-none
+        .swiper-container.mb-course-swiper.margin-t20
+          .swiper-wrapper
+            - @other_products.each do |item|
+              .col-xs-6.col-md-3.swiper-slide
                 .service-image-list-content.margin-t10.margin-b10.gray-shadow
                   %a{href: "#{course_path(item)}"}
                     = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")

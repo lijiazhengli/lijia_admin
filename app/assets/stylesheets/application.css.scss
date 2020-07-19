@@ -32,8 +32,6 @@ $lijia-nav-font: #252828;
 // 黑色背景颜色：#1B1B1B
 $lijia-bg-black: #1B1B1B;
 
-@import "third/bootstrap";
-@import "third/bootstrap-dashboard";
 
 @import "third/swiper.min";
 @import "third/swiper-lijia";
@@ -46,8 +44,9 @@ $lijia-bg-black: #1B1B1B;
 @import "shared/nav";
 @import "shared/service";
 
-
+@import "xs/base";
 @import "xs/home";
+
 
 //@import "font-awesome-sprockets";
 //@import "font-awesome";
