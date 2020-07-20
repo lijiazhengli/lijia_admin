@@ -26,7 +26,7 @@
                   .title= item.title
                   .desc= item.description
                   .margin-t10
-                    %span.red-reverse-bg.btn-span 立即预约
+                    %span.red-reverse-bg.btn-span.cursor-text{:onclick =>"showAppletPop('扫码预约', '扫一扫 小程序下单预约')"} 立即预约
                     %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.count_string || 999}"
         .swiper-button-next
         .swiper-button-prev
@@ -41,7 +41,7 @@
                 .title= item.title
                 .desc= item.description
                 .margin-t10
-                  %span.red-reverse-bg.btn-span 立即预约
+                  %span.red-reverse-bg.btn-span.cursor-text{:onclick =>"showAppletPop('扫码报名', '扫一扫 小程序下单报名')"} 立即报名
                   %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.count_string || 999}"
 
 .white-list-content
@@ -79,7 +79,8 @@
             .info-content
               .title= item.title
               .red-text.font-18px= "¥ #{item.price}"
-              %span.right-span.icon-45.icon-cart
+              %span.right-span.icon-45.icon-cart.cursor-text{:onclick =>"showAppletPop('扫码订购', '扫一扫 小程序下单订购')"}
+
 
 
 :javascript

@@ -232,3 +232,45 @@
 
 .margin-b20
   margin-bottom: 20px
+
+
+.show-pop-container
+  position: fixed
+  padding-left: 0px
+  padding-right: 0px
+  z-index: 1050
+  width: 100%
+  height: 100%
+  top: 0
+  left: 0
+  bottom: 0
+  overflow-y: scroll
+  overflow-x: hidden
+  padding-bottom: 110px
+  background-color: rgba(0, 0, 0, 0.42)
+  display: none
+  .sub-content
+    background-color: white
+    margin-left: 40%
+    margin-top: 10%
+    max-width: 300px
+    max-height: 400px
+    padding: 15px
+    border-radius: 10px
+    position: relative
+    .close-btn
+      display: inline-block
+      position: absolute
+      top: -30px
+      right: 15px
+
+    .code-content
+      padding: 15px 45px
+      .code
+        border: 15px solid $lijia-right-red
+        border-radius: 5px
+        img
+          max-width: 100%
+
+
+

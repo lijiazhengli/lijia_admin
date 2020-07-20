@@ -33,7 +33,7 @@ class exports.Lijiaweb.SwiperLijia
         nextEl: '.swiper-button-next'
         prevEl: '.swiper-button-prev'
       slidesPerView: 4
-      spaceBetween: 15
+      spaceBetween: 0
     )
 
   @_binding_mb_course_swiper: ->
@@ -42,7 +42,6 @@ class exports.Lijiaweb.SwiperLijia
         nextEl: '.swiper-button-next'
         prevEl: '.swiper-button-prev'
       slidesPerView: 2
-      spaceBetween: 10
     )
 
   @_binding_pc_slideshows_swiper: ->

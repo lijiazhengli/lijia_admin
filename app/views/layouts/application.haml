@@ -42,6 +42,9 @@
           .small-font 北京顺义区林荫路誉天下别墅1期1-2栋
         .footer-right
           .contact-img
+            = image_tag('applet.jpg')
+            .small-font 微信小程序
+          .contact-img
             = image_tag('weixin.jpg')
             .small-font 微信公众号
           .contact-img
@@ -49,4 +52,17 @@
             .small-font 联系我们
       .copy
         %a.info{href: "http://www.beian.miit.gov.cn"} Copyright 2018-#{(DateTime.now + 1.year).year} 莉家整理，京ICP备18063945号-1
+
+
+    .show-pop-container#show-applet-code
+      .sub-content
+        %span.close-btn{:onclick => "closeAppletPop()"}
+          .icon-close.icon-30
+        .center-text
+          %span.info-title#pop-title 扫码购买
+        .code-content
+          .code
+            = image_tag('applet-code.png')
+        .center-text#pop-footer-msg
+          扫一扫 小程序下单购买
 
