@@ -11,7 +11,7 @@ require 'mina/rbenv'
 
 set :forward_agent, true     #使用本地的`SSH秘钥`去服务器执行`git pull`，这样`Git`上就不用设置`部署公钥`
 
-set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
+set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads', 'public/ckeditor_assets')
 set :shared_files, fetch(:shared_files, []).push('config/application.yml', 'config/database.yml', 'config/master.key', 'config/puma.rb', 'config/apiclient_cert.p12')
 
 

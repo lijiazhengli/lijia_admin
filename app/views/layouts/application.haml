@@ -23,15 +23,17 @@
   %body
     .navbar-nav.fixed-top.nav-header-container
       .pc-brown-container
-        .container
+        .container.mb-center-text
           %a.nav-logo{href: "/"}= image_tag('logo.png')
-          .nav-ul
+          .nav-ul.d-none.d-sm-block
             %li.right-li
               %a.nav-font-color{href: "/"} 首页
               %a.nav-font-color{href: "#{services_path}"} 整理服务
-              %a.nav-font-color{href: "#"} 培训课程
+              - if false
+                %a.nav-font-color{href: "#"} 培训课程
               %a.nav-font-color{href: "/information"} 品牌介绍
-              %a.nav-font-color{href: "#"} 联系我们
+              - if false
+                %a.nav-font-color{href: "#"} 联系我们
     %div{style: 'height: 50px;'}
     = yield
     .navbar-nav.nav-footer-container
@@ -52,6 +54,26 @@
             .small-font 联系我们
       .copy
         %a.info{href: "http://www.beian.miit.gov.cn"} Copyright 2018-#{(DateTime.now + 1.year).year} 莉家整理，京ICP备18063945号-1
+
+
+
+    .fixed-bottom.nav-bottom-container.d-sm-none
+      %a.nav-span-width{href: root_path}
+        %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}"}
+          = image_tag("nav/home#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}.png", class: "nav-icon")
+          %div 首页
+      %a.nav-span-width{href: services_path}
+        %span{class: "#{'current' if (%w(services).include?(params[:controller]))}"}
+          = image_tag("nav/service#{'-current' if (%w(services).include?(params[:controller]) and params[:action] == 'index')}.png", class: "nav-icon")
+          %div 整理服务
+      %a.nav-span-width{href: '/information'}
+        %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}"}
+          = image_tag("nav/info#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}.png", class: "nav-icon")
+          %div 关于莉家
+      %a.nav-span-width{href: root_path}
+        %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}"}
+          = image_tag("nav/home#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}.png", class: "nav-icon")
+          %div 经典案例
 
 
     .show-pop-container#show-applet-code
