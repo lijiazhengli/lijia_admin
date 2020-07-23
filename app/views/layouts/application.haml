@@ -64,15 +64,15 @@
           %div 首页
       %a.nav-span-width{href: services_path}
         %span{class: "#{'current' if (%w(services).include?(params[:controller]))}"}
-          = image_tag("nav/service#{'-current' if (%w(services).include?(params[:controller]) and params[:action] == 'index')}.png", class: "nav-icon")
+          = image_tag("nav/service#{'-current' if %w(services).include?(params[:controller])}.png", class: "nav-icon")
           %div 整理服务
       %a.nav-span-width{href: '/information'}
         %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}"}
           = image_tag("nav/info#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}.png", class: "nav-icon")
           %div 关于莉家
       %a.nav-span-width{href: root_path}
-        %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}"}
-          = image_tag("nav/home#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}.png", class: "nav-icon")
+        %span
+          = image_tag("nav/home.png", class: "nav-icon")
           %div 经典案例
 
 

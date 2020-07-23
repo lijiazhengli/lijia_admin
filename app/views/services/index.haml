@@ -19,7 +19,7 @@
     .row
       .col-md-12.center-text
         .line-title.title-font 整理服务
-      .col-md-12.padding-0px.margin-t20.service-index-content
+      .col-md-12.padding-0px.margin-t20.service-index-content.d-none.d-sm-block
         .left-content
           - @products.each_with_index do |product, index|
             .left-product-list.servic-left-content{class: "servic-left-#{product.id} #{'current' if index == 0}", "data-id" => "#{product.id}", :onclick =>"showOtherRightInfo('#{product.id}', 'servic')"}
@@ -43,5 +43,17 @@
 
             .margin-t20
               .cursor-text.red-reverse-bg.btn-100span.cursor-text{:onclick =>"showAppletPop('扫码预约', '扫一扫 小程序下单预约')"} 立即预约
+      .col-md-12.padding-0px.margin-t20.mb-service-index-content.d-sm-none
+        - @products.each_with_index do |item, index|
+          .mb-service-list.gray-shadow
+            %a.left-content{href: "#{service_path(item)}"}
+              = image_tag(item.front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+            .service-info-content
+              .title= item.title
+              .margin-t5.desc= item.description
+              .margin-t20
+                %span.gray-text= "已预约：#{item.count_string || 999}"
+                %span.rigth-span.red-reverse-bg.btn-span.cursor-text.margin-nt5{:onclick =>"showAppletPop('扫码预约', '扫一扫 小程序下单预约')"} 立即预约
+                
 
 

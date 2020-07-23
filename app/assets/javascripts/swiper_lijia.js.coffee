@@ -39,9 +39,10 @@ class exports.Lijiaweb.SwiperLijia
   @_binding_mb_course_swiper: ->
     pcButtonSwiper = new Swiper('.mb-course-swiper',
       navigation:
-        nextEl: '.swiper-button-next'
-        prevEl: '.swiper-button-prev'
+        nextEl: '.mb-swiper-button-next'
+        prevEl: '.mb-swiper-button-prev'
       slidesPerView: 2
+      spaceBetween: 0
     )
 
   @_binding_pc_slideshows_swiper: ->

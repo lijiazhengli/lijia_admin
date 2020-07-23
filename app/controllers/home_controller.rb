@@ -4,6 +4,7 @@ class HomeController < ApplicationController
     products = Product.active
     @services = products.select{|item| item.type == 'Service'}
     @courses = products.select{|item| item.type == 'Course'}
+    @courses_extends = CourseExtend.where(course_id: @courses.map(&:id))
     @goods = products.select{|item| item.type == 'Good'}
   end
 

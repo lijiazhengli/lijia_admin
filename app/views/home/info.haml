@@ -28,11 +28,12 @@
       .col-md-12.white-show-content.margin-t20
         .center-text.title-list-nborder
           %span.info-title 优秀整理团队
-        .col-md-12.margin-t20
+        .col-md-12.margin-t20.mb-padding-0px.mb-margin-t10
           - @teams.each do |item|
             .service-list-content.circle-img
               .teacher-info-list.introduct-info-list
-                = image_tag item.pc_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img'
+                = image_tag item.pc_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-none d-sm-block'
+                = image_tag item.mobile_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-sm-none'
                 .right-content
                   .title.margin-t20
                     %span.teacher-name= item.title
@@ -42,7 +43,7 @@
       .col-md-12.white-show-content.margin-t20
         .center-text.title-list-nborder
           %span.info-title 城市加盟
-        .margin-t20
+        .margin-t20.mb-margin-t10
           = image_tag @franchise.pc_image || '', title: @franchise.title, alt: @franchise.title, class: 'circle-img'
         .margin-t20
           - (@franchise.description || '').split("\r\n").each do |info|

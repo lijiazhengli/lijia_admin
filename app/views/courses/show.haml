@@ -21,16 +21,19 @@
           %span.red-text.current-price= @product.earnest_price
           %span.margin-l5.gray-text 定金
           %span.red-reverse-bg.btn-span.right-span.cursor-text{:onclick =>"showAppletPop('扫码报名', '扫一扫 小程序下单报名')"} 立即预约
-        .margin-t10.gray-text
-          %span.with-icon-span
-            %span.icon-addicon.icon-15.left-icon
-            %span.font-small 开课城市：#{@product.city_name}
-          %span.with-icon-span.margin-l15
-            %span.icon-time.icon-15.left-icon
-            %span.font-small 时间安排：#{@product.course_short_time}
-          %span.with-icon-span.margin-l15
-            %span.icon-addicon.icon-15.left-icon
-            %span.font-small 详细地址：#{@product_extend.address}
+        - if @product_extend and @product_extend.show_city_list
+
+        - else
+          .margin-t10.gray-text
+            %span.with-icon-span
+              %span.icon-addicon.icon-15.left-icon
+              %span.font-small 开课城市：#{@product.city_name}
+            %span.with-icon-span.margin-l15
+              %span.icon-time.icon-15.left-icon
+              %span.font-small 时间安排：#{@product.course_short_time}
+            %span.with-icon-span.margin-l15
+              %span.icon-addicon.icon-15.left-icon
+              %span.font-small 详细地址：#{@product_extend.address}
 
       .col-md-12.mb-padding-0px.d-none.d-sm-block
         .swiper-container.pc-course-swiper.margin-t20
@@ -59,8 +62,8 @@
                     .title= item.title
                     .gray-text.font-small= item.course_short_time
                     .right-span= item.city_name
-          .swiper-button-next
-          .swiper-button-prev
+          .swiper-button-next.mb-swiper-button-next
+          .swiper-button-prev.mb-swiper-button-prev
 
       .col-md-12.white-show-content.margin-t20.course-show-content
         .title-content 课程介绍
