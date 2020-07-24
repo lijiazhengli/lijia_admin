@@ -28,8 +28,9 @@
                     .title= item.title
                     .red-text.font-small ¥#{item.price}
                     .right-span.icon-45.icon-cart.cursor-text{:onclick =>"showAppletPop('扫码订购', '扫一扫 小程序下单订购')"}
-          .swiper-button-next
-          .swiper-button-prev
+          - if @other_products.length > 4
+            .swiper-button-next
+            .swiper-button-prev
 
       .col-xs-12.col-md-12.mb-padding-0px.d-sm-none
         .swiper-container.mb-course-swiper.margin-t20
@@ -43,8 +44,9 @@
                     .title= item.title
                     .red-text.font-small ¥#{item.price}
                     .right-span.icon-45.icon-cart.cursor-text{:onclick =>"showAppletPop('扫码订购', '扫一扫 小程序下单订购')"}
-          .mb-swiper-button-next.swiper-button-next
-          .mb-swiper-button-prev.swiper-button-prev
+          - if @other_products.length > 2
+            .mb-swiper-button-next.swiper-button-next
+            .mb-swiper-button-prev.swiper-button-prev
 
 
 :javascript

@@ -15,7 +15,7 @@
       .col-md-12.center-text
         .line-title.title-font 预约整理
         .sub-title-font.margin-t5 衣橱整理、空间规划、 搬家打包、全屋整理 莉家致力于解决您的收纳难题
-      .swiper-container.pc-button-swiper.margin-t20.hidden-xs
+      .swiper-container.pc-button-swiper.margin-t20.d-none.d-sm-block
         .swiper-wrapper
           - @services.each do |item|
             .col-md-4.swiper-slide.md-32width
@@ -69,7 +69,7 @@
           .col-md-6.course-image-list-content.margin-t20
             %a{href: "#{course_path(item)}"}
               = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
-            .info-content.red-shadow
+            .info-content.red-shadow{:onclick =>"showAppletPop('扫码报名', '扫一扫 小程序下单报名')"}
               .title= item.title
               - sub_item = @courses_extends.select{|i| i.course_id == item.id}.first
               - if sub_item and sub_item.show_city_list

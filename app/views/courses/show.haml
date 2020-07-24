@@ -45,10 +45,16 @@
                     = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
                   .course-info-content
                     .title= item.title
-                    .gray-text.font-small= item.course_short_time
-                    .right-span= item.city_name
-          .swiper-button-next
-          .swiper-button-prev
+                    - sub_item = @courses_extends.select{|i| i.course_id == item.id}.first
+                    - if sub_item and sub_item.show_city_list
+                      %span.red-text= "¥ #{item.price}"
+                    - else
+                      .gray-text.font-small= item.course_short_time
+                      .right-span= item.city_name
+
+          - if @other_products.length > 4
+            .swiper-button-next
+            .swiper-button-prev
 
       .col-md-12.mb-padding-0px.d-sm-none
         .swiper-container.mb-course-swiper.margin-t20
@@ -60,10 +66,15 @@
                     = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
                   .course-info-content
                     .title= item.title
-                    .gray-text.font-small= item.course_short_time
-                    .right-span= item.city_name
-          .swiper-button-next.mb-swiper-button-next
-          .swiper-button-prev.mb-swiper-button-prev
+                    - sub_item = @courses_extends.select{|i| i.course_id == item.id}.first
+                    - if sub_item and sub_item.show_city_list
+                      %span.red-text= "¥ #{item.price}"
+                    - else
+                      .gray-text.font-small= item.course_short_time
+                      .right-span= item.city_name
+          - if @other_products.length > 2
+            .swiper-button-next.mb-swiper-button-next
+            .swiper-button-prev.mb-swiper-button-prev
 
       .col-md-12.white-show-content.margin-t20.course-show-content
         .title-content 课程介绍
