@@ -39,7 +39,7 @@ class Admin::IntroducesController < Admin::BaseController
   end
 
   def file_upload
-    file_upload_to_qiniu('introduces/')
+    file_upload_to_qiniu('introduces')
   end
 
   private

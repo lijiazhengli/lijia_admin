@@ -39,7 +39,7 @@ class Admin::AdImagesController < Admin::BaseController
   end
 
   def file_upload
-    file_upload_to_qiniu('ad_image/')
+    file_upload_to_qiniu('ad_image')
   end
 
   private

@@ -27,13 +27,18 @@
           %a.nav-logo{href: "/"}= image_tag('logo.png')
           .nav-ul.d-none.d-sm-block
             %li.right-li
-              %a.nav-font-color{href: "/"} 首页
-              %a.nav-font-color{href: "#{services_path}"} 整理服务
+              %a.nav-font-color{href: "/"}
+                %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}"} 首页
+              %a.nav-font-color{href: "#{services_path}"}
+                %span{class: "#{'current' if (%w(services).include?(params[:controller]))}"} 整理服务
               - if false
-                %a.nav-font-color{href: "#"} 培训课程
-              %a.nav-font-color{href: "/information"} 品牌介绍
+                %a.nav-font-color{href: "#"}
+                  %span 培训课程
+              %a.nav-font-color{href: "/information"}
+                %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}"} 品牌介绍
               - if false
-                %a.nav-font-color{href: "#"} 联系我们
+                %a.nav-font-color{href: "#"}
+                  %span 联系我们
     %div{style: 'height: 50px;'}
     = yield
     .navbar-nav.nav-footer-container

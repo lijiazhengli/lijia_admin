@@ -34,7 +34,7 @@ class Admin::TeachersController < Admin::BaseController
   end
 
   def file_upload
-    file_upload_to_qiniu('teacher/')
+    file_upload_to_qiniu('teacher')
   end
 
   private

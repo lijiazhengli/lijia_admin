@@ -30,7 +30,7 @@
           %span.info-title 优秀整理团队
         .col-md-12.margin-t20.mb-padding-0px.mb-margin-t10
           - @teams.each do |item|
-            .service-list-content.circle-img
+            .service-list-content.circle-img.margin-t20
               .teacher-info-list.introduct-info-list
                 = image_tag item.pc_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-none d-sm-block'
                 = image_tag item.mobile_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-sm-none'
