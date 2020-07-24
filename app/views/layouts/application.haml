@@ -75,10 +75,11 @@
         %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}"}
           = image_tag("nav/info#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}.png", class: "nav-icon")
           %div 关于莉家
-      %a.nav-span-width{href: root_path}
-        %span
-          = image_tag("nav/home.png", class: "nav-icon")
-          %div 经典案例
+      - if false
+        %a.nav-span-width{href: root_path}
+          %span
+            = image_tag("nav/home.png", class: "nav-icon")
+            %div 经典案例
 
 
     .show-pop-container#show-applet-code
