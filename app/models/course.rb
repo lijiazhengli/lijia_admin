@@ -11,7 +11,7 @@ class Course < Product
   scope :applet_home, -> {where(active: true).order(:position)}
 
   def to_applet_list
-    {
+    attrs = {
       id: self.id,
       title: self.title,
       desc: self.description,
@@ -21,6 +21,9 @@ class Course < Product
       end_date: self.end_date,
       img_url: self.front_image
     }
+    info_extend = self.self_extend
+    attrs[:show_city_list] = true  if info_extend.present? and info_extend.show_city_list
+    attrs
   end
 
   def get_desc_title

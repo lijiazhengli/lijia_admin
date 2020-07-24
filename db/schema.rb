@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_02_110831) do
+
+ActiveRecord::Schema.define(version: 2020_07_06_085558) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -104,6 +105,7 @@ ActiveRecord::Schema.define(version: 2020_07_02_110831) do
     t.boolean "has_student_zhekou", default: false
     t.text "city_and_date"
     t.boolean "show_city_list", default: false
+    t.text "city_and_address"
     t.index ["course_id"], name: "index_course_extends_on_course_id"
   end
 
