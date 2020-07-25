@@ -18,7 +18,8 @@
         - @teachers.each do |item|
           .col-md-6.teacher-list-content
             .teacher-info-list.width-red-shadow
-              = image_tag item.mobile_image || '', title: item.name + item.tag, alt: item.name + item.tag, class: 'left-img circle-img'
+              .left-img
+                = image_tag item.mobile_image || '', title: item.name + item.tag, alt: item.name + item.tag, class: 'circle-img'
               .right-content
                 .title
                   %span.teacher-name= item.name
