@@ -12,7 +12,7 @@ class Service < Product
   end
 
   def show_count_string
-    self.count_string return self.count_string.present?
+    return self.count_string if self.count_string.present?
     '999次'
   end
 end
