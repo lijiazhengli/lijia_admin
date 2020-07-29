@@ -23,8 +23,9 @@
               .right-content
                 .title
                   %span.teacher-name= item.name
-                  %span.teacher-tag.margin-l5= item.tag
-                .content.margin-t10= item.introduce
+                  %span.teacher-tag.margin-l5.d-none.d-sm-block= item.tag
+                .red-text.margin-t10.d-sm-none= item.tag
+                .content.margin-t10.d-none.d-sm-block= item.introduce
 
       .col-md-12.white-show-content.margin-t20
         .center-text.title-list-nborder
@@ -38,12 +39,13 @@
                 .right-content
                   .title.margin-t20
                     %span.teacher-name= item.title
-                    %span.teacher-tag.margin-l5= item.tag
+                    - if item.tag.present?
+                      %span.teacher-tag.margin-l5= item.tag
                   .content.margin-t10= item.description
         
       .col-md-12.white-show-content.margin-t20
         .center-text.title-list-nborder
-          %span.info-title 城市加盟
+          %span.info-title 合伙人扶持计划
         .margin-t20.mb-margin-t10
           = image_tag @franchise.pc_image || '', title: @franchise.title, alt: @franchise.title, class: 'circle-img'
         .margin-t20
