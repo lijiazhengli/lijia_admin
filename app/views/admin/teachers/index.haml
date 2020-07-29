@@ -15,8 +15,9 @@
     %thead
       %tr
         %th 姓名
-        %td 标签
-        %td 头像
+        %th 标签
+        %th 手机版标签
+        %th 头像
         %th 是否启用
         %th 操作
     %tbody
@@ -24,6 +25,7 @@
         %tr
           %td= item.name
           %td= item.tag
+          %td= item.web_tag
           %td= image_tag(item.mobile_image || '', width: '100px')
           %td= item.active
           %td
