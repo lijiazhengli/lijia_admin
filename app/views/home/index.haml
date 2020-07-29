@@ -27,7 +27,7 @@
                   .desc= item.description
                   .margin-t10
                     %span.red-reverse-bg.btn-span.cursor-text{:onclick =>"showAppletPop('扫码预约', '扫一扫 小程序下单预约')"} 立即预约
-                    %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.count_string || 999}"
+                    %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.show_count_string || 999}"
         .swiper-button-next
         .swiper-button-prev
 
@@ -44,7 +44,7 @@
                   .desc= item.description
                   .margin-t10
                     %span.red-reverse-bg.btn-span.cursor-text{:onclick =>"showAppletPop('扫码报名', '扫一扫 小程序下单报名')"} 立即报名
-                    %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.count_string || 999}"
+                    %span.rigth-span.gray-text.margin-t5= "服务已预约：#{item.show_count_string || 999}"
       - else
         .margin-t20.padding-0px.d-sm-none.mb-service-index-content
           - @services.each do |item|
@@ -55,7 +55,7 @@
                 .title= item.title
                 .margin-t5.desc= item.description
                 .margin-t20
-                  %span.gray-text= "已预约：#{item.count_string || 999}"
+                  %span.gray-text= "已预约：#{item.show_count_string || 999}"
                   %span.rigth-span.red-reverse-bg.btn-span.cursor-text.margin-nt5{:onclick =>"showAppletPop('扫码预约', '扫一扫 小程序下单预约')"} 立即预约
 
 .white-list-content
@@ -98,7 +98,7 @@
             .info-content
               .title= item.title
               .red-text.font-18px= "¥ #{item.price}"
-              %span.right-span.icon-45.icon-cart.cursor-text{:onclick =>"showAppletPop('扫码订购', '扫一扫 小程序下单订购')"}
+              %span.right-span.icon-30.icon-cart.cursor-text{:onclick =>"showAppletPop('扫码订购', '扫一扫 小程序下单订购')"}
 
 
 
