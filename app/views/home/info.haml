@@ -1,7 +1,7 @@
 - if @info.present?
   .banner-list-content
     = image_tag @info.pc_image || '', title: @info.title, alt: @info.title, class: 'banner-img d-none d-sm-block'
-    = image_tag @info.mobile_image || '', title: @info.title, alt: @info.title, class: 'banner-img d-sm-none'
+    = image_tag @info.pc_image || '', title: @info.title, alt: @info.title, class: 'banner-img d-sm-none'
 .gray-list-content
   .container.margin-b20.info-show-content
     .row
