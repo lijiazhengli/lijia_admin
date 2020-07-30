@@ -512,7 +512,7 @@ class AppletsController < ApplicationController
     if order_info[:course_date].present?
       course_dates = order_info[:course_date].split('-')
       info[:start_date] = update_date_with_year(course_dates[0])
-      info[:end_date] = update_date_with_year(course_dates[1])
+      info[:end_date] = update_date_with_year(course_dates[1] || course_dates[0])
       info[:start_date] = "#{Time.now.year}-#{info[:start_date][5..-1]}" if info[:start_date] > info[:end_date]
     end
     info
