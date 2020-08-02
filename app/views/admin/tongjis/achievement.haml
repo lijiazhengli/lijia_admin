@@ -1,0 +1,59 @@
+%h2 业绩及绩效
+%h5 说明
+%p 1. 查询结果，不包含取消订单
+= render :partial => '/admin/orders/search', :locals => {url: achievement_admin_tongjis_path, order_list: false}
+
+
+%div 总计: #{@results.keys.size}
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 姓名
+        %th 电话
+        %th 类型
+        %th 整理服务金额(业绩)
+        %th 课程金额(业绩)
+        %th 收纳工具金额(业绩)
+        %th 业绩总计
+        %th 整理服务金额(提成)
+        %th 课程金额(提成)
+        %th 收纳工具金额(提成)
+        %th 提成总计
+
+    %tbody
+      - @results.each do |phone_number, item|
+        - user = @users.select{|i| i.phone_number == phone_number}.first
+        %tr
+          %td= user.try(:name)
+          %td= User::STATUS[user.try(:status) || 1]
+          %td= phone_number
+          - yeji_count = 0
+          - ["service", 'course', 'product'].each do |pre|
+            - item_name = (pre + '_yeji_order_ids').to_sym
+            %td
+              - if item[item_name].present?
+                - sum = OrderPaymentRecord.tongji.where(order_id: item[item_name]).sum(:cost).round(2)
+                - yeji_count += sum
+                = sum
+              - else
+                = 0
+          %td= yeji_count
+
+          - ticheng_count = 0
+          - ["service", 'course', 'product'].each do |pre|
+            - item_name = (pre + '_ticheng_order_ids').to_sym
+            %td
+              - if item[item_name].present?
+                - order_ids = item[item_name].dup
+                - sum = 0
+                - @per_infos.each do |info|
+                  - cur_order_ids = info.item_type != 'Base' ? (order_ids && [info.item_id]) : order_ids
+                  - sum = (OrderPaymentRecord.tongji.where(order_id: cur_order_ids).sum(:cost) * info.send("status_#{user.try(:status) || 1}"))
+                  - order_ids -= cur_order_ids
+                - sum = (sum/100).round(2)
+                - ticheng_count += sum
+                = sum
+              - else
+                = 0
+          %td= ticheng_count

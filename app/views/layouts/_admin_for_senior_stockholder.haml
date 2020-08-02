@@ -31,6 +31,9 @@
   = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and !%w(accounting).include?(params[:action])}"
 
 %li.nav-item
+  = link_to '业绩及提成', achievement_admin_tongjis_path, class: "nav-link #{'active' if params[:controller] == 'admin/tongjis' and %w(achievement).include?(params[:action])}"
+
+%li.nav-item
   = link_to '订单收入', accounting_admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and %w(accounting).include?(params[:action])}"
 
 %li.nav-item

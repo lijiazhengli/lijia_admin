@@ -8,7 +8,7 @@
   .form-group
     = text_field_tag :customer_name_cont, params[:customer_name_cont], class: "form-control", placeholder: "订购人"
   .form-group
-    = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
+    = text_field_tag :customer_phone_number_cont, params[:customer_phone_number_cont], class: "form-control", placeholder: "订购人电话"
   .form-group
     = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
   .form-group
@@ -29,6 +29,12 @@
     = f.date_field :start_date_gteq, class: "form-control"
     = f.label "截止日期"
     = f.date_field :end_date_lteq, class: "form-control"
+
+  .form-group
+    = f.label "创建时间起"
+    = f.date_field :created_at_gteq, class: "form-control"
+    = f.label "创建时间止"
+    = f.date_field :created_at_lteq, class: "form-control"
 
   .form-group
     = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"

@@ -5,6 +5,7 @@ class OrderPaymentRecord < ActiveRecord::Base
   scope :tenpay_method, -> {where(payment_method_id: Order::TENPAY_ID)}
   scope :paid, -> {where.not(timestamp: nil)}
   scope :unpaid, -> {where(timestamp: nil)}
+  scope :tongji, -> {where.not(payment_method_id: 7)}
 
   def payment_name
     OrderPaymentRecord::PAYMENT_METHOD_ID[self.payment_method_id]

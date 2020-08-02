@@ -43,6 +43,49 @@ class Order < ApplicationRecord
 
   CURRENT_STATUS = %w(unpaid paided part-paid confirming confirmed on_the_road completed)
 
+
+
+  def self.search_result(params, default_create = false)
+    params[:sort_type] ||= 'id'
+    params[:sort_order_type] ||= 'desc'
+
+    @params = params[:q] || {}
+    if params[:order_type].present?
+      @params[:order_type_eq] = params[:order_type]
+    end
+
+    if default_create
+      @params[:created_at_gteq] ||= (Time.now-1.day).strftime("%F")
+    end
+
+    user_ids = []
+
+    product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
+
+    if params[:user_id].present?
+      user_ids << params[:user_id].to_i
+      @params[:customer_phone_number_cont] = (User.find(params[:user_id]).phone_number rescue '')
+    end
+    if params[:customer_name_cont].present?
+      user_ids += User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
+    end
+
+    if params[:customer_phone_number_cont].present?
+      user_ids += User.ransack(phone_number_cont: params[:customer_phone_number_cont]).result(distinct: true).pluck(:id).uniq
+    end
+    @params[:user_id_in] = user_ids
+    if product_ids.present?
+      @q = Order.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order("orders.#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
+    else
+      @q = Order.noncanceled.includes(:purchased_items).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
+    end
+
+    orders = @q.result(distinct: true)
+    orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
+
+    return [orders, @params, @q]
+  end
+
   def to_applet_order_list
     attrs = self.attributes.slice(
       "address_province", "address_city", "address_district", 'created_at', 'external_id',

@@ -171,6 +171,12 @@ Rails.application.routes.draw do
         patch :file_upload
       end
     end
+
+    resources :tongjis, only: [:index] do
+      collection do
+        get :achievement
+      end
+    end
     resources :users
   end
 

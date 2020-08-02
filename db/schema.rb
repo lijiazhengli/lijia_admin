@@ -274,8 +274,8 @@ ActiveRecord::Schema.define(version: 2020_08_02_082753) do
   end
 
   create_table "percent_infos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "item_type"
-    t.string "item_id"
+    t.string "item_type"
+    t.integer "item_id"
     t.text "extend"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
