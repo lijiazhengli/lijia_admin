@@ -65,6 +65,18 @@
       = f.label "推荐电话"
       %br
       = f.text_field :referral_phone_number, class: 'form-control'
+
+
+    - if [Order::SERVICE_ORDER].include?(@order.order_type)
+      .form-group
+        = f.label '组织人'
+        %br
+        = f.text_field :organizer_name, class: 'form-control'
+
+      .form-group
+        = f.label '组织人电话'
+        %br
+        = f.text_field :organizer_phone_number, class: 'form-control'
     - if [Order::SERVICE_ORDER, Order::PRODUCT_ORDER].include?(@order.order_type)
 
       .form-group

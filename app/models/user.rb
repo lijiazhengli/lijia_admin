@@ -5,6 +5,7 @@ class User < ApplicationRecord
   COURSE_STUDENT_ZHEKOU = 0.8
   PARTNER_ZHEKOU = 0.6
   ZHEKOU = {1 => '普通客人', 0.8 => '学员', 0.6 => '合伙人'}
+  STATUS = {1 => '普通客人', 2 => '学员', 3 => '城市合伙人', 4 => '事业合伙人', 5 => '战略合伙人'}
 
   def get_applet_sex
     self.sex ? "#{self.sex}" : '0'

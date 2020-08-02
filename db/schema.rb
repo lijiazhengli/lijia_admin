@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_29_180802) do
+ActiveRecord::Schema.define(version: 2020_08_02_082753) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -255,6 +255,8 @@ ActiveRecord::Schema.define(version: 2020_07_29_180802) do
     t.string "address_district"
     t.string "applet_form_id"
     t.float "zhekou", default: 1.0
+    t.string "organizer_phone_number"
+    t.string "organizer_name"
     t.index ["external_id"], name: "index_orders_on_external_id"
     t.index ["order_type"], name: "index_orders_on_order_type"
     t.index ["purchase_source"], name: "index_orders_on_purchase_source"
@@ -269,6 +271,15 @@ ActiveRecord::Schema.define(version: 2020_07_29_180802) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["url"], name: "index_pages_on_url"
+  end
+
+  create_table "percent_infos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "item_type"
+    t.string "item_id"
+    t.text "extend"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_type", "item_id"], name: "index_percent_infos_on_item_type_and_item_id"
   end
 
   create_table "product_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -380,6 +391,7 @@ ActiveRecord::Schema.define(version: 2020_07_29_180802) do
     t.string "address_district"
     t.string "avatar"
     t.float "zhekou", default: 1.0
+    t.integer "status", default: 1
     t.index ["phone_number"], name: "index_users_on_phone_number"
     t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"

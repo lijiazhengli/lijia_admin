@@ -1,0 +1,2 @@
+class PercentInfo < ApplicationRecord
+end

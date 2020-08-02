@@ -1,0 +1,53 @@
+= search_form_for @q, url: url, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
+  .form-group
+  = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: '产品sku，多个产品sku请用英文逗号分割', style: "width: 320px"
+  .form-group
+    = f.search_field :location_address_cont, class: "form-control", placeholder: "地址"
+  .form-group
+    = text_field_tag :customer_name_cont, params[:customer_name_cont], class: "form-control", placeholder: "订购人"
+  .form-group
+    = f.search_field :customer_phone_number_cont, class: "form-control", placeholder: "订购人电话"
+  .form-group
+    = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
+  .form-group
+    = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
+
+  .form-group
+    = f.search_field :recipient_name_cont, class: "form-control", placeholder: "收货人/学员"
+  .form-group
+    = f.search_field :recipient_phone_number_cont, class: "form-control", placeholder: "收货人/学员电话"
+
+  .form-group
+    = f.search_field :organizer_name_cont, class: "form-control", placeholder: "组织人"
+  .form-group
+    = f.search_field :organizer_phone_number_cont, class: "form-control", placeholder: "组织人电话"
+
+  .form-group
+    = f.label "开始日期"
+    = f.date_field :start_date_gteq, class: "form-control"
+    = f.label "截止日期"
+    = f.date_field :end_date_lteq, class: "form-control"
+
+  .form-group
+    = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
+
+  .form-group
+    = f.label '创建人'
+    = select_tag "q[admin_id_eq]", options_for_select(Admin.pluck(:user_name, :id).to_h, @params[:admin_id_eq]), include_blank: true, class: "form-control"
+
+  .form-group
+    = f.label '订单状态'
+    = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+  .form-group
+    = f.label '订单类型'
+    = select_tag "q[order_type_eq]", options_for_select(Order::ORDER_TYPE.invert, @params[:order_type_eq]), include_blank: true, class: "form-control"
+  - if order_list
+    .form-group
+      = f.label '排序方式'
+      = select_tag "sort_type", options_for_select({'创建时间' => 'id', '修改时间' => 'updated_at'}, params[:sort_type]), include_blank: false, class: "form-control"
+      = select_tag "sort_order_type", options_for_select({'降序' => 'desc', '升序' => 'asc'}, params[:sort_order_type]), include_blank: false, class: "form-control"
+
+  = f.submit '查询', class: "btn btn-secondary"
