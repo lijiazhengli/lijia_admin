@@ -48,7 +48,7 @@
                 - order_ids = item[item_name].dup
                 - sum = 0
                 - @per_infos.each do |info|
-                  - cur_order_ids = info.item_type != 'Base' ? (order_ids && [info.item_id]) : order_ids
+                  - cur_order_ids = info.item_type != 'Base' ? [info.item_id] : order_ids
                   - sum = (OrderPaymentRecord.tongji.where(order_id: cur_order_ids).sum(:cost) * info.send("status_#{user.try(:status) || 1}"))
                   - order_ids -= cur_order_ids
                 - sum = (sum/100).round(2)

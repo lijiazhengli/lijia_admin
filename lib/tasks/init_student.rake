@@ -32,4 +32,13 @@ namespace :student do
     o_ids = Order.where(order_type: 'Course', status: 'canceled').pluck(:id)
     Student.where(order_id: o_ids).destroy_all
   end
+
+  task :init_student_by_order => :environment do
+    Order.where(order_type: "Course").noncanceled.each do |order|
+      Order.create_course_student({order: order}, {})
+      if order.status == 'completed'
+        Order.update_student_user_zhekou({order: order}, {})
+      end
+    end
+  end
 end

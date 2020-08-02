@@ -417,19 +417,21 @@ class Order < ApplicationRecord
       return if order.order_type != Order::COURSE_ORDER
       return if CourseExtend.where(course_id: order.purchased_items.pluck(:product_id), has_student_zhekou: true).empty?
       student = Student.where(order_id: order.id).first
-      user = order.user
-      user.update!(zhekou: COURSE_STUDENT_ZHEKOU) if student.phone_number == user.phone_number and user.zhekou > COURSE_STUDENT_ZHEKOU
-      order_hash[:user] = user
+      user = student.user
+      user.update!(zhekou: COURSE_STUDENT_ZHEKOU) if user.zhekou > COURSE_STUDENT_ZHEKOU
+      user.update!(status: 2) if user.status == 1
+      student.update(user_id: user.id)
+      order_hash[:student_user] = user
     end
 
     def create_course_student order_hash, params
       order = order_hash[:order]
-      user = order_hash[:user]
-      raise '不能创建学员' if order.blank? or user.blank?
+      raise '不能创建学员' if order.blank? or order.recipient_phone_number.blank?
       order.purchased_items.each do |item|
         course = Course.find(item.product_id)
-        student = Student.where(course_id: course.id, user_id: user.id,  order_id: order.id).first_or_create
-        student.update!(notes: order.notes, city_name: order.city_name, name: order.customer_name, phone_number: user.phone_number)
+        user = User.find_or_create_source_user(order.recipient_phone_number, 'course_order', {})
+        student = Student.where(course_id: course.id, user_id: user.id, order_id: order.id).first_or_create
+        student.update!(notes: order.notes, city_name: order.city_name, name: order.recipient_name, phone_number: order.recipient_phone_number)
         order_hash[:student] = student
       end
     end
