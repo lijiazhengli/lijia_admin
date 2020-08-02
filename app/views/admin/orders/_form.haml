@@ -50,16 +50,16 @@
         %br
         = f.text_field :customer_phone_number, class: 'form-control'
 
-    - if @order.order_type == Order::COURSE_ORDER
-      .form-group
-        = f.label '*学员名称'
-        %br
-        = f.text_field :recipient_name, class: 'form-control'
+      - if @order.order_type == Order::COURSE_ORDER
+        .form-group
+          = f.label '*学员名称'
+          %br
+          = f.text_field :recipient_name, class: 'form-control'
 
-      .form-group
-        = f.label '*学员电话'
-        %br
-        = f.text_field :recipient_phone_number, class: 'form-control'
+        .form-group
+          = f.label '*学员电话'
+          %br
+          = f.text_field :recipient_phone_number, class: 'form-control'
 
     .form-group
       = f.label "推荐人"
