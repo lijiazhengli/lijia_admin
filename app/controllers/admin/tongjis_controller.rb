@@ -21,6 +21,14 @@ class Admin::TongjisController < Admin::BaseController
     @users = User.where(phone_number: results.keys)
   end
 
+  def city
+    @orders, @params, @q = Order.search_result(params)
+    @orders = @orders.page(params[:page])
+    @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :phone_number).to_h
+    product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id)
+    @product_hash = Product.get_product_list_hash(product_ids)
+  end
+
   def update_result_info(results, order, phone_number, order_ids)
     return results if phone_number.blank?
     info = results[phone_number] || {}

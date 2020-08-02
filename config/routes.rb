@@ -175,6 +175,7 @@ Rails.application.routes.draw do
     resources :tongjis, only: [:index] do
       collection do
         get :achievement
+        get :city
       end
     end
     resources :users
