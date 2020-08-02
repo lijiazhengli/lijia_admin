@@ -366,6 +366,8 @@ class Order < ApplicationRecord
       order_attr = order_attr.merge!(
         user_id: order_hash[:user_id] || order_hash[:user].try(:id),
         customer_name: order_attr[:customer_name] || order_hash[:customer_name] || order_hash[:user].try(:name),
+        recipient_name: order_attr[:recipient_name] || order_hash[:recipient_name],
+        recipient_phone_number: order_attr[:recipient_phone_number] || order_hash[:recipient_phone_number],
         purchased_items_attributes: order_hash[:purchased_items] || []
       )
       Order.new(order_attr)
@@ -429,6 +431,7 @@ class Order < ApplicationRecord
       raise '不能创建学员' if order.blank? or order.recipient_phone_number.blank?
       order.purchased_items.each do |item|
         course = Course.find(item.product_id)
+        p order.recipient_phone_number
         user = User.find_or_create_source_user(order.recipient_phone_number, 'course_order', {})
         student = Student.where(course_id: course.id, user_id: user.id, order_id: order.id).first_or_create
         student.update!(notes: order.notes, city_name: order.city_name, name: order.recipient_name, phone_number: order.recipient_phone_number)
