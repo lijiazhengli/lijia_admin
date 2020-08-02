@@ -176,6 +176,7 @@ Rails.application.routes.draw do
       collection do
         get :achievement
         get :city
+        get :course
       end
     end
     resources :users

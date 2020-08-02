@@ -1,0 +1,87 @@
+:css
+
+  th{
+    border: 1px solid #dddddd;
+    border-bottom: none;
+  }
+
+  .table thead th{
+    border-bottom: none;
+  }
+
+  td{
+    border: 1px solid #dddddd;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd){
+    background-color: white;
+  }
+
+  .table-striped tbody tr:nth-of-type(even){
+    background-color: white;
+  }
+
+%h2 课程订单统计
+%h5 说明
+%p 1. 查询结果，不包含取消订单
+%p 2.产品sku： 多个产品sku请用英文逗号分割。此条件为包含关系查询，即当输入'3'时，查询的是第51期职业整理师训练营（沈阳站）课程
+= search_form_for @q, url: course_admin_tongjis_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
+  .form-group
+    = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: '产品sku，多个产品sku请用英文逗号分割', style: "width: 320px"
+  .form-group
+    = f.label "创建时间起"
+    = f.date_field :created_at_gteq, class: "form-control"
+    = f.label "创建时间止"
+    = f.date_field :created_at_lteq, class: "form-control"
+
+  .form-group
+    = f.label '订单状态'
+    = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+
+  = f.submit '查询', class: "btn btn-secondary"
+
+
+%div
+  总数： 
+  = @result.keys.size
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 城市
+        %th 日期
+        %th 未付款(个)
+        %th 不部分付款(个)
+        %th 已付款(个)
+        %th 其他(个)
+        %th 未付款(元)
+        %th 不部分付款(元)
+        %th 已付款(元)
+        %th 其他(元)
+        %th 订单总数(个)
+        %th 付款总金额(元)
+    %tbody
+      - @result.each do |city_name, info|
+        - count = -1
+        - info.each do |date, item|
+          - count += 1
+          %tr
+            - if count == 0
+              %td{rowspan: info.keys.size}= city_name
+            %td= date
+            %td= item['unpaid_count']
+            %td= item['part-paid_count']
+            %td= item['paided_count']
+            %td= item['other_count']
+
+            %td= item['unpaid']
+            %td= item['part-paid']
+            %td= item['paided']
+            %td= item['other']
+            %td= item['unpaid_count'] + item['part-paid_count'] + item['paided_count'] + item['other_count']
+            %td= item['paided_value'].round(2)
+
+
+

@@ -127,6 +127,13 @@ class Order < ApplicationRecord
     "#{course.start_date} 至 #{course.end_date}"
   end
 
+  def tongji_course_show_date
+    return "#{self.start_date}~#{self.end_date}" if self.start_date.present? and self.end_date.present?
+    course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last
+    return nil if course.blank?
+    "#{course.start_date}~#{course.end_date}"
+  end
+
   def order_show_city
     return "#{self.city_name}" if self.city_name.present?
     course = Product.where(id: self.purchased_items.pluck(:product_id).uniq).last

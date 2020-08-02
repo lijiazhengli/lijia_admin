@@ -29,6 +29,38 @@ class Admin::TongjisController < Admin::BaseController
     @product_hash = Product.get_product_list_hash(product_ids)
   end
 
+  def course
+    @params = params[:q] || {}
+    @params[:order_type] = 'Course'
+
+    product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
+    if product_ids.present?
+      @q = Order.noncanceled.includes(:purchased_items, :order_payment_records).where(purchased_items: {product_id: product_ids}).ransack(@params)
+    else
+      @q = Order.noncanceled.includes(:purchased_items, :order_payment_records).ransack(@params)
+    end
+    @orders = @q.result(distinct: true)
+    @result = {}
+    @orders.each do |order|
+      next if order.city_name.blank?
+      info = @result[order.city_name] || {}
+      show_time = order.tongji_course_show_date
+      info_value = info[show_time] || {"part-paid_count" => 0, "paided_count" => 0, 'other_count' => 0, 'unpaid' => 0, 'part-paid' => 0, 'paided' => 0, "unpaid_count" => 0, 'other' => 0,  "paided_value" => 0}
+      if ['unpaid', 'part-paid', 'paided'].include?(order.status)
+        info_value["#{order.status}_count"] = info_value["#{order.status}_count"] + 1
+        info_value[order.status] = info_value[order.status] + order.order_payment_records.paid.sum(:cost)
+      else
+        info_value['other_count'] = info_value['other_count'] + 1
+        info_value['other'] = info_value['other'] + order.order_payment_records.paid.sum(:cost)
+      end
+      info_value['paided_value'] = info_value['paided_value'] + order.order_payment_records.paid.sum(:cost)
+      info[show_time] = info_value
+      @result[order.city_name] = info
+    end
+
+    p @result
+  end
+
   def update_result_info(results, order, phone_number, order_ids)
     return results if phone_number.blank?
     info = results[phone_number] || {}
