@@ -3,7 +3,7 @@ class Admin::TeachersController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Teacher.ransack(@params)
+    @q = Teacher.order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
   end
 
@@ -35,6 +35,24 @@ class Admin::TeachersController < Admin::BaseController
 
   def file_upload
     file_upload_to_qiniu('teacher')
+  end
+
+  def up_serial
+    item = Teacher.where(id: params[:id]).first
+    if item.up_serial params[:target_id]
+      render js: "alert('操作成功');"
+    else
+      render js: "alert('操作失败');"
+    end
+  end
+
+  def down_serial
+    item = Teacher.where(id: params[:id]).first
+    if item.down_serial params[:target_id]
+      render js: "alert('操作成功');"
+    else
+      render js: "alert('操作失败');"
+    end
   end
 
   private

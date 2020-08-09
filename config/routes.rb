@@ -184,6 +184,8 @@ Rails.application.routes.draw do
         post :file_upload
         put :file_upload
         patch :file_upload
+        put :up_serial
+        put :down_serial
       end
     end
 

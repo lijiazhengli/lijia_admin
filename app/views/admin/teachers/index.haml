@@ -20,9 +20,10 @@
         %th 头像
         %th 是否启用
         %th 操作
-    %tbody
+    %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
       - @items.each do |item|
-        %tr
+        - @draggable = true
+        %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_teachers_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_teachers_path(:id =>item.id)}")
           %td= item.name
           %td= item.tag
           %td= item.web_tag
