@@ -1,0 +1,43 @@
+%h2 经典案例列表
+= search_form_for @q, url: admin_cases_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :title_cont, class: "form-control", placeholder: "名称"
+  = f.submit '查询', class: "btn btn-secondary"
+  = link_to '新建案例', new_admin_case_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 名称
+        %th 链接
+        %th 手机图片
+        %th 电脑图片
+        %th 是否启用
+        %th 操作
+    %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+      - @items.each do |item|
+        - @draggable = true
+        %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_cases_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_cases_path(:id =>item.id)}")
+          %td= item.title
+          %td= item.url
+          %td= item.mobile_image ? image_tag(item.mobile_image, width: '100px') : ''
+          %td= item.pc_image ? image_tag(item.pc_image, width: '100px') : ''
+          %td= active_chinese_name(item)
+          %td
+            - if item.active
+              = link_to '关闭', disable_admin_case_path(item), :method => :put
+            - else
+              = link_to '启用', enable_admin_case_path(item), :method => :put
+            |
+            = link_to '修改', edit_admin_case_path(item)
+            |
+            = link_to '删除', admin_case_path(item), :method => :delete, :data => { :confirm => '确定删除?' }
+  = paginate @items
+
+
+

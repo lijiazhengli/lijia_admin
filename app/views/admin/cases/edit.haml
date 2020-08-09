@@ -1,0 +1,5 @@
+%h3 修改经典案例
+
+= link_to '返回', admin_cases_path, class: "btn btn-secondary"
+
+= render partial: 'form', locals: {url: admin_case_path(@item)}

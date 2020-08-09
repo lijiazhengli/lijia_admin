@@ -4,7 +4,7 @@ class Admin::IntroducesController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Introduce.ransack(@params)
+    @q = Introduce.order(:item_type, :position).ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
   end
 

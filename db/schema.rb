@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_02_082753) do
+ActiveRecord::Schema.define(version: 2020_08_09_120926) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -83,6 +83,18 @@ ActiveRecord::Schema.define(version: 2020_08_02_082753) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "orders_count", default: 0
     t.index ["orders_count"], name: "index_arrangers_on_orders_count"
+  end
+
+  create_table "cases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "url"
+    t.string "description"
+    t.string "mobile_image"
+    t.string "pc_image"
+    t.boolean "active"
+    t.integer "position", default: 999
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "ckeditor_assets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -192,6 +204,8 @@ ActiveRecord::Schema.define(version: 2020_08_02_082753) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "tag"
     t.string "pc_image"
+    t.string "url"
+    t.integer "position", default: 999
     t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 
@@ -372,8 +386,8 @@ ActiveRecord::Schema.define(version: 2020_08_02_082753) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "mobile_image"
     t.string "tag"
-    t.integer "position", default: 999
     t.string "web_tag"
+    t.integer "position", default: 999
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

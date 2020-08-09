@@ -31,6 +31,20 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :cases do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
+      end
+    end
+
     resources :courses do
       resources :course_extends
       collection do
