@@ -73,6 +73,11 @@
         %span{class: "#{'current' if (%w(services).include?(params[:controller]))}"}
           = image_tag("nav/service#{'-current' if %w(services).include?(params[:controller])}.png", class: "nav-icon")
           %div 整理服务
+
+      %a.nav-span-width{href: cases_path}
+        %span{class: "#{'current' if (%w(cases).include?(params[:controller]))}"}
+          = image_tag("nav/service#{'-current' if %w(cases).include?(params[:controller])}.png", class: "nav-icon")
+          %div 经典案例
       %a.nav-span-width{href: '/information'}
         %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}"}
           = image_tag("nav/info#{'-current' if (%w(home).include?(params[:controller]) and params[:action] == 'info')}.png", class: "nav-icon")

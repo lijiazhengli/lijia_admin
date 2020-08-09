@@ -44,20 +44,49 @@
     .content
       max-height: 290px
 
-  .case-info-list
-    padding: 15px
-    display: flex
-    .left-img
-      width: 45%
-      display: inline-block
-    .right-content
-      width: 52%
-      display: inline-block
-      margin-left: 2%
-      .title
-        display: flex
-        align-items: center
-        margin-top: 20px
-        .teacher-name
-          font-size: 120%
-          font-weight: bold
+@media (min-width: 577px)
+  .info-show-content
+    .case-info-list
+      position: relative
+      padding: 15px
+      padding-left: 180px
+      height: 180px
+      background-color: white
+      border-radius: 10px
+      color: $lijia-font
+      .case-img
+        position: absolute
+        left: 15px
+        top: 15px
+        width: 150px
+      .case-content
+        .title
+          display: flex
+          align-items: center
+          .case-name
+            font-size: 120%
+            font-weight: bold
+        .content
+          max-height: 85px
+          overflow: hidden
+          display: inline-block
+      .case-btn
+        position: absolute
+        right: 15px
+        bottom: 15px
+    .case-info-list:nth-child(odd)
+      padding-left: 15px
+      padding-right: 180px
+      .case-img
+        position: absolute
+        right: 15px
+        left: auto
+      .case-btn
+        position: absolute
+        right: 180px
+        bottom: 15px
+
+
+
+
+
