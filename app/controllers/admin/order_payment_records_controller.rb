@@ -14,6 +14,13 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     end
   end
 
+  def refund_index
+    @params = params[:q] || {}
+    @q = OrderPaymentRecord.includes(:order).where('order_payment_records.cost < ?', 0).order('order_payment_records.updated_at desc').ransack(@params)
+    @items = @q.result(distinct: true).page(params[:page])
+    @paided_count = @q.result(distinct: true).sum(:cost)
+  end
+
   def new
     @item = @order.order_payment_records.build
 

@@ -35,10 +35,15 @@ namespace :student do
 
   task :init_student_by_order => :environment do
     Order.where(order_type: "Course").noncanceled.each do |order|
-      Order.create_course_student({order: order}, {})
-      if order.status == 'completed'
-        Order.update_student_user_zhekou({order: order}, {})
+      begin
+        Order.create_course_student({order: order}, {})
+        if order.status == 'completed'
+          Order.update_student_user_zhekou({order: order}, {})
+        end
+      rescue Exception => e
+        p order.external_id
       end
+      
     end
   end
 end

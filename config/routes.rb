@@ -128,6 +128,7 @@ Rails.application.routes.draw do
         post :received
         post :refund
         get  :reimbursement
+        get  :refund_index
       end
     end
 

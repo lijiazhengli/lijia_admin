@@ -1,0 +1,51 @@
+%h2 订单收款列表
+
+= search_form_for @q, url: refund_index_admin_order_payment_records_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = f.search_field :out_trade_no_cont, class: "form-control", placeholder: "商户号"
+  .form-group
+    = f.search_field :transaction_id_cont, class: "form-control", placeholder: "交易号"
+
+
+  = f.submit '查询', class: "btn btn-secondary"
+
+%br
+%h5 说明
+%p 1. ✅ 代表该条交易已收钱
+
+
+%div
+  总数： 
+  = @items.total_count
+  %br
+  总金额：
+  = @paided_count.round(2)
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 订单号
+        %th 付款方式
+        %th 费用类型
+        %th 金额
+        %th 商户号
+        %th 交易号
+        %th 付款时间
+        %th 备注
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.order.external_id
+          %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
+          %td= item.payment_method_name
+          %td= item.cost
+          %td= item.out_trade_no
+          %td
+            %div
+              %span= item.transaction_id
+              - if item.timestamp.present?
+                %span ✅
+          %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
+          %td= item.remark
+
+  = paginate @items
