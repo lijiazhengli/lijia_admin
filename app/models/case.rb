@@ -1,4 +1,5 @@
 class Case < ApplicationRecord
+  scope :active, -> { where(active: true).order(:position) }
   def up_serial(target_id)
     self.class.transaction do
       pre_image = self.class.find(target_id)

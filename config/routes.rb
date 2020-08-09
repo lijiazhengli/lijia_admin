@@ -235,6 +235,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :cases, only: [:index] do
+  end
+
   resources :courses, only: [:index, :show] do
   end
 

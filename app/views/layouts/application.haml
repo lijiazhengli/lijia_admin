@@ -31,6 +31,8 @@
                 %span{class: "#{'current' if (%w(home).include?(params[:controller]) and params[:action] == 'index')}"} 首页
               %a.nav-font-color{href: "#{services_path}"}
                 %span{class: "#{'current' if (%w(services).include?(params[:controller]))}"} 整理服务
+              %a.nav-font-color{href: "#{cases_path}"}
+                %span{class: "#{'current' if (%w(cases).include?(params[:controller]))}"} 经典案例
               - if false
                 %a.nav-font-color{href: "#"}
                   %span 培训课程
