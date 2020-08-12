@@ -7,3 +7,4 @@ namespace :arranger do
       item.update(active: true)
     end
   end
+end
