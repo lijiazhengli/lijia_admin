@@ -1,0 +1,25 @@
+%h3 课程开课城市列表
+= link_to '新建课程开课城市', new_admin_course_course_city_info_path(@course), class: "btn btn-success"
+= link_to '返回课程列表', admin_courses_path, class: "btn btn-success"
+
+
+%table.table.table-striped
+  %tr
+    %th 图片
+    %th 是否显示
+    %th 操作
+
+  %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+    - @items.each do |item|
+      - @draggable = true
+      %tr(id="product-image-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_course_course_city_infos_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_course_course_city_infos_path(:id =>item.id)}")
+        %td= item.city_name
+        %td
+          = link_to '修改', edit_admin_course_course_city_info_path(@course, item)
+          |
+          - if item.active
+            = link_to '关闭', disable_admin_course_course_city_info_path(@course,item), :method => :put
+          - else
+            = link_to '启用', enable_admin_course_course_city_infos_path(@course,item), :method => :put
+          |
+          = link_to '删除', admin_course_course_city_infos_path(@course, item), method: :delete, data: { :confirm => '确定删除吗？' }

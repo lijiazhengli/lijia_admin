@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_09_120926) do
+ActiveRecord::Schema.define(version: 2020_08_12_184701) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -106,6 +106,19 @@ ActiveRecord::Schema.define(version: 2020_08_09_120926) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["type"], name: "index_ckeditor_assets_on_type"
+  end
+
+  create_table "course_city_infos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "course_id"
+    t.string "city_name"
+    t.string "date_info"
+    t.string "address"
+    t.boolean "active"
+    t.integer "position", default: 999
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_course_city_infos_on_course_id"
   end
 
   create_table "course_extends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -330,6 +343,7 @@ ActiveRecord::Schema.define(version: 2020_08_09_120926) do
     t.string "pc_detailed_image"
     t.text "web_content"
     t.string "sub_title"
+    t.boolean "show_city_list"
     t.index ["type"], name: "index_products_on_type"
   end
 

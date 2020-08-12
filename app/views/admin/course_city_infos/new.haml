@@ -1,0 +1,5 @@
+%h3 新建课程开课城市
+
+= link_to '返回', admin_course_course_city_infos_path(@course), class: 'btn btn-success'
+
+= render :partial => 'form', :locals => {url: admin_course_course_city_infos_path(@course)}

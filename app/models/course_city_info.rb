@@ -1,0 +1,2 @@
+class CourseCityInfo < ApplicationRecord
+end

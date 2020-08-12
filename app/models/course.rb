@@ -2,6 +2,8 @@ class Course < Product
   has_many  :students
   accepts_nested_attributes_for :students, allow_destroy: true
 
+  has_many  :course_city_infos
+
   has_one  :course_extend
   accepts_nested_attributes_for :course_extend, allow_destroy: true
 

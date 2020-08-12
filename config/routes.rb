@@ -46,6 +46,16 @@ Rails.application.routes.draw do
     end
 
     resources :courses do
+      resources :course_city_infos do
+        collection do
+          put :up_serial
+          put :down_serial
+        end
+        member do
+          put :disable
+          put :enable
+        end
+      end
       resources :course_extends
       collection do
         post :file_upload
