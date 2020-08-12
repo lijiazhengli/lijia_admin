@@ -27,9 +27,9 @@ class AppletsController < ApplicationController
   def index
     request_info = {}
     request_info[:pages_slideshows] = AdImage.applet_home.map{|item| item.to_applet_list}
-    request_info[:services] = Service.applet_home.limit(8).map{|item| item.to_applet_list}
-    request_info[:courses] = Course.applet_home.limit(4).map{|item| item.to_applet_list}
-    request_info[:goods] = Good.applet_home.limit(20).map{|item| item.to_applet_list}
+    request_info[:services] = Service.applet_home.map{|item| item.to_applet_list}
+    request_info[:courses] = Course.applet_home.map{|item| item.to_applet_list}
+    request_info[:goods] = Good.applet_home.map{|item| item.to_applet_list}
     render json: request_info
   end
 
