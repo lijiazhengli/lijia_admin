@@ -75,7 +75,7 @@ class Product < ActiveRecord::Base
       info_extend = CourseExtend.find_by_course_id(self.id)
       attrs[:address] = info_extend.try(:address)
       if info_extend.present? and info_extend.show_city_list
-        city_infos_list = info_extend.city_infos_list
+        city_infos_list, city_address_infos = self.city_infos_list
         if city_infos_list.present?
           course_city_infos = {}
           course_city_infos[:show_city_list] = info_extend.show_city_list
@@ -84,9 +84,8 @@ class Product < ActiveRecord::Base
           current_city_name = self.city_name.present?  ?  self.city_name : course_city_infos[:cities][0]
           course_city_infos[:course_city] = current_city_name
           course_city_infos[:course_date] = city_infos_list[current_city_name][0]
-          course_city_infos[:city_address_infos] = info_extend.city_address_info_list
+          course_city_infos[:city_address_infos] = city_address_infos
           attrs[:course_city_infos] = course_city_infos
-
         end
       end
       attrs[:teachers] = self.teachers.map{|item| item.to_course_list}

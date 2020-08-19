@@ -58,6 +58,19 @@ class Course < Product
     "#{self.show_start_date[5..-1]}-#{self.show_end_date[5..-1]}"
   end
 
+  def city_infos_list
+    date_list = {}
+    address_list = {}
+    self.course_city_infos.active.each do |info|
+      if info.date_info.present?
+        date_list[info.city_name] ||= []
+        date_list[info.city_name] << info.date_info
+        address_list[info.city_name] ||= info.address if info.address.present?
+      end
+    end
+    [date_list, address_list]
+  end
+
   class << self
     def get_recommend_infos(course_id)
       infos = {}

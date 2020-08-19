@@ -129,5 +129,40 @@ namespace :admin do
     end
   end
 
+  desc '更新客服信息'
+  task :init_admin_200817 => :environment do
+    realm = "Lijia"
+    password = "lijia99"
+    role = Role.find_by_name('admin_customer_service')
+    {
+      'wangxueru' => '王雪菇',
+      'guozhifeng' => '郭志凤'
+
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.blank?
+        p_hash = Digest::MD5.hexdigest([name, realm, password].join(':'))
+        admin = Admin.create!(name: name, password_hash: p_hash, active: true, user_name: user_name)
+        admin.role_assignments.create!(role_id: role.id)
+      end
+    end
+
+    realm = "Lijia"
+    password = "lijia99"
+    role = Role.find_by_name('admin_customer_service')
+    {
+      'fengjing' => '封静'
+
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.blank?
+        p_hash = Digest::MD5.hexdigest([name, realm, password].join(':'))
+        admin = Admin.create!(name: name, password_hash: p_hash, active: true, user_name: user_name)
+        admin.role_assignments.create!(role_id: role.id)
+      end
+    end
+
+  end
+
 
 end

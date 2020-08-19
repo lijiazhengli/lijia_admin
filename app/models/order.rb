@@ -144,8 +144,8 @@ class Order < ApplicationRecord
     info_extend = CourseExtend.where(course_id: self.purchased_items.pluck(:product_id).uniq).last
     return nil if info_extend.blank?
     return info_extend.address unless info_extend.show_city_list
-    address_lists = info_extend.city_address_info_list || {}
-    address_lists[self.city_name]
+    date_info = "#{self.start_date.split('-')[1..2].join('.')}-#{self.end_date.split('-')[1..2].join('.')}" rescue nil
+    CourseCityInfo.where(course_id: info_extend.course_id, city_name: self.city_name, date_info: date_info).last.try(:address) || ''
   end
 
 

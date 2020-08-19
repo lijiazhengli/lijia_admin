@@ -18,6 +18,8 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     @params = params[:q] || {}
     @q = OrderPaymentRecord.includes(:order).where('order_payment_records.cost < ?', 0).order('order_payment_records.updated_at desc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
+    order_ids = @items.map(&:order_id)
+    @users_hash = User.includes(:orders).where(orders: {id: order_ids}).pluck(:id, :name).to_h
     @paided_count = @q.result(distinct: true).sum(:cost)
   end
 

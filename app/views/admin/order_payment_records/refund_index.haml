@@ -25,6 +25,7 @@
     %thead
       %tr
         %th 订单号
+        %th 订购人
         %th 付款方式
         %th 费用类型
         %th 金额
@@ -36,6 +37,7 @@
       - @items.each do |item|
         %tr
           %td= item.order.external_id
+          %td= "#{@users_hash[item.order.user_id]}|#{item.order.customer_phone_number}"
           %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
           %td= item.payment_method_name
           %td= item.cost

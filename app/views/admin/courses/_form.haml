@@ -65,6 +65,11 @@
     .form-group
       = f.label "是否享受学员折扣"
       = select_tag 'has_student_zhekou', options_for_select({'是' => true, '否' => false}, params[:has_student_zhekou]), class: 'form-control'
+
+    .form-group
+      = f.label "是否多城市多日期开课"
+      = select_tag 'show_city_list', options_for_select({'是' => true, '否' => false}, params[:show_city_list]), class: 'form-control'
+
     .form-group
       = f.text_field :front_image, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @course, image_name: 'front_image', image_size: '首页图片(686x340)', button_name: 'front-image', input_name: 'course_front_image', upload_url: file_upload_admin_courses_path(type: 'front')}

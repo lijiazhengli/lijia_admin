@@ -40,6 +40,10 @@
     = f.label '订单状态'
     = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
 
+  .form-group
+    = f.label '按城市汇总'
+    = select_tag 'city_total', options_for_select({'否' => false, '是' => true}, params[:city_total]), class: 'form-control'
+
   = f.submit '查询', class: "btn btn-secondary"
 
 
@@ -63,25 +67,43 @@
         %th 订单总数(个)
         %th 付款总金额(元)
     %tbody
-      - @result.each do |city_name, info|
-        - count = -1
-        - info.each do |date, item|
-          - count += 1
-          %tr
-            - if count == 0
-              %td{rowspan: info.keys.size}= city_name
-            %td= date
-            %td= item['unpaid_count']
-            %td= item['part-paid_count']
-            %td= item['paided_count']
-            %td= item['other_count']
+      - if params[:city_total] == 'true'
+        - @result.each do |city_name, info|
+          - count = -1
+          - info.each do |date, item|
+            - count += 1
+            %tr
+              - if count == 0
+                %td{rowspan: info.keys.size}= city_name
+              %td= date
+              %td= item['unpaid_count']
+              %td= item['part-paid_count']
+              %td= item['paided_count']
+              %td= item['other_count']
 
-            %td= item['unpaid']
-            %td= item['part-paid']
-            %td= item['paided']
-            %td= item['other']
-            %td= item['unpaid_count'] + item['part-paid_count'] + item['paided_count'] + item['other_count']
-            %td= item['paided_value'].round(2)
+              %td= item['unpaid']
+              %td= item['part-paid']
+              %td= item['paided']
+              %td= item['other']
+              %td= item['unpaid_count'] + item['part-paid_count'] + item['paided_count'] + item['other_count']
+              %td= item['paided_value'].round(2) 
+      - else
+        - @result.each do |city_name, info|
+          - info.each do |date, item|
+            %tr
+              %td= city_name
+              %td= date
+              %td= item['unpaid_count']
+              %td= item['part-paid_count']
+              %td= item['paided_count']
+              %td= item['other_count']
+
+              %td= item['unpaid']
+              %td= item['part-paid']
+              %td= item['paided']
+              %td= item['other']
+              %td= item['unpaid_count'] + item['part-paid_count'] + item['paided_count'] + item['other_count']
+              %td= item['paided_value'].round(2)
 
 
 

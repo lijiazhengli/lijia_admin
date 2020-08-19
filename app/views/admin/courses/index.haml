@@ -39,6 +39,7 @@
         %th 自动创建微信付款记录
         %th 预定人数
         %th 是否享受学员折扣
+        %th 是否多城市多日期开课
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
       - @items.each do |item|
@@ -57,8 +58,9 @@
           %td= image_tag(item.pc_detailed_image || '', width: '100px')
           %td= active_chinese_name(item)
           %td= show_active_chinese_name(item.create_tenpay)
-          %th= item.max_count
-          %th= show_active_chinese_name(item.course_extend.has_student_zhekou)
+          %td= item.max_count
+          %td= show_active_chinese_name(item.course_extend.has_student_zhekou)
+          %td= show_active_chinese_name(item.course_extend.show_city_list)
           %td
             = link_to '详情', admin_course_path(item)
             |
@@ -78,6 +80,7 @@
             = link_to '报名情况', course_admin_tongjis_path(product_ids: item.id)
             |
             = link_to "详情图片", admin_product_product_images_path(item)
-            |
-            = link_to '课程额外信息', admin_course_course_extends_path(item)
+            - if item.course_extend.show_city_list
+              |
+              = link_to '开课城市和日期', admin_course_course_city_infos_path(item)
   = paginate @items

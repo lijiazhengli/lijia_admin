@@ -16,7 +16,7 @@ class Admin::CoursesController < Admin::BaseController
   def create
     @course = Course.new(current_record_params)
     if @course.save
-      @course.self_extend.update(address: params[:course_address], has_student_zhekou: params[:has_student_zhekou])
+      @course.self_extend.update(address: params[:course_address], has_student_zhekou: params[:has_student_zhekou], show_city_list: params[:show_city_list])
       redirect_to admin_courses_path
     else
       render :new
@@ -30,7 +30,7 @@ class Admin::CoursesController < Admin::BaseController
   def update
     @course = Course.find(params[:id])
     if @course.update_attributes(current_record_params)
-      @course.self_extend.update(address: params[:course_address], has_student_zhekou: params[:has_student_zhekou])
+      @course.self_extend.update(address: params[:course_address], has_student_zhekou: params[:has_student_zhekou], show_city_list: params[:show_city_list])
       redirect_to admin_courses_path
     else
       render :edit
@@ -42,6 +42,7 @@ class Admin::CoursesController < Admin::BaseController
     item_extend = @course.self_extend
     params[:course_address] = item_extend.address
     params[:has_student_zhekou] = item_extend.has_student_zhekou
+    params[:show_city_list] = item_extend.show_city_list
   end
 
   def destroy

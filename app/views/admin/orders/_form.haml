@@ -98,7 +98,7 @@
         = f.label "详细地址"
         %br
         = f.text_field :location_details, class: 'form-control'
-    - if [Order::SERVICE_ORDER].include?(@order.order_type)
+    - if [Order::SERVICE_ORDER, Order::COURSE_ORDER].include?(@order.order_type)
       .form-group
         = f.label "*开始日期"
         %br

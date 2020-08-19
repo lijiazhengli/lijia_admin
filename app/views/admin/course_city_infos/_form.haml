@@ -14,12 +14,13 @@
     .form-group
       = f.label "*开课时间"
       %br
+      %span 开始日期以英文‘-’分隔：1开始日期-1结束日期， 例如：课程时间为：6月29-6月30, 信息填写 06.29-06.30
       = f.text_field :date_info, class: 'form-control'
 
     .form-group
       = f.label "*开课地址"
       %br
-      = f.text_field :address, class: 'form-control'
+      = f.text_area :address, class: 'form-control'
 
     .form-group
       = f.label "备注"
