@@ -28,6 +28,7 @@
         %th 姓名
         %th 电话
         %th 类型
+        %th OpenId
         %th 折扣
         %th 创建时间
         %th 操作
@@ -37,6 +38,7 @@
           %td= item.name
           %td= item.phone_number
           %td= User::STATUS[item.status]
+          %td= item.wx_ma_id
           %td= item.zhekou
           %td= item.created_at.strftime('%F %T')
           %td

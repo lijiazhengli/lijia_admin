@@ -1,5 +1,5 @@
 namespace :course do 
-  desc '更新学员信息'
+  desc '更新课程城市信息'
   task :init_city_info => :environment do
     CourseExtend.where(show_city_list: true).each do |item|
       city_address_info_list = item.city_address_info_list
