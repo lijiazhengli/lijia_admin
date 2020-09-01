@@ -6,6 +6,10 @@
           - @item.errors.messages.each do |key,msg|
             %li= msg.join(',')
     .form-group
+      = f.label "*名称"
+      %br
+      = f.text_field :name, class: 'form-control'
+    .form-group
       = f.label "类型"
       %br
       说明：此类型用于算提成和绩效
@@ -15,5 +19,9 @@
       %br
       说明：0.9 代表下单时享受9折优惠（仅收纳工具订单有效），折扣信息不能大于1， 学员8折、合伙人6折。
       = f.text_field :zhekou, class: 'form-control'
+
+    .form-group
+      = f.label "是否查看绩效"
+      = f.select :show_achievement, options_for_select({'是' => true, '否' => false}, @item.show_achievement), {}, class: 'form-control'
 
     = f.submit '保存', class: 'btn btn-success'

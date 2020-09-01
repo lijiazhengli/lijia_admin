@@ -145,8 +145,7 @@ class AppletsController < ApplicationController
 
   def user_info
     p params
-    user = User.where(phone_number: params[:customer_phone_number]).last
-    
+    user = User.where(phone_number: params[:customer_phone_number]).last    
     render json: {userInfo: user.to_applet_list}
   end
 

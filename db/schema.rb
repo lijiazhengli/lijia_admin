@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_12_184701) do
+ActiveRecord::Schema.define(version: 2020_09_01_161252) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -420,6 +420,7 @@ ActiveRecord::Schema.define(version: 2020_08_12_184701) do
     t.string "avatar"
     t.float "zhekou", default: 1.0
     t.integer "status", default: 1
+    t.boolean "show_achievement", default: false
     t.index ["phone_number"], name: "index_users_on_phone_number"
     t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"

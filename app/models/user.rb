@@ -25,6 +25,7 @@ class User < ApplicationRecord
     %w(name avatar zhekou).each do |info|
       attrs[info.to_sym] =  self.send(info)
     end
+    attrs[:show_achievement] = true if self.show_achievement
     attrs[:sex] = self.get_applet_sex
     orders = self.orders.current_orders.select(:order_type)
     Order::ORDER_TYPE.keys.each{|item| attrs["#{item.downcase}_count".to_sym] = orders.select{|i| i.order_type == item}.size}

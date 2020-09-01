@@ -30,6 +30,7 @@
         %th 类型
         %th OpenId
         %th 折扣
+        %th 是否查看绩效
         %th 创建时间
         %th 操作
     %tbody
@@ -40,6 +41,7 @@
           %td= User::STATUS[item.status]
           %td= item.wx_ma_id
           %td= item.zhekou
+          %td= show_active_chinese_name(item.show_achievement)
           %td= item.created_at.strftime('%F %T')
           %td
             - if @admin.senior_stockholder?
