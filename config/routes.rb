@@ -242,6 +242,7 @@ Rails.application.routes.draw do
       post :save_user_info
       get  :user_info
       get  :user_franchises
+      get  :user_order
     end
   end
 

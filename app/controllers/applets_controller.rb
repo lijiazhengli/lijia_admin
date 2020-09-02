@@ -152,9 +152,16 @@ class AppletsController < ApplicationController
   def crm_info
     p params
     user = User.where(phone_number: params[:customer_phone_number]).last
-    
     render json: {userInfo: user.to_applet_crm_list}
+  end
 
+  def user_order
+    p params
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    userInfo = user.to_applet_user_order_list(params)
+    p userInfo
+    
+    render json: {userInfo: userInfo}
   end
 
   def load_customer_info

@@ -86,6 +86,20 @@ class Order < ApplicationRecord
     return [orders, @params, @q]
   end
 
+  def to_user_achievement
+    attrs = self.attributes.slice(
+      "address_province", "address_city", "address_district", 'external_id',
+      "id", 'user_id',
+      'order_type', "recipient_name", "recipient_phone_number", "status",
+    )
+    attrs['full_address'] = self.full_address
+    attrs['created_at'] = self.created_at.strftime('%F %T')
+    attrs["tenpay_paid_due"] = self.tenpay_paid_due
+    attrs["no_tenpay_paid_due"] = self.no_tenpay_paid_due
+    attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
+    attrs
+  end
+
   def to_applet_order_list
     attrs = self.attributes.slice(
       "address_province", "address_city", "address_district", 'created_at', 'external_id',
@@ -202,6 +216,11 @@ class Order < ApplicationRecord
 
   def no_tenpay_paid_due
     total_cost = self.order_payment_records.tenpay_method.unpaid.sum(:cost).round(2)
+    total_cost
+  end
+
+  def tenpay_paid_due
+    total_cost = self.order_payment_records.tenpay_method.paid.sum(:cost).round(2)
     total_cost
   end
 

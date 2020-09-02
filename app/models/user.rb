@@ -11,6 +11,10 @@ class User < ApplicationRecord
     self.sex ? "#{self.sex}" : '0'
   end
 
+  def show_name_info
+    [self.name, self.phone_number].join(' ')
+  end
+
   def to_applet_list
     attrs = {}
     %w(name profession avatar address_province address_city address_district zhekou).each do |info|
@@ -39,6 +43,25 @@ class User < ApplicationRecord
     user_attr = {phone_number: mobile, source: source }
     [:wx_union_id, :wx_ma_id].each {|v| user_attr[v] = user_info[v] if user_info[v].present?}
     User.create!(user_attr)
+  end
+
+  def to_applet_user_order_list(params)
+    info = {}
+    params[:start_at] ||= (Time.now - 150.days).strftime('%F')
+    params[:end_at] ||= Time.now.strftime('%F')
+    st = Time.parse(params[:start_at]).beginning_of_day
+    et = Time.parse(params[:end_at]).end_of_day
+    user_orders = Order.noncanceled.includes(:purchased_items).where(user_id: self.id).where("orders.created_at between ? and ? ", st, et)
+    info[:user_orders] = user_orders.map{|o| o.to_user_achievement}
+    referral_orders = Order.noncanceled.includes(:purchased_items).where(referral_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et)
+    info[:referral_orders] = referral_orders.map{|o| o.to_user_achievement}
+    organizer_orders = Order.noncanceled.includes(:purchased_items).where(organizer_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et)
+    info[:organizer_orders] = organizer_orders.map{|o| o.to_user_achievement}
+    user_ids = ([self.id] + referral_orders.map(&:user_id) + organizer_orders.map(&:user_id)).uniq
+    order_ids = (user_orders.map(&:id) + referral_orders.map(&:id) + organizer_orders.map(&:id)).uniq
+    info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids)).pluck(:id, :title).to_h
+    info[:userInfos] = User.where(id: user_ids).map{|u| [u.id, u.show_name_info]}.to_h
+    return info
   end
 
 end
