@@ -161,7 +161,7 @@ class AppletsController < ApplicationController
     userInfo = user.to_applet_user_order_list(params)
     p userInfo
     
-    render json: {userInfo: userInfo}
+    render json: userInfo
   end
 
   def load_customer_info
