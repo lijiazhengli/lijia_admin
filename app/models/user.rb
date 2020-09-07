@@ -59,7 +59,7 @@ class User < ApplicationRecord
     info[:organizer_orders] = organizer_orders.map{|o| o.to_user_achievement}
     user_ids = ([self.id] + referral_orders.map(&:user_id) + organizer_orders.map(&:user_id)).uniq
     order_ids = (user_orders.map(&:id) + referral_orders.map(&:id) + organizer_orders.map(&:id)).uniq
-    info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids)).pluck(:id, :title).to_h
+    info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids).pluck(:product_id)).pluck(:id, :title).to_h
     info[:userInfos] = User.where(id: user_ids).map{|u| [u.id, u.show_name_info]}.to_h
     return info
   end
