@@ -235,6 +235,7 @@ Rails.application.routes.draw do
       get  :load_product_infos
       get  :orders
       get  :order_show
+      get  :order_payment_show
       get  :product_show
       get  :set_phone
       get  :service_index

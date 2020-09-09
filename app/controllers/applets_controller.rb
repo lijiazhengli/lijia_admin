@@ -143,6 +143,21 @@ class AppletsController < ApplicationController
     end
   end
 
+  def order_payment_show
+    p params
+    delivery_orders = []
+    if params[:id].present?
+      order = Order.find(params[:id])
+      order_product_ids = order.purchased_items.pluck(:product_id)
+    end
+    products = Product.get_product_list_hash(order_product_ids.uniq)
+    if order.present?
+      render json: {order: order, products: products, purchased_items: order.purchased_items, order_payment_records: order.order_payment_records}
+    else
+      render json: {emptyPageNotice: '暂无订单'}
+    end
+  end
+
   def user_info
     p params
     user = User.where(phone_number: params[:customer_phone_number]).last    
