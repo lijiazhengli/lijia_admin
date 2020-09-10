@@ -1,7 +1,7 @@
 class OrderPaymentRecord < ActiveRecord::Base
   belongs_to :order
   PAYMENT_METHOD_ID = {1 => '现金', 2 => '微信付款', 3 => '支付宝', 4 => '银行转账', 5 => '服务费定金', 6 => '服务费尾款现金', 7 => '收纳工具结算现金', 8 => '银行转账', 9 => '课程尾款现金'}
-
+  APPLET_SELECT_PAYMENT_METHOD_ID = ['服务费定金', '服务费尾款现金', '收纳工具结算现金', '课程尾款现金']
   scope :tenpay_method, -> {where(payment_method_id: Order::TENPAY_ID)}
   scope :paid, -> {where.not(timestamp: nil)}
   scope :unpaid, -> {where(timestamp: nil)}

@@ -220,6 +220,7 @@ Rails.application.routes.draw do
       get  :course_index
       post :create_apply_order
       post :create_order
+      post :create_order_payment
       post :create_course_order
       post :create_service_order
       get  :crm_info

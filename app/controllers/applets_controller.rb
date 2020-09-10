@@ -152,10 +152,20 @@ class AppletsController < ApplicationController
     end
     products = Product.get_product_list_hash(order_product_ids.uniq)
     if order.present?
-      render json: {order: order, products: products, purchased_items: order.purchased_items, order_payment_records: order.order_payment_records}
+      render json: {order: order, products: products, purchased_items: order.purchased_items, order_payment_records: order.order_payment_records, paymentMenthods: OrderPaymentRecord::APPLET_SELECT_PAYMENT_METHOD_ID}
     else
       render json: {emptyPageNotice: '暂无订单'}
     end
+  end
+
+  def create_order_payment
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    order = Order.find(params[:order_id])
+    record_info = order_payment_params
+    record_info[:operate_user_id] = user.id
+    record_info[:payment_method_id] = OrderPaymentRecord::PAYMENT_METHOD_ID.invert[params[:payment_method_name]]
+    order.order_payment_records.create(record_info)
+    render json: {success: true, order_payment_records: order.order_payment_records}
   end
 
   def user_info
@@ -344,6 +354,14 @@ class AppletsController < ApplicationController
       :address_city,
       :address_district,
       :sex
+    )
+  end
+
+  def order_payment_params
+    params.permit(
+      :payment_method_name,
+      :cost,
+      :remark
     )
   end
 
