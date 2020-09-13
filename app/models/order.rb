@@ -96,6 +96,7 @@ class Order < ApplicationRecord
     attrs['created_at'] = self.created_at.strftime('%F %T')
     attrs["tenpay_paid_due"] = self.tenpay_paid_due
     attrs["no_tenpay_paid_due"] = self.no_tenpay_paid_due
+    attrs["untenpay_paid_due"] = self.untenpay_paid_due
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
     attrs
   end
@@ -221,6 +222,11 @@ class Order < ApplicationRecord
 
   def tenpay_paid_due
     total_cost = self.order_payment_records.tenpay_method.paid.sum(:cost).round(2)
+    total_cost
+  end
+
+  def untenpay_paid_due
+    total_cost = self.order_payment_records.untenpay_method.sum(:cost).round(2)
     total_cost
   end
 

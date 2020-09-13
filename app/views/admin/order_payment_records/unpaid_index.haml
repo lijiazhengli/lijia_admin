@@ -1,0 +1,53 @@
+%h2 订单收款列表
+
+= search_form_for @q, url: unpaid_index_admin_order_payment_records_path, html: {class: 'form-inline'} do |f|
+  .form-group
+    = text_field_tag :order_external_id, params[:order_external_id], class: "form-control", placeholder: "订单号"
+  .form-group
+    = f.search_field :out_trade_no_cont, class: "form-control", placeholder: "商户号"
+  .form-group
+    = f.search_field :transaction_id_cont, class: "form-control", placeholder: "交易号"
+  .form-group
+    = f.search_field :cost_eq, class: "form-control", placeholder: "金额"
+
+  = f.submit '查询', class: "btn btn-secondary"
+
+%br
+%h5 说明
+%p 1. 查询结果，不包含取消订单
+
+
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 订单号
+        %th 订单状态
+        %th 提交者
+        %th 申请日期
+        %th 金额
+        %th 付款方式
+        %th 付款说明
+        %th 操作
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.order.external_id
+          %td= Order::STATUS[item.order.status]
+          %td
+            - if item.operate_user_id.present?
+              - user = @operate_users.select{|u| u.id == item.operate_user_id}.first
+              %div #{user.try(:name)} | #{user.try(:phone_number)}
+
+          %td= item.created_at.present? ? item.created_at.strftime("%F %H:%M") : ''
+          %td= item.cost
+          %td= OrderPaymentRecord::PAYMENT_METHOD_ID[item.payment_method_id]
+          %td= item.remark
+          %td
+            = link_to '确认收款', confirm_paid_admin_order_payment_records_path(id: item.id), :method => :post, :data => { :confirm => '确定该项收款?' }, class: "btn btn-success"
+ 
+
+  = paginate @items

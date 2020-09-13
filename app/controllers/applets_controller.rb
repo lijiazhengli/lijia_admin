@@ -168,6 +168,18 @@ class AppletsController < ApplicationController
     render json: {success: true, order_payment_records: order.order_payment_records}
   end
 
+  def delete_order_payment
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    payment = OrderPaymentRecord.find(params[:id])
+    if user.id == payment.try(:operate_user_id)
+      order_id = payment.order_id
+      payment.destroy
+      render json: {success: true, order_payment_records: OrderPaymentRecord.where(order_id: order_id)}
+    else
+      render json: {success: true, errors: '付款信息不正确'}
+    end
+  end
+
   def user_info
     p params
     user = User.where(phone_number: params[:customer_phone_number]).last    

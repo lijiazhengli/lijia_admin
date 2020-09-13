@@ -23,6 +23,17 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     @paided_count = @q.result(distinct: true).sum(:cost)
   end
 
+  def unpaid_index
+    @params = params[:q] || {}
+    if params[:order_external_id].present?
+      @q = OrderPaymentRecord.includes(:order).references(:order).where(timestamp: [nil, ''], orders: {external_id: params[:order_external_id]}).where('orders.status != ? and order_payment_records.cost > ?', 'canceled', 0).order('order_payment_records.updated_at desc').ransack(@params)
+    else
+      @q = OrderPaymentRecord.includes(:order).references(:order).where(timestamp: [nil, '']).where('orders.status != ? and order_payment_records.cost > ?', 'canceled', 0).order('order_payment_records.updated_at desc').ransack(@params)
+    end
+    @items = @q.result(distinct: true).page(params[:page])
+    @operate_users = User.where(id: @items.map(&:operate_user_id).uniq)
+  end
+
   def new
     @item = @order.order_payment_records.build
 
@@ -93,6 +104,17 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
       redirect_back(fallback_location: admin_order_payment_records_path, notice: '退款成功！')
     else
       redirect_back(fallback_location: admin_order_payment_records_path, alert: msg)
+    end 
+  end
+
+  def confirm_paid
+    p params
+    item = OrderPaymentRecord.find(params[:id])
+    success, msg = item.confirm_paid_or_operate
+    if success
+      redirect_back(fallback_location: unpaid_index_admin_order_payment_records_path, notice: '成功！')
+    else
+      redirect_back(fallback_location: unpaid_index_admin_order_payment_records_path, alert: msg)
     end 
   end
 

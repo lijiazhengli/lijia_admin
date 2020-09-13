@@ -6,4 +6,8 @@
 
 %li.nav-item
   = link_to '退款记录', refund_index_admin_order_payment_records_path, class: "nav-link #{'active' if params[:controller] == 'admin/order_payment_records' and %w(refund_index).include?(params[:action])}"
+
+%li.nav-item
+  = link_to '确认收款', unpaid_index_admin_order_payment_records_path, class: "nav-link #{'active' if params[:controller] == 'admin/order_payment_records' and %w(uppaid_index).include?(params[:action])}"
+
   

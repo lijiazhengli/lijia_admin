@@ -112,11 +112,11 @@
       .form-group
         = f.label "订单状态"
         = f.select :status, options_for_select(Order::STATUS.invert, @order.status), {}, class: 'form-control'
-    - if [Order::SERVICE_ORDER].include?(@order.order_type)
-      .form-group
-        = f.label '服务备注'
-        %br
-        = f.text_area :service_notes, class: 'form-control'
+    
+    .form-group
+      = f.label '服务备注（内部人员填写）'
+      %br
+      = f.text_area :service_notes, class: 'form-control'
     - if [Order::PRODUCT_ORDER].include?(@order.order_type)
       .form-group
         = f.label "订单折扣"

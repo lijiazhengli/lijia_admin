@@ -149,10 +149,12 @@ Rails.application.routes.draw do
       collection do
         put :cancel
         post :confirm_refund
+        post :confirm_paid
         post :received
         post :refund
         get  :reimbursement
         get  :refund_index
+        get  :unpaid_index
       end
     end
 
@@ -224,6 +226,7 @@ Rails.application.routes.draw do
       post :create_course_order
       post :create_service_order
       get  :crm_info
+      post :delete_order_payment
       post :delete_user_address
       get  :franchise_index
       get  :franchise_show

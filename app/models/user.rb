@@ -47,8 +47,8 @@ class User < ApplicationRecord
 
   def to_applet_user_order_list(params)
     info = {}
-    params[:start_at] ||= (Time.now - 150.days).strftime('%F')
-    params[:end_at] ||= Time.now.strftime('%F')
+    params[:start_at] = (Time.now - 30.days).strftime('%F') if params[:start_at].blank?
+    params[:end_at] = Time.now.strftime('%F') if params[:end_at].blank?
     st = Time.parse(params[:start_at]).beginning_of_day
     et = Time.parse(params[:end_at]).end_of_day
     user_orders = Order.noncanceled.includes(:purchased_items).where(user_id: self.id).where("orders.created_at between ? and ? ", st, et)
@@ -61,6 +61,9 @@ class User < ApplicationRecord
     order_ids = (user_orders.map(&:id) + referral_orders.map(&:id) + organizer_orders.map(&:id)).uniq
     info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids).pluck(:product_id)).pluck(:id, :title).to_h
     info[:userInfos] = User.where(id: user_ids).map{|u| [u.id, u.show_name_info]}.to_h
+    info[:start_at] = params[:start_at]
+    info[:end_at] = params[:end_at]
+
     return info
   end
 

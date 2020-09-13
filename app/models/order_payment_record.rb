@@ -3,6 +3,7 @@ class OrderPaymentRecord < ActiveRecord::Base
   PAYMENT_METHOD_ID = {1 => '现金', 2 => '微信付款', 3 => '支付宝', 4 => '银行转账', 5 => '服务费定金', 6 => '服务费尾款现金', 7 => '收纳工具结算现金', 8 => '银行转账', 9 => '课程尾款现金'}
   APPLET_SELECT_PAYMENT_METHOD_ID = ['服务费定金', '服务费尾款现金', '收纳工具结算现金', '课程尾款现金']
   scope :tenpay_method, -> {where(payment_method_id: Order::TENPAY_ID)}
+  scope :untenpay_method, -> {where.not(payment_method_id: Order::TENPAY_ID)}
   scope :paid, -> {where.not(timestamp: nil)}
   scope :unpaid, -> {where(timestamp: nil)}
   scope :tongji, -> {where.not(payment_method_id: 7)}
@@ -29,6 +30,12 @@ class OrderPaymentRecord < ActiveRecord::Base
   # 退款记录对应的支付记录的支付金额
   def pay_cost
     OrderPaymentRecord.where("cost > ? and transaction_id=?", 0, self.transaction_id).first.try(:cost).round(2)
+  end
+
+  def confirm_paid_or_operate
+    self.update(timestamp: Time.now)
+    self.order.update(status: 'paided')
+    return [true, nil]
   end
 
   def reimbursement
