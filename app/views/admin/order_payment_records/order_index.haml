@@ -38,7 +38,11 @@
           %td= item.timestamp.present? ? item.timestamp.strftime("%F %T") : ''
           %td= item.remark
           %td
-            - if !item.timestamp
+            - p item.timestamp.present?
+            - p item.payment_method_id == Order::TENPAY_ID
+            - p item.transaction_id.present?
+
+            - if !item.timestamp or item.payment_method_id != Order::TENPAY_ID
               = link_to '修改', edit_admin_order_order_payment_record_path(@order, item)
               |
               = link_to '删除', admin_order_order_payment_record_path(@order, item), :method => :delete, :data => { :confirm => '确定删除?' }

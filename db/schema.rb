@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_10_163914) do
+ActiveRecord::Schema.define(version: 2020_09_23_162238) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -72,6 +72,26 @@ ActiveRecord::Schema.define(version: 2020_09_10_163914) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "user_name"
     t.index ["name"], name: "index_admins_on_name"
+  end
+
+  create_table "applies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "admin_id"
+    t.string "item_type"
+    t.string "status", default: "unconfirmed"
+    t.float "cost"
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_type", "status"], name: "index_applies_on_item_type_and_status"
+    t.index ["user_id"], name: "index_applies_on_user_id"
+  end
+
+  create_table "apply_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "apply_id"
+    t.string "item_type"
+    t.integer "item_id"
+    t.index ["apply_id"], name: "index_apply_items_on_apply_id"
   end
 
   create_table "arrangers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

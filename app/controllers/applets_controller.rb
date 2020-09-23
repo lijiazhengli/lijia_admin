@@ -192,6 +192,15 @@ class AppletsController < ApplicationController
     render json: {userInfo: user.to_applet_crm_list}
   end
 
+  def apply_fee
+    p params
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    userInfo = user.to_applet_user_apply_fee_order_list(params)
+    p userInfo
+    
+    render json: userInfo
+  end
+
   def user_order
     p params
     user = User.where(phone_number: params[:customer_phone_number]).last
@@ -387,6 +396,24 @@ class AppletsController < ApplicationController
       render json: {success: true}
     else
       render json: {success: false, errors: '加盟申请创建失败， 请稍后再试'}
+    end
+  end
+
+  def create_apply_order_fee
+    p params
+    byebug
+    params[:redis_expire_name] = "order_fee_apply_#{params[:customer_phone_number]}"
+    msg = nil #Apply.check_redis_expire_name(params)
+    if msg.blank?
+      apply, success, errors = Apply.create_order_fee_apply_for_applet(params)
+      byebug
+      if success
+        render json: {success: true}
+      else
+        render json: {success: false, errors: '订单费用申请创建失败， 请稍后再试'}
+      end
+    else
+      render json: {success: false, errors: msg}
     end
   end
 

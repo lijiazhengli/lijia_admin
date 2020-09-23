@@ -213,6 +213,7 @@ Rails.application.routes.draw do
 
   resources :applets, only: [:index, :show] do
     collection do
+      get  :apply_fee
       get  :cart
       get  :cart_base_show
       get  :cart_show
@@ -221,6 +222,7 @@ Rails.application.routes.draw do
       post :cancel_order
       get  :course_index
       post :create_apply_order
+      post :create_apply_order_fee
       post :create_order
       post :create_order_payment
       post :create_course_order

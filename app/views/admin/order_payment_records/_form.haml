@@ -34,7 +34,7 @@
       说明：如未付款此项不用填写
       = f.text_field :transaction_id, class: 'form-control'
 
-    - if false
+    - if @item.payment_method_id != Order::TENPAY_ID
       .form-group
         = f.label "到账时间"
         %br

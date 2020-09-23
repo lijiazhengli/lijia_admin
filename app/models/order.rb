@@ -15,6 +15,7 @@ class Order < ApplicationRecord
 
   scope :current_orders, -> {where(status: CURRENT_STATUS).order('id desc')}
   scope :noncanceled, -> { where.not(status: ['canceled']) }
+  scope :paided, -> { where(status: ['paided']) }
   scope :available, -> { where(status: ['part-paid', 'paided', 'confirming', 'confirmed', 'on_the_road', 'completed']) }
   scope :goods, -> { where(order_type: PRODUCT_ORDER) }
 

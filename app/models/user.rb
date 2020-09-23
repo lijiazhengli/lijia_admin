@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many  :orders
+  has_many  :applies
   has_many  :franchises
 
   COURSE_STUDENT_ZHEKOU = 0.8
@@ -64,6 +65,17 @@ class User < ApplicationRecord
     info[:start_at] = params[:start_at]
     info[:end_at] = params[:end_at]
 
+    return info
+  end
+
+  def to_applet_user_apply_fee_order_list(params)
+    info = {}
+    user_orders = Order.paided.includes(:purchased_items).where(organizer_phone_number: self.phone_number)
+    info[:user_orders] = user_orders.map{|o| o.to_user_achievement}
+    user_ids = user_orders.map(&:user_id).uniq
+    order_ids = user_orders.map(&:id).uniq
+    info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids).pluck(:product_id)).pluck(:id, :title).to_h
+    info[:userInfos] = User.where(id: user_ids).map{|u| [u.id, u.show_name_info]}.to_h
     return info
   end
 
