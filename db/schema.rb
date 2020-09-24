@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_23_162238) do
+ActiveRecord::Schema.define(version: 2020_09_24_153728) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -91,7 +91,10 @@ ActiveRecord::Schema.define(version: 2020_09_23_162238) do
     t.integer "apply_id"
     t.string "item_type"
     t.integer "item_id"
+    t.string "status", default: "unconfirmed"
     t.index ["apply_id"], name: "index_apply_items_on_apply_id"
+    t.index ["item_type"], name: "index_apply_items_on_item_type_and_item_type"
+    t.index ["status"], name: "index_apply_items_on_status"
   end
 
   create_table "arrangers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

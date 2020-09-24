@@ -58,6 +58,7 @@ class User < ApplicationRecord
     info[:referral_orders] = referral_orders.map{|o| o.to_user_achievement}
     organizer_orders = Order.noncanceled.includes(:purchased_items).where(organizer_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et)
     info[:organizer_orders] = organizer_orders.map{|o| o.to_user_achievement}
+    info[:applied_order_ids] = ApplyItem.noncanceled.where(item_type: "Order", item_id: organizer_orders.map(&:id)).pluck(:item_id)
     user_ids = ([self.id] + referral_orders.map(&:user_id) + organizer_orders.map(&:user_id)).uniq
     order_ids = (user_orders.map(&:id) + referral_orders.map(&:id) + organizer_orders.map(&:id)).uniq
     info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids).pluck(:product_id)).pluck(:id, :title).to_h
@@ -70,7 +71,9 @@ class User < ApplicationRecord
 
   def to_applet_user_apply_fee_order_list(params)
     info = {}
-    user_orders = Order.paided.includes(:purchased_items).where(organizer_phone_number: self.phone_number)
+    user = User.where(phone_number: self.phone_number).first
+    applied_order_ids = user.applies.order_fee_list.includes(:apply_items).pluck('apply_items.item_id').uniq
+    user_orders = Order.paided.includes(:purchased_items).where(organizer_phone_number: self.phone_number).where.not(id: applied_order_ids)
     info[:user_orders] = user_orders.map{|o| o.to_user_achievement}
     user_ids = user_orders.map(&:user_id).uniq
     order_ids = user_orders.map(&:id).uniq

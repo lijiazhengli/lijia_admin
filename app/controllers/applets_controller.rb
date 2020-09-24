@@ -401,12 +401,10 @@ class AppletsController < ApplicationController
 
   def create_apply_order_fee
     p params
-    byebug
     params[:redis_expire_name] = "order_fee_apply_#{params[:customer_phone_number]}"
     msg = nil #Apply.check_redis_expire_name(params)
     if msg.blank?
       apply, success, errors = Apply.create_order_fee_apply_for_applet(params)
-      byebug
       if success
         render json: {success: true}
       else

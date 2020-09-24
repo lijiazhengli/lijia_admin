@@ -25,6 +25,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :applies do
+      member do
+        put :completed
+        put :canceled
+        put :update_status
+      end
+    end
+
     resources :arrangers do
       member do
         get :service_orders

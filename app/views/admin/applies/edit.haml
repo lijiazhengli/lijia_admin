@@ -1,0 +1,32 @@
+%h3 修改费用申请信息
+
+= link_to '返回', admin_applies_path, class: "btn btn-secondary"
+
+.col-md-6
+  = form_for @item, url: admin_apply_path(@item) do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+
+    .form-group
+      = f.label "费用"
+      %br
+      = f.text_field :cost, class: 'form-control'
+    - if false
+      .form-group
+        = f.label "状态"
+        = f.select :status, options_for_select(Apply::STATUS.invert, @item.status), {}, class: 'form-control'
+
+    .form-group
+      = f.label '备注'
+      %br
+      = f.text_area :notes, class: 'form-control'
+
+    = f.submit '保存', class: 'btn btn-success'
+
+
+
+
+
