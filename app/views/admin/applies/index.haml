@@ -37,8 +37,6 @@
           %td= Order::STATUS[item.status]
           %td= item.notes
           %td
-            = link_to '详情', admin_apply_path(item)
-            |
             = link_to '修改', edit_admin_apply_path(item)
             |
             = link_to '完成', completed_admin_apply_path(item), :method => :put, :data => { :confirm => '确定完成申请?' }

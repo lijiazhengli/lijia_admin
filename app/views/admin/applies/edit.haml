@@ -27,6 +27,41 @@
     = f.submit '保存', class: 'btn btn-success'
 
 
+%br
+
+%h5 订单明细
+%div
+  总数： 
+  = @order_payment_records.sum(:cost)
+  应申请费用：
+  = (@order_payment_records.sum(:cost) * 0.05).round(2)
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 订单号
+        %th 产品名称
+        %th 费用信息
+    %tbody
+      - @apply_items.each do |item|
+        - order = @order_infos.select{|o| o.id == item.item_id}.first
+        %tr
+          %td= link_to order.external_id, admin_order_path(order)
+          %td
+            - order.purchased_items.each do |sub_item|
+              - product = @product_hash[sub_item.product_id]
+              - if product
+                - if order.order_type == Order::PRODUCT_ORDER
+                  %div #{product[:title]}x#{sub_item.quantity}
+                - else
+                  %div #{product[:title]}
+          %td
+            - @order_payment_records.select{|r| r.order_id == item.item_id}.each do |records|
+              %div
+                - if records.timestamp.present?
+                  %span ✅
+                #{records.payment_method_name}：¥#{records.cost}， 备注： #{records.remark}
+
 
 
 

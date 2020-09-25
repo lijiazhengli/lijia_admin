@@ -14,12 +14,14 @@ class Admin::AppliesController < Admin::BaseController
     if @item.update_attributes(current_record_params)
       redirect_to admin_applies_path
     else
+      load_order_and_payment_records_infos
       render :edit
     end
   end
 
   def edit
     @item = Apply.find(params[:id])
+    load_order_and_payment_records_infos
   end
 
 
@@ -54,6 +56,15 @@ class Admin::AppliesController < Admin::BaseController
 
   def current_record_params
     params.require(:apply).permit!
-  end 
+  end
+
+  def load_order_and_payment_records_infos
+    @apply_items = @item.apply_items
+    order_ids = @apply_items.map(&:item_id).uniq
+    @order_infos = Order.noncanceled.includes(:purchased_items).where(id: order_ids)
+    product_ids = PurchasedItem.where(order_id: order_ids).pluck(:product_id)
+    @product_hash = Product.get_product_list_hash(product_ids)
+    @order_payment_records = OrderPaymentRecord.where(order_id: order_ids)
+  end
 
 end
