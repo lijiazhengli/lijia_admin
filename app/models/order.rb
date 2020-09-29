@@ -527,7 +527,7 @@ class Order < ApplicationRecord
         order_attr[:status] = 'part-paid'
       end
       order_info = {order_attr: order_attr, order: order, params: option}
-      if order_attr[:status] == 'part-paid'
+      if order_attr[:status] == 'part-paid' and order.is_course?
         order_info[:methods] = %w(update_order update_order_payment_record create_remaining_tenpay_order_payment_record)
       else
         order_info[:methods] = %w(update_order update_order_payment_record)
