@@ -313,7 +313,7 @@ class Order < ApplicationRecord
       success = false
       allow_methods = %w(
         check_user create_order create_course_student save_with_new_external_id update_order cancel_order completed_order 
-        create_tenpay_order_payment_record create_earnest_tenpay_order_payment_record
+        create_tenpay_order_payment_record create_earnest_tenpay_order_payment_record create_remaining_tenpay_order_payment_record
         update_order_payment_record
       )
 
@@ -424,6 +424,15 @@ class Order < ApplicationRecord
       order_hash[:order_payment_record] = order_payment_record
     end
 
+    def create_remaining_tenpay_order_payment_record(order_hash, params)
+      raise '订单不存在' if order_hash[:order].blank?
+      order = order_hash[:order]
+      total_cost = (order.order_total_fee - order.order_paid_due).round(2)
+      order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '尾款', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
+      order_payment_record.save!
+      order_hash[:order_payment_record] = order_payment_record
+    end
+
     def cancel_order order_hash, params
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
@@ -518,7 +527,11 @@ class Order < ApplicationRecord
         order_attr[:status] = 'part-paid'
       end
       order_info = {order_attr: order_attr, order: order, params: option}
-      order_info[:methods] = %w(update_order update_order_payment_record)
+      if order_attr[:status] == 'part-paid'
+        order_info[:methods] = %w(update_order update_order_payment_record create_remaining_tenpay_order_payment_record)
+      else
+        order_info[:methods] = %w(update_order update_order_payment_record)
+      end
       order_info[:current_payment_record] = order_payment_record
       order_info[:redis_expire_name] = "order-#{order.id}"
       order, success, errors = Order.create_or_update_order(order_info)
