@@ -90,7 +90,7 @@ class Order < ApplicationRecord
   def to_user_achievement
     attrs = self.attributes.slice(
       "address_province", "address_city", "address_district", 'external_id',
-      "id", 'user_id',
+      "id", 'user_id', 'notes', 'service_notes',
       'order_type', "recipient_name", "recipient_phone_number", "status",
     )
     attrs['full_address'] = self.full_address
@@ -98,6 +98,8 @@ class Order < ApplicationRecord
     attrs["tenpay_paid_due"] = self.tenpay_paid_due
     attrs["no_tenpay_paid_due"] = self.no_tenpay_paid_due
     attrs["untenpay_paid_due"] = self.untenpay_paid_due
+    attrs["order_show_date"] = self.start_date if self.start_date and self.is_service?
+    attrs["order_show_end_date"] = self.end_date if self.end_date and self.is_service?
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
     attrs
   end
@@ -521,6 +523,22 @@ class Order < ApplicationRecord
       order_info[:redis_expire_name] = "order-#{order.id}"
       order, success, errors = Order.create_or_update_order(order_info)
       order
+    end
+
+    def user_orders_achievement(orders)
+      order_ids = orders.map(&:id).uniq
+      purchased_items = PurchasedItem.where(order_id: order_ids)
+      product_ids = purchased_items.pluck(:product_id).uniq
+      persent_info = Product.where(id: product_ids).pluck(:id, :service_percent).to_h
+      total_fee = 0
+      orders.each do |order|
+        product_id = purchased_items.select{|i| i.order_id == order.id}.pluck(:product_id)[0]
+        service_percent = persent_info[product_id] || 0.05
+        tenpay_fee = order.tenpay_paid_due
+        order_fee = order.order_paid_due
+        total_fee += [tenpay_fee - (order_fee) * service_percent, 0].max
+      end
+      return total_fee
     end
   end
 end

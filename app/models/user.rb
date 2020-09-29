@@ -52,11 +52,11 @@ class User < ApplicationRecord
     params[:end_at] = Time.now.strftime('%F') if params[:end_at].blank?
     st = Time.parse(params[:start_at]).beginning_of_day
     et = Time.parse(params[:end_at]).end_of_day
-    user_orders = Order.noncanceled.includes(:purchased_items).where(user_id: self.id).where("orders.created_at between ? and ? ", st, et)
+    user_orders = Order.noncanceled.includes(:purchased_items).where(user_id: self.id).where("orders.created_at between ? and ? ", st, et).order('id desc')
     info[:user_orders] = user_orders.map{|o| o.to_user_achievement}
-    referral_orders = Order.noncanceled.includes(:purchased_items).where(referral_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et)
+    referral_orders = Order.noncanceled.includes(:purchased_items).where(referral_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et).order('id desc')
     info[:referral_orders] = referral_orders.map{|o| o.to_user_achievement}
-    organizer_orders = Order.noncanceled.includes(:purchased_items).where(organizer_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et)
+    organizer_orders = Order.noncanceled.includes(:purchased_items).where(organizer_phone_number: self.phone_number).where("orders.created_at between ? and ? ", st, et).order('id desc')
     info[:organizer_orders] = organizer_orders.map{|o| o.to_user_achievement}
     info[:applied_order_ids] = ApplyItem.noncanceled.where(item_type: "Order", item_id: organizer_orders.map(&:id)).pluck(:item_id)
     user_ids = ([self.id] + referral_orders.map(&:user_id) + organizer_orders.map(&:user_id)).uniq
@@ -75,6 +75,7 @@ class User < ApplicationRecord
     applied_order_ids = user.applies.order_fee_list.includes(:apply_items).pluck('apply_items.item_id').uniq
     user_orders = Order.paided.includes(:purchased_items).where(organizer_phone_number: self.phone_number).where.not(id: applied_order_ids)
     info[:user_orders] = user_orders.map{|o| o.to_user_achievement}
+    info[:total_fee] = Order.user_orders_achievement(user_orders)
     user_ids = user_orders.map(&:user_id).uniq
     order_ids = user_orders.map(&:id).uniq
     info[:productInfos] = Product.where(id: PurchasedItem.where(order_id: order_ids).pluck(:product_id)).pluck(:id, :title).to_h

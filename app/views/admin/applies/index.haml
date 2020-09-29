@@ -20,6 +20,7 @@
   %table.table.table-striped.table-sm
     %thead
       %tr
+        %th ID
         %th 费用
         %th 操作人
         %th 联系人
@@ -29,12 +30,13 @@
     %tbody
       - @items.each do |item|
         %tr
+          %td= item.id
           %td= item.cost
           %td= @admins_hash[item.admin_id]
           %td
             - user = @users_hash[item.user_id]
             = "#{user.name} | #{user.phone_number}"
-          %td= Order::STATUS[item.status]
+          %td= Apply::STATUS[item.status]
           %td= item.notes
           %td
             = link_to '修改', edit_admin_apply_path(item)

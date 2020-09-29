@@ -63,8 +63,9 @@ class Admin::AppliesController < Admin::BaseController
     order_ids = @apply_items.map(&:item_id).uniq
     @order_infos = Order.noncanceled.includes(:purchased_items).where(id: order_ids)
     product_ids = PurchasedItem.where(order_id: order_ids).pluck(:product_id)
-    @product_hash = Product.get_product_list_hash(product_ids)
+    @product_hash = Product.where(id: product_ids).map{|i| [i.id, i]}.to_h
     @order_payment_records = OrderPaymentRecord.where(order_id: order_ids)
+    @total_fee = Order.user_orders_achievement(@order_infos)
   end
 
 end

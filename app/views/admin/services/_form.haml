@@ -28,6 +28,12 @@
       = f.text_field :earnest_price, class: 'form-control'
 
     .form-group
+      = f.label "运营提成"
+      %br
+      说明：0.05 代表运营提成为0.05，0代表无品牌运营费用，运营提成不能大于1， 通常为 0.05。
+      = f.text_field :service_percent, class: 'form-control'
+
+    .form-group
       = f.label "预约人数"
       %br
       = f.text_field :count_string, class: 'form-control'

@@ -3,6 +3,7 @@ class Apply < ApplicationRecord
   has_many  :apply_items
   accepts_nested_attributes_for :apply_items, allow_destroy: true
 
+
   scope :noncanceled, -> { where.not(status: ['canceled']) }
   scope :order_fee_list, -> { where(status: AVAILABLE_STATUS, item_type: 'OrderFee') }
   AVAILABLE_STATUS = ['unconfirmed', 'completed']
@@ -62,8 +63,7 @@ class Apply < ApplicationRecord
       msg = check_order_fee_apply_option(option)
       return [nil, false, msg] if msg.present?
       return [nil, false, '含有已申请费用的订单，请核对'] unless ApplyItem.includes(:apply).where(item_type: 'Order', item_id: option[:order_ids], applies: {status: AVAILABLE_STATUS}).empty?
-      total_cost = OrderPaymentRecord.paid.where(order_id: option[:order_ids]).sum(:cost) * 0.05
-
+      total_cost = Order.user_orders_achievement(Order.noncanceled.where(id: option[:order_ids]))
       return [nil, false, '订单金额已变更， 请重新提交申请'] if (total_cost.round(2) - option[:total_fee].to_f).abs >= 0.5
       user = User.where(phone_number: option[:customer_phone_number]).last
       success = false

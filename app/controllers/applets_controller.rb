@@ -404,11 +404,11 @@ class AppletsController < ApplicationController
     params[:redis_expire_name] = "order_fee_apply_#{params[:customer_phone_number]}"
     msg = nil #Apply.check_redis_expire_name(params)
     if msg.blank?
-      apply, success, errors = Apply.create_order_fee_apply_for_applet(params)
+      apply, success, msg = Apply.create_order_fee_apply_for_applet(params)
       if success
         render json: {success: true}
       else
-        render json: {success: false, errors: '订单费用申请创建失败， 请稍后再试'}
+        render json: {success: false, errors: msg}
       end
     else
       render json: {success: false, errors: msg}
