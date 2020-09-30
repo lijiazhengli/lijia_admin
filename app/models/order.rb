@@ -313,8 +313,8 @@ class Order < ApplicationRecord
       success = false
       allow_methods = %w(
         check_user create_order create_course_student save_with_new_external_id update_order cancel_order completed_order 
-        create_tenpay_order_payment_record create_earnest_tenpay_order_payment_record create_remaining_tenpay_order_payment_record
-        update_order_payment_record
+        create_tenpay_order_payment_record create_earnest_tenpay_order_payment_record
+        update_order_payment_record create_remaining_tenpay_order_payment_record
       )
 
       all_methods = options.symbolize_keys![:methods] || []
