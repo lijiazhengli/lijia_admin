@@ -18,4 +18,15 @@ module Admin::BaseHelper
     arr.join('|')
   end
 
+  def show_organizer_info(item, info)
+    arr = []
+    arr << item.organizer_name if item.organizer_name.present?
+    if item.organizer_phone_number.present?
+      arr << item.organizer_phone_number
+      user = info[item.organizer_phone_number]
+      arr << user.show_status if user.present?
+    end
+    arr.join('|')
+  end
+
 end

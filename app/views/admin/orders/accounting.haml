@@ -79,8 +79,10 @@
                 - else
                   %div #{product[:title]}
           %td= item.order_payment_records.where.not(timestamp: [nil]).sum(:cost).round(2)
-          %td= "#{@users_hash[item.user_id]}|#{item.customer_phone_number}"
-          %td= show_referral_info(item, @referral_infos)
-          %td= "#{item.organizer_name}|#{item.organizer_phone_number}"
+          %td
+            - user = @users.select{|u| u.id == item.user_id}.first
+            = "#{user.name}|#{user.phone_number}|#{user.show_status}"
+          %td= show_referral_info(item, @phone_numbers_infos)
+          %td= show_organizer_info(item, @phone_numbers_infos)
           %td= item.created_at.strftime('%F %T')      
   = paginate @orders

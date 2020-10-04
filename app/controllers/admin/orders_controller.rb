@@ -112,8 +112,9 @@ class Admin::OrdersController < Admin::BaseController
     @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
     @product_hash = Product.get_product_list_hash(product_ids)
-    @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
-    @referral_infos = User.where(phone_number: @orders.map(&:referral_phone_number)).map{|i| [i.phone_number, i]}.to_h
+    @users = User.where(id: @orders.map(&:user_id))
+    phone_numbers =  @orders.map(&:referral_phone_number) + @orders.map(&:organizer_phone_number)
+    @phone_numbers_infos = User.where(phone_number: phone_numbers).map{|i| [i.phone_number, i]}.to_h
   end
 
 
