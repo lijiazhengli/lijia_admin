@@ -1,0 +1,30 @@
+.col-md-12
+  = form_for @item, url: url do |f|
+    - if @item.errors.any?
+      .form-group
+        %ul
+          - @item.errors.messages.each do |key,msg|
+            %li= msg.join(',')
+    .form-group
+      = f.label "*名称"
+      %br
+      = f.text_field :title, class: 'form-control'
+
+    .form-group
+      = f.label "简介"
+      %br
+      = f.text_area :description, class: 'form-control'
+
+    .form-group
+      = f.label "是否启用"
+      = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
+    .form-group
+      = f.text_field :front_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @item, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'product_set_front_image', upload_url: file_upload_admin_product_sets_path(type: 'front')}
+
+    .form-group
+      = f.text_field :detailed_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @item, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'product_set_detailed_image', upload_url: file_upload_admin_product_sets_path(type: 'detailed')}
+
+
+    = f.submit '保存', class: 'btn btn-success'

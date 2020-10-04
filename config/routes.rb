@@ -184,6 +184,20 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :product_sets do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
+      end
+    end
+
     resources :services do
       collection do
         post :file_upload
