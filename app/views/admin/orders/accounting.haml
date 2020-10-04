@@ -49,7 +49,10 @@
         %th 折扣
         %th 付款信息
         %th 产品信息
+        %th 总金额
+        %th 订购人
         %th 推荐人
+        %th 组织人
         %th 创建时间
     %tbody
       - @orders.each do |item|
@@ -75,8 +78,9 @@
                   %div #{product[:title]}x#{sub_item.quantity}
                 - else
                   %div #{product[:title]}
-          %td
-            - if item.referral_phone_number.present?
-              = "#{item.referral_name}|#{item.referral_phone_number}"
+          %td= item.order_payment_records.where.not(timestamp: [nil]).sum(:cost).round(2)
+          %td= "#{@users_hash[item.user_id]}|#{item.customer_phone_number}"
+          %td= show_referral_info(item, @referral_infos)
+          %td= "#{item.organizer_name}|#{item.organizer_phone_number}"
           %td= item.created_at.strftime('%F %T')      
   = paginate @orders

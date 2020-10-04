@@ -16,6 +16,11 @@ class User < ApplicationRecord
     [self.name, self.phone_number].join(' ')
   end
 
+
+  def show_status
+    STATUS[self.status]
+  end
+
   def to_applet_list
     attrs = {}
     %w(name profession avatar address_province address_city address_district zhekou).each do |info|
