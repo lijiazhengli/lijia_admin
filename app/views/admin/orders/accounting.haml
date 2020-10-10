@@ -9,9 +9,17 @@
     .form-group
       = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
     .form-group
+    = text_field_tag :customer_name_cont, params[:customer_name_cont], class: "form-control", placeholder: "订购人"
+    .form-group
+    = text_field_tag :customer_phone_number_cont, params[:customer_phone_number_cont], class: "form-control", placeholder: "订购人电话"
+    .form-group
       = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
     .form-group
       = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
+    .form-group
+    = f.search_field :organizer_name_cont, class: "form-control", placeholder: "组织人"
+    .form-group
+    = f.search_field :organizer_phone_number_cont, class: "form-control", placeholder: "组织人电话"
     .form-group
       = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: 'sku，多个sku请用英文逗号分割', style: "width: 320px"
     .form-group

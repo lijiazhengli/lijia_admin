@@ -100,6 +100,18 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     @params = params[:q] || {}
+
+    user_ids = []
+
+    if params[:customer_name_cont].present?
+      user_ids += User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
+    end
+
+    if params[:customer_phone_number_cont].present?
+      user_ids += User.ransack(phone_number_cont: params[:customer_phone_number_cont]).result(distinct: true).pluck(:id).uniq
+    end
+    @params[:user_id_in] = user_ids if user_ids.present?
+
     if product_ids.present?
       @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
     else
