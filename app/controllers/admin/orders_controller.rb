@@ -8,6 +8,7 @@ class Admin::OrdersController < Admin::BaseController
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id)
     @product_hash = Product.get_product_list_hash(product_ids)
+    @referral_infos = User.where(phone_number: @orders.map(&:referral_phone_number)).map{|i| [i.phone_number, i]}.to_h
   end
 
   def new
@@ -99,6 +100,18 @@ class Admin::OrdersController < Admin::BaseController
     end
 
     @params = params[:q] || {}
+
+    user_ids = []
+
+    if params[:customer_name_cont].present?
+      user_ids += User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
+    end
+
+    if params[:customer_phone_number_cont].present?
+      user_ids += User.ransack(phone_number_cont: params[:customer_phone_number_cont]).result(distinct: true).pluck(:id).uniq
+    end
+    @params[:user_id_in] = user_ids if user_ids.present?
+
     if product_ids.present?
       @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
     else
@@ -111,6 +124,9 @@ class Admin::OrdersController < Admin::BaseController
     @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
     @product_hash = Product.get_product_list_hash(product_ids)
+    @users = User.where(id: @orders.map(&:user_id))
+    phone_numbers =  @orders.map(&:referral_phone_number) + @orders.map(&:organizer_phone_number)
+    @phone_numbers_infos = User.where(phone_number: phone_numbers).map{|i| [i.phone_number, i]}.to_h
   end
 
 

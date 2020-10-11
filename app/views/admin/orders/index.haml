@@ -59,7 +59,7 @@
           %td= item.city_name
           %td= Order::STATUS[item.status]
           %td= "#{item.start_date}~#{item.end_date}"
-          %td= "#{item.referral_name}|#{item.referral_phone_number}"
+          %td= show_referral_info(item, @referral_infos)
           %td= "#{item.organizer_name}|#{item.organizer_phone_number}"
           %td= item.zhekou
           %td= item.created_at.strftime('%F %T')
