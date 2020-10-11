@@ -11,7 +11,17 @@
       = f.text_field :title, class: 'form-control'
 
     .form-group
-      = f.label "价格"
+      = f.label "*产品分类"
+      %br
+      = f.select :product_set_id, options_for_select(ProductSet.all.pluck(:title, :id), @good.product_set_id), {include_blank: true}, class: 'form-control'
+
+    .form-group
+      = f.label "*尺寸和颜色"
+      %br
+      = f.text_field :size, class: 'form-control'
+
+    .form-group
+      = f.label "*价格"
       %br
       = f.text_field :price, class: 'form-control'
 

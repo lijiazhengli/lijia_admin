@@ -185,6 +185,19 @@ Rails.application.routes.draw do
     end
 
     resources :product_sets do
+      resources :product_set_images do
+        collection do
+          post :file_upload
+          put :file_upload
+          patch :file_upload
+          put :up_serial
+          put :down_serial
+        end
+        member do
+          put :disable
+          put :enable
+        end
+      end
       collection do
         post :file_upload
         put :file_upload

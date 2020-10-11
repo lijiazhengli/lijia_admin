@@ -3,6 +3,9 @@
   = search_form_for @q, url: admin_goods_path, html: {class: 'form-inline'} do |f|
     .form-group
       = f.search_field :title_cont, class: "form-control", placeholder: "产品名称"
+    .form-group
+      = f.label '产品分类'
+      = select_tag "q[product_set_id_eq]", options_for_select(ProductSet.pluck(:title, :id).to_h, @params[:product_set_id_eq]), include_blank: true, class: "form-control"
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建产品', new_admin_good_path, class: "btn btn-success"
 
@@ -26,6 +29,7 @@
       %tr
         %th sku
         %th 名称
+        %th 产品分类
         - if false
           %th 城市名称
         %th 价格
@@ -44,6 +48,7 @@
           %td= item.title
           - if false
             %td= item.city_name
+          %td= @product_sets_hash[item.product_set_id]
           %td= item.price
           %td= item.min_count
           %td= image_tag(item.front_image || '', width: '100px')

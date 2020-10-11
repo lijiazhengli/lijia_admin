@@ -34,5 +34,7 @@
               = link_to '关闭', disable_admin_product_set_path(item), :method => :put
             - else
               = link_to '启用', enable_admin_product_set_path(item), :method => :put
+            |
+            = link_to "详情图片", admin_product_set_product_set_images_path(item)
 
   = paginate @items
