@@ -1,6 +1,29 @@
 class ProductSet < ApplicationRecord
   has_many :product_set_images
+  has_many :products
   scope :active, -> { where(active: true).order(:position) }
+  scope :applet_home, -> {where(active: true).order(:position)}
+
+  def to_applet_list
+    {
+      id: self.id,
+      title: self.title,
+      img_url: self.front_image
+    }
+  end
+
+  def to_applet_show
+    attrs = {
+      id: self.id,
+      title: self.title,
+      desc: self.description,
+      img_url: self.detailed_image
+    }
+
+    attrs[:exprie_product] = true unless self.active
+    attrs[:item_images] = self.product_set_images.active.pluck(:mobile_image)
+    attrs
+  end
 
   def up_serial(target_id)
     self.class.transaction do

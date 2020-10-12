@@ -30,6 +30,7 @@
         %th sku
         %th 名称
         %th 产品分类
+        %th 尺寸和颜色
         - if false
           %th 城市名称
         %th 价格
@@ -49,6 +50,7 @@
           - if false
             %td= item.city_name
           %td= @product_sets_hash[item.product_set_id]
+          %td= item.size
           %td= item.price
           %td= item.min_count
           %td= image_tag(item.front_image || '', width: '100px')

@@ -278,6 +278,7 @@ Rails.application.routes.draw do
       get  :order_show
       get  :order_payment_show
       get  :product_show
+      get  :product_set_show
       get  :set_phone
       get  :service_index
       post :save_address

@@ -30,6 +30,7 @@ class AppletsController < ApplicationController
     request_info[:services] = Service.applet_home.map{|item| item.to_applet_list}
     request_info[:courses] = Course.applet_home.map{|item| item.to_applet_list}
     request_info[:goods] = Good.applet_home.map{|item| item.to_applet_list}
+    request_info[:product_sets] = ProductSet.applet_home.map{|item| item.to_applet_list}
     render json: request_info
   end
 
@@ -124,6 +125,15 @@ class AppletsController < ApplicationController
     request_info[:info] = product.to_applet_show
     request_info[:cart_info] = product.to_applet_list
     p request_info
+    render json: request_info
+  end
+
+  def product_set_show
+    set = ProductSet.find(params[:id]) rescue nil
+    set = ProductSet.active.first if set.blank?
+    request_info = {}
+    request_info[:info] = set.to_applet_show
+    request_info[:product_info] = set.products.active.map{|i| i.to_applet_list_v2}
     render json: request_info
   end
 
