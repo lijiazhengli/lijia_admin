@@ -1,10 +1,10 @@
-%h2 产品分类列表
+%h2 收纳工具分类列表
 - if true
   = search_form_for @q, url: admin_product_sets_path, html: {class: 'form-inline'} do |f|
     .form-group
-      = f.search_field :title_cont, class: "form-control", placeholder: "产品名称"
+      = f.search_field :title_cont, class: "form-control", placeholder: "名称"
     = f.submit '查询', class: "btn btn-secondary"
-    = link_to '新建产品分类', new_admin_product_set_path, class: "btn btn-success"
+    = link_to '新建收纳工具分类', new_admin_product_set_path, class: "btn btn-success"
 
 %br
 %div

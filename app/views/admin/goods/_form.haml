@@ -6,12 +6,12 @@
           - @good.errors.messages.each do |key,msg|
             %li= msg.join(',')
     .form-group
-      = f.label "*名称"
+      = f.label "*收纳工具sku名称"
       %br
       = f.text_field :title, class: 'form-control'
 
     .form-group
-      = f.label "*产品分类"
+      = f.label "*收纳工具分类"
       %br
       = f.select :product_set_id, options_for_select(ProductSet.all.pluck(:title, :id), @good.product_set_id), {include_blank: true}, class: 'form-control'
 
