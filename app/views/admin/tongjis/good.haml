@@ -1,0 +1,43 @@
+%h2 收纳工具统计
+%h5 说明
+%p 1. 查询结果，不包含取消订单
+%p 2.产品sku： 多个产品sku请用英文逗号分割。此条件为包含关系查询，即当输入'33'时，查询的是灰色棉麻布百纳箱
+= search_form_for @q, url: good_admin_tongjis_path, html: {class: 'form-inline'} do |f|
+  .form-group
+  = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: '产品sku，多个产品sku请用英文逗号分割', style: "width: 320px"
+  .form-group
+    = f.label "创建时间起"
+    = f.date_field :created_at_gteq, class: "form-control"
+    = f.label "创建时间止"
+    = f.date_field :created_at_lteq, class: "form-control"
+
+  .form-group
+    = f.label '订单状态'
+    = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
+  = f.submit '查询', class: "btn btn-secondary"
+
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 单号
+        %th 产品名字
+        %th 数量
+        %th 价格
+        %th 折扣
+        %th 售价
+        %th 订单状态
+        %th 下单时间
+    %tbody
+      - @purchased_items.each do |item|
+        - order = @orders.select{|o| o.id == item.order_id}.first
+        - product = @product_hash[item.product_id]
+        %tr
+          %td= link_to order.external_id, admin_order_path(order)
+          %td= product[:title]
+          %td= item.quantity
+          %td= item.price
+          %td= order.zhekou
+          %td= (item.price * order.zhekou).round(2)
+          %td= Order::STATUS[order.status]
+          %td= item.created_at.strftime('%F %T')
