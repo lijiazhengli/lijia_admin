@@ -55,6 +55,13 @@ class AppletsController < ApplicationController
     render json: request_info
   end
 
+  def product_set_index
+    request_info = {}
+    request_info[:pages_slideshows] = AdImage.applet_good.map{|item| item.to_applet_list}
+    request_info[:product_sets] = ProductSet.applet_home.map{|item| item.to_applet_list}
+    render json: request_info
+  end
+
   def franchise_show
     item = Franchise.find(params[:id])
     request_info = {}

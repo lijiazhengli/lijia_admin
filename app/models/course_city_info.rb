@@ -4,7 +4,7 @@ class CourseCityInfo < ApplicationRecord
     self.class.transaction do
       pre_image = self.class.find(target_id)
       index = pre_image.position
-      self.class.where.not(id: self.id).where('`position` <= ? AND `position` >= ?', self.position, pre_image.position).update_all('`position` = `position` + 1')
+      self.class.where(course_id: self.course_id).where.not(id: self.id).where('`position` <= ? AND `position` >= ?', self.position, pre_image.position).update_all('`position` = `position` + 1')
       self.update(:position => index)
     end
   end
@@ -13,7 +13,7 @@ class CourseCityInfo < ApplicationRecord
     self.class.transaction do
       next_image = self.class.find(target_id)
       index = next_image.position
-      self.class.where.not(id: self.id).where('`position` >= ? AND `position` <= ?', self.position, next_image.position).update_all('`position` = `position` - 1')
+      self.class.where(course_id: self.course_id).where.not(id: self.id).where('`position` >= ? AND `position` <= ?', self.position, next_image.position).update_all('`position` = `position` - 1')
       self.update(:position => index)
     end
   end

@@ -30,32 +30,36 @@
       %br
       = f.text_field :min_count, class: 'form-control'
 
-    .form-group
-      = f.label "简介"
-      %br
-      = f.text_area :description, class: 'form-control'
 
-    .form-group
-      = f.label "详细描述"
-      %br
-      = f.cktext_area :web_content, ckeditor: { language: 'zh-cn'}
+    - if false
+      .form-group
+        = f.label "简介"
+        %br
+        = f.text_area :description, class: 'form-control'
+
+      .form-group
+        = f.label "详细描述"
+        %br
+        = f.cktext_area :web_content, ckeditor: { language: 'zh-cn'}
 
     .form-group
       = f.label "是否启用"
       = f.select :active, options_for_select({'是' => true, '否' => false}, @good.active), {}, class: 'form-control'
     .form-group
       = f.text_field :front_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @good, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'good_front_image', upload_url: file_upload_admin_goods_path(type: 'front')}
+      = render partial: 'upload_image', locals: {item: @good, image_name: 'front_image', image_size: '购物车图片(220x220)', button_name: 'front-image', input_name: 'good_front_image', upload_url: file_upload_admin_goods_path(type: 'front')}
 
     .form-group
       = f.text_field :pc_front_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_front_image', image_size: '电脑首页图片(300x200)', button_name: 'pc-front-image', input_name: 'good_pc_front_image', upload_url: file_upload_admin_goods_path(type: 'pc-front')}
-    .form-group
-      = f.text_field :detailed_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @good, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'good_detailed_image', upload_url: file_upload_admin_goods_path(type: 'detailed')}
+      = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_front_image', image_size: '购物车图片(300x200)', button_name: 'pc-front-image', input_name: 'good_pc_front_image', upload_url: file_upload_admin_goods_path(type: 'pc-front')}
+    
+    - if false
+      .form-group
+        = f.text_field :detailed_image, style: 'display: none'
+        = render partial: 'upload_image', locals: {item: @good, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'good_detailed_image', upload_url: file_upload_admin_goods_path(type: 'detailed')}
 
-    .form-group
-      = f.text_field :pc_detailed_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_detailed_image', image_size: '电脑详细页图片(1920x400)', button_name: 'pc-detailed-image', input_name: 'good_pc_detailed_image', upload_url: file_upload_admin_goods_path(type: 'pc-detailed')}
+      .form-group
+        = f.text_field :pc_detailed_image, style: 'display: none'
+        = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_detailed_image', image_size: '电脑详细页图片(1920x400)', button_name: 'pc-detailed-image', input_name: 'good_pc_detailed_image', upload_url: file_upload_admin_goods_path(type: 'pc-detailed')}
 
     = f.submit '保存', class: 'btn btn-success'

@@ -267,7 +267,7 @@ class Order < ApplicationRecord
     params = {
       body: "美莉家-微信支付",
       out_trade_no: trade_no,
-      total_fee: String((trade_due*1000).to_i/10),
+      total_fee: String(((trade_due*1000).to_f/10).round(0)),
       spbill_create_ip: "#{ip}",
       notify_url: ENV['WX_PAYMENT_NOTIFICATION_URL'],
       trade_type: 'JSAPI',

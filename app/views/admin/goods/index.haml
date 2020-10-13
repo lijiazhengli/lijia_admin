@@ -35,10 +35,11 @@
           %th 城市名称
         %th 价格
         %th 最小购买数量
-        %th 首页图片
-        %th 电脑首页图片
-        %th 详细页图片
-        %th 电脑详细页图片
+        %th 购物车图片
+        %th 电脑购物车图片
+        - if false
+          %th 详细页图片
+          %th 电脑详细页图片
         %th 是否启用
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
@@ -55,8 +56,9 @@
           %td= item.min_count
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.pc_front_image || '', width: '100px')
-          %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= image_tag(item.pc_detailed_image || '', width: '100px')
+          - if false
+            %td= image_tag(item.detailed_image || '', width: '100px')
+            %td= image_tag(item.pc_detailed_image || '', width: '100px')
           %td= active_chinese_name(item)
           %td
             = link_to '修改', edit_admin_good_path(item)
@@ -65,6 +67,7 @@
               = link_to '关闭', disable_admin_good_path(item), :method => :put
             - else
               = link_to '启用', enable_admin_good_path(item), :method => :put
-            |
-            = link_to "详情图片", admin_product_product_images_path(item)
+            - if false
+              |
+              = link_to "详情图片", admin_product_product_images_path(item)
   = paginate @items
