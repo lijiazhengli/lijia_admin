@@ -34,7 +34,7 @@
         - order = @orders.select{|o| o.id == item.order_id}.first
         - product = @product_hash[item.product_id]
         - count += item.quantity
-        - total_due += (item.price * order.zhekou)
+        - total_due += (item.price * item.quantity * order.zhekou)
         %tr
           %td= link_to order.external_id, admin_order_path(order)
           %td= product[:title]
