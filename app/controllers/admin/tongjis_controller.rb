@@ -77,18 +77,21 @@ class Admin::TongjisController < Admin::BaseController
   def good
 
     product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
-    @params = params[:q] || {}
+    params[:q] ||= {}
+    params[:q][:created_at_gteq] ||= (Time.now - 1.days).strftime("%F")
+    params[:q][:created_at_lteq] ||= (Time.now + 1.days).strftime("%F")
+    @params = params[:q]
 
     if product_ids.present?
-      @q = Order.goods.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
+      @q = Order.goods.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).ransack(@params)
     else
-      @q = Order.goods.noncanceled.includes(:purchased_items).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
+      @q = Order.goods.noncanceled.ransack(@params)
     end
     @orders = @q.result(distinct: true)
     if product_ids.present?
-      @purchased_items = PurchasedItem.where(product_id: product_ids).where(order_id: @orders.map(&:id).uniq)
+      @purchased_items = PurchasedItem.where(product_id: product_ids).where(order_id: @orders.map(&:id).uniq).order('order_id desc')
     else
-      @purchased_items = PurchasedItem.where(order_id: @orders.map(&:id).uniq)
+      @purchased_items = PurchasedItem.where(order_id: @orders.map(&:id).uniq).order('order_id desc')
     end
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
     @product_hash = Product.get_product_list_hash(product_ids)
