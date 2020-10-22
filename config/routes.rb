@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         collection do
           put :up_serial
           put :down_serial
+          put :date_position
         end
         member do
           put :disable

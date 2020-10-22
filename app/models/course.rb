@@ -71,6 +71,10 @@ class Course < Product
     [date_list, address_list]
   end
 
+  def v2_city_infos_list
+    self.course_city_infos.active.order('date_info asc')
+  end
+
   class << self
     def get_recommend_infos(course_id)
       infos = {}

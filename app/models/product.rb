@@ -87,6 +87,17 @@ class Product < ActiveRecord::Base
           course_city_infos[:city_address_infos] = city_address_infos
           attrs[:course_city_infos] = course_city_infos
         end
+
+        v2_city_infos_list = self.v2_city_infos_list
+        attrs[:course_date_list] = v2_city_infos_list.map(&:date_info).uniq
+        if attrs[:course_date_list].present?
+          current_city_info = v2_city_infos_list.first
+          attrs[:v2_course_date] = current_city_info.date_info
+          attrs[:v2_course_city] = current_city_info.city_name
+          attrs[:v2_course_address] = current_city_info.address
+        end
+        attrs[:v2_city_infos_list] = v2_city_infos_list
+
       end
       attrs[:teachers] = self.teachers.map{|item| item.to_course_list}
       attrs[:order_count] = self.available_order_count

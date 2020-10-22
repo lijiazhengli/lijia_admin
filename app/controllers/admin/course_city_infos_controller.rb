@@ -58,6 +58,13 @@ class Admin::CourseCityInfosController < Admin::BaseController
     end
   end
 
+  def date_position
+    @course.course_city_infos.order('date_info asc').each_with_index do |item, index|
+      item.update(position: index)
+    end
+    redirect_to admin_course_course_city_infos_path(@course), notice: '成功'
+  end
+
   def enable
     item = CourseCityInfo.find(params[:id])
     if item.enable
