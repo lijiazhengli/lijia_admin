@@ -6,6 +6,7 @@ class Admin::ProductSetsController < Admin::BaseController
     @params = params[:q] || {}
     @q = ProductSet.order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page])
+    @products = Product.active.where(product_set_id: @items.map(&:id))
   end
 
   def new
