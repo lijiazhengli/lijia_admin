@@ -27,6 +27,8 @@ class Admin::TongjisController < Admin::BaseController
     @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :phone_number).to_h
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id)
     @product_hash = Product.get_product_list_hash(product_ids)
+    @referral_infos = User.where(phone_number: @orders.map(&:referral_phone_number)).map{|i| [i.phone_number, i]}.to_h
+    @order_payment_records = OrderPaymentRecord.where(order_id: @orders.map(&:id))
   end
 
   def course

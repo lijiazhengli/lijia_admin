@@ -19,6 +19,9 @@
         %th 区
         %th 地址
         %th 小区
+        %th 推荐人
+        %th 组织人
+        %th 费用
         %th 状态
         %th 创建时间
     %tbody
@@ -38,7 +41,10 @@
           %td= item.address_city
           %td= item.address_district
           %td= item.location_title
-          %td= item.location_details          
+          %td= item.location_details
+          %td= show_referral_info(item, {})
+          %td= show_organizer_info(item, {})
+          %td= @order_payment_records.select{|r| r.order_id == item.id}.map(&:cost).map(&:to_f).reduce(0, :+).round(2)   
           %td= Order::STATUS[item.status]
           %td= item.created_at.strftime('%F %T')        
   - if @orders.present?  
