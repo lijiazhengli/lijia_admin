@@ -43,8 +43,7 @@
       = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_front_image', image_size: '购物车图片(300x200)', button_name: 'pc-front-image', input_name: 'good_pc_front_image', upload_url: file_upload_admin_goods_path(type: 'pc-front')}
     
     - if true
-      %div
-        ----------------以下信息即将被删除-----------
+      %div ----------------以下信息即将被删除-----------
       .form-group
         = f.label "简介"
         %br
