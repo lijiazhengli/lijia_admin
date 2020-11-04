@@ -168,8 +168,19 @@ class AppletsController < ApplicationController
       order_product_ids = order.purchased_items.pluck(:product_id)
     end
     products = Product.get_product_list_hash(order_product_ids.uniq)
+    arrangers = Arranger.active.map{|item| item.to_applet_list}
+    order_arrangers = order.arrangers
     if order.present?
-      render json: {order: order, products: products, purchased_items: order.purchased_items, order_payment_records: order.order_payment_records, paymentMenthods: OrderPaymentRecord::APPLET_SELECT_PAYMENT_METHOD_ID}
+      render json: {
+        order: order,
+        order_arrangers: order_arrangers.map{|item| item.to_applet_list},
+        order_arrangers_ids: order_arrangers.map(&:id),
+        products: products,
+        purchased_items: order.purchased_items,
+        order_payment_records: order.order_payment_records,
+        paymentMenthods: OrderPaymentRecord::APPLET_SELECT_PAYMENT_METHOD_ID,
+        arrangers: arrangers
+      }
     else
       render json: {emptyPageNotice: '暂无订单'}
     end
@@ -182,7 +193,24 @@ class AppletsController < ApplicationController
     record_info[:operate_user_id] = user.id
     record_info[:payment_method_id] = OrderPaymentRecord::PAYMENT_METHOD_ID.invert[params[:payment_method_name]]
     order.order_payment_records.create(record_info)
+    order.update_attributes(completed_at: params[:completed_at]) if params[:completed_at].present?
     render json: {success: true, order_payment_records: order.order_payment_records}
+  end
+
+  def update_order_arranger
+    order = Order.find(params[:order_id])
+    params[:current_arrangers_ids].each do |arranger_id|
+      OrderArrangerAssignment.where(order_id: order.id, arranger_id: arranger_id).first_or_create
+    end
+    order_arrangers = order.arrangers
+    render json: {success: true, order_arrangers: order_arrangers.map{|item| item.to_applet_list}, order_arrangers_ids: order_arrangers.map(&:id)}
+  end
+
+  def delete_order_arranger
+    order = Order.find(params[:order_id])
+    OrderArrangerAssignment.where(order_id: order.id, arranger_id: params[:arranger_id]).destroy_all
+    order_arrangers = order.arrangers
+    render json: {success: true, order_arrangers: order_arrangers.map{|item| item.to_applet_list}, order_arrangers_ids: order_arrangers.map(&:id)}
   end
 
   def delete_order_payment
@@ -196,6 +224,8 @@ class AppletsController < ApplicationController
       render json: {success: true, errors: '付款信息不正确'}
     end
   end
+
+
 
   def user_info
     p params

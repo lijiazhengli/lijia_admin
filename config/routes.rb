@@ -266,6 +266,7 @@ Rails.application.routes.draw do
       post :create_service_order
       get  :crm_info
       post :delete_order_payment
+      post :delete_order_arranger
       post :delete_user_address
       get  :franchise_index
       get  :franchise_show
@@ -286,6 +287,7 @@ Rails.application.routes.draw do
       get  :service_index
       post :save_address
       post :save_user_info
+      post :update_order_arranger
       get  :user_info
       get  :user_franchises
       get  :user_order
