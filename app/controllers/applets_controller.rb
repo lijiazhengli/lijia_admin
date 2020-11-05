@@ -168,7 +168,7 @@ class AppletsController < ApplicationController
       order_product_ids = order.purchased_items.pluck(:product_id)
     end
     products = Product.get_product_list_hash(order_product_ids.uniq)
-    arrangers = Arranger.active.map{|item| item.to_applet_list}
+    arrangers = Arranger.active
     order_arrangers = order.arrangers
     if order.present?
       render json: {
@@ -179,7 +179,8 @@ class AppletsController < ApplicationController
         purchased_items: order.purchased_items,
         order_payment_records: order.order_payment_records,
         paymentMenthods: OrderPaymentRecord::APPLET_SELECT_PAYMENT_METHOD_ID,
-        arrangers: arrangers
+        arrangerCities: ['全部']+arrangers.map(&:address_city).uniq.sort,
+        arrangers: arrangers.map{|item| item.to_applet_list}
       }
     else
       render json: {emptyPageNotice: '暂无订单'}
