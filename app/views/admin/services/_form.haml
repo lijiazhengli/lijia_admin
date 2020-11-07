@@ -42,6 +42,15 @@
       = f.label "提前预约天数"
       %br
       = f.text_field :advance_days, class: 'form-control'
+
+    .form-group
+      = f.label "开始时间"
+      %br
+      = f.text_field :start_time, value: (@service.start_time.present? ? @service.start_time.strftime("%FT%H:%M") : nil),  class: 'form-control', type: 'datetime-local'
+    .form-group
+      = f.label "结束时间"
+      %br
+      = f.text_field :end_time, value: (@service.end_time.present? ? @service.end_time.strftime("%FT%H:%M") : nil),  class: 'form-control', type: 'datetime-local'
     
     .form-group
       = f.label "简介"
@@ -75,10 +84,6 @@
     .form-group
       = f.text_field :pc_detailed_image, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @service, image_name: 'pc_detailed_image', image_size: '电脑详细页图片(1920x400)', button_name: 'pc-detailed-image', input_name: 'service_pc_detailed_image', upload_url: file_upload_admin_services_path(type: 'pc-detailed')}
-
-
-      
-
 
 
     = f.submit '保存', class: 'btn btn-success'

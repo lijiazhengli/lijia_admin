@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_04_144505) do
+ActiveRecord::Schema.define(version: 2020_11_07_163208) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -394,6 +394,8 @@ ActiveRecord::Schema.define(version: 2020_11_04_144505) do
     t.float "service_percent", default: 1.0
     t.integer "product_set_id"
     t.string "size", default: ""
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.index ["product_set_id"], name: "index_products_on_product_set_id"
     t.index ["type"], name: "index_products_on_type"
   end

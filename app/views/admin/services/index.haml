@@ -33,6 +33,8 @@
         %th 定金
         %th 预约人数
         %th 提前预约天数
+        %th 开始时间
+        %th 结束时间
         %th 首页图片
         %th 电脑首页图片
         %th 详细页图片
@@ -54,6 +56,8 @@
           %td= item.earnest_price
           %td= item.count_string
           %td= item.advance_days
+          %td= item.start_time.present? ? item.start_time.strftime("%F %H:%M") : ''
+          %td= item.end_time.present? ? item.end_time.strftime("%F %H:%M") : ''
           %td= image_tag(item.front_image || '', width: '100px')
           %td= image_tag(item.pc_front_image || '', width: '100px')
           %td= image_tag(item.detailed_image || '', width: '100px')

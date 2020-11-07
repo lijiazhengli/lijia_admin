@@ -510,45 +510,50 @@ class AppletsController < ApplicationController
     order_info = params[:orderInfo]
     user = User.where(phone_number: order_info[:customer_phone_number]).last
     service = Service.find(order_info[:service_id])
+    t = Time.now
+    if service.start_time and  service.start_time > t
+      render json: {success: false, errors: '整理服务未开始'}
+    elsif service.end_time and  service.end_time < t
+      render json: {success: false, errors: '整理服务预约已结束'}
+    else
+      order_info[:wx_ma_id] = user.wx_ma_id
+      order_attr = base_order_params
 
+      p order_attr
+      order_attr.merge!(applet_service_base_info(order_info))
 
-    order_info[:wx_ma_id] = user.wx_ma_id
-    order_attr = base_order_params
-
-    p order_attr
-    order_attr.merge!(applet_service_base_info(order_info))
-
-    if order_info[:address_id].present?
-      order_attr.merge!(Address.find(order_info[:address_id]).to_applet_order_info)
-    end
-
-    order_attr[:user_id] = user.id
-    order_attr[:city_name] = order_attr[:address_city]
-    order_attr[:start_date] = order_info[:delivery_date]
-
-    p order_attr
-
-    option = {order_attr: order_attr.permit!, params: order_info}
-    option[:purchased_items] = get_service_purchased_items(order_info)
-    option[:user] = user if user.present?
-
-    if service.create_tenpay
-      if service.earnest_price and service.price > service.earnest_price
-        option[:methods] = %w(check_user create_order save_with_new_external_id create_earnest_tenpay_order_payment_record)
-      else
-        option[:methods] = %w(check_user create_order save_with_new_external_id create_tenpay_order_payment_record)
+      if order_info[:address_id].present?
+        order_attr.merge!(Address.find(order_info[:address_id]).to_applet_order_info)
       end
-    else
-      option[:methods] = %w(check_user create_order save_with_new_external_id)
-    end
 
-    option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
-    p option
-    @order, success, errors = Order.create_or_update_order(option)
-    if success
-      render json: {success: success, order: @order}
-    else
-      render json: {success: false, errors: errors.values[0]}
+      order_attr[:user_id] = user.id
+      order_attr[:city_name] = order_attr[:address_city]
+      order_attr[:start_date] = order_info[:delivery_date]
+
+      p order_attr
+
+      option = {order_attr: order_attr.permit!, params: order_info}
+      option[:purchased_items] = get_service_purchased_items(order_info)
+      option[:user] = user if user.present?
+
+      if service.create_tenpay
+        if service.earnest_price and service.price > service.earnest_price
+          option[:methods] = %w(check_user create_order save_with_new_external_id create_earnest_tenpay_order_payment_record)
+        else
+          option[:methods] = %w(check_user create_order save_with_new_external_id create_tenpay_order_payment_record)
+        end
+      else
+        option[:methods] = %w(check_user create_order save_with_new_external_id)
+      end
+
+      option[:redis_expire_name] = "applet-#{order_info[:wx_ma_id]}"
+      p option
+      @order, success, errors = Order.create_or_update_order(option)
+      if success
+        render json: {success: success, order: @order}
+      else
+        render json: {success: false, errors: errors.values[0]}
+      end
     end
   end
 

@@ -94,7 +94,7 @@ class Order < ApplicationRecord
       'order_type', "recipient_name", "recipient_phone_number", "status",
     )
     attrs['full_address'] = self.full_address
-    attrs['created_at'] = self.created_at.strftime('%F %T')
+    attrs['created_at'] = self.created_at.strftime('%Y/%m/%d %T')
     attrs["tenpay_paid_due"] = self.tenpay_paid_due
     attrs["no_tenpay_paid_due"] = self.no_tenpay_paid_due
     attrs["untenpay_paid_due"] = self.untenpay_paid_due

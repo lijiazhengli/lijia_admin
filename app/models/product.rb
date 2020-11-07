@@ -71,6 +71,8 @@ class Product < ActiveRecord::Base
       end_date: self.end_date,
       img_url: self.detailed_image
     }
+    attrs[:start_time] = self.start_time.strftime('%Y/%m/%d %T') if self.start_time.present?
+    attrs[:end_time] = self.end_time.strftime('%Y/%m/%d %T') if self.end_time.present?
     if self.type == 'Course'
       info_extend = CourseExtend.find_by_course_id(self.id)
       attrs[:address] = info_extend.try(:address)
