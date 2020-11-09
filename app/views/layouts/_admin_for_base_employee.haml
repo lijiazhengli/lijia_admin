@@ -1,0 +1,9 @@
+%li.nav-item
+  = link_to '业绩及提成', achievement_admin_tongjis_path, class: "nav-link #{'active' if params[:controller] == 'admin/tongjis' and %w(achievement).include?(params[:action])}"
+%li.nav-item
+  = link_to '订单地址统计', city_admin_tongjis_path, class: "nav-link #{'active' if params[:controller] == 'admin/tongjis' and %w(city).include?(params[:action])}"
+%li.nav-item
+  = link_to '订单收入', accounting_admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and %w(accounting).include?(params[:action])}"
+
+%li.nav-item
+  = link_to "收纳工具销售统计", good_admin_tongjis_path, class: "nav-link #{'active' if params[:controller] == 'admin/tongjis' and params[:action] == 'good'}"

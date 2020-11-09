@@ -5,7 +5,7 @@ class Admin::UsersController < Admin::BaseController
   def index
     @params = params[:q] || {}
     @q = User.order('id desc').ransack(@params)
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
 
    # @items = @course.students.includes(:user).page(params[:page])
   end

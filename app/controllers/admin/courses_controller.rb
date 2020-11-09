@@ -6,7 +6,7 @@ class Admin::CoursesController < Admin::BaseController
   def index
     @params = params[:q] || {}
     @q = Course.includes(:course_extend).order('active desc, position asc').ransack(@params)
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
   end
 
   def new
@@ -54,7 +54,7 @@ class Admin::CoursesController < Admin::BaseController
     @course = Course.find(params[:id])
     @params = params[:q] || {}
     @q = Order.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: @course.id}).order('orders.id desc').ransack(@params)
-    @orders = @q.result(distinct: true).page(params[:page])
+    @orders = @q.result(distinct: true).page(params[:page]).per(100)
   end
 
   def file_upload

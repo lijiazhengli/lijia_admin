@@ -3,7 +3,7 @@ class Admin::OrderArrangerAssignmentsController < Admin::BaseController
   before_action :get_order
 
   def index
-    @items = @order.order_arranger_assignments.page(params[:page])
+    @items = @order.order_arranger_assignments.page(params[:page]).per(100)
     @arrangers_hash = Arranger.where(id: @items.map(&:arranger_id)).pluck(:id, :name).to_h
   end
 

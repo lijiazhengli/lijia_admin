@@ -5,19 +5,19 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
 
   def index
     if @order.present?
-      @items = @order.order_payment_records.page(params[:page])
+      @items = @order.order_payment_records.page(params[:page]).per(100)
       render :order_index
     else
       @params = params[:q] || {}
       @q = OrderPaymentRecord.includes(:order).references(:order).where('orders.status != ? and order_payment_records.transaction_id != ?', 'canceled', '').order('order_payment_records.updated_at desc').ransack(@params)
-      @items = @q.result(distinct: true).page(params[:page])
+      @items = @q.result(distinct: true).page(params[:page]).per(100)
     end
   end
 
   def refund_index
     @params = params[:q] || {}
     @q = OrderPaymentRecord.includes(:order).where('order_payment_records.cost < ?', 0).order('order_payment_records.updated_at desc').ransack(@params)
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
     order_ids = @items.map(&:order_id)
     @users_hash = User.includes(:orders).where(orders: {id: order_ids}).pluck(:id, :name).to_h
     @paided_count = @q.result(distinct: true).sum(:cost)
@@ -30,7 +30,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
     else
       @q = OrderPaymentRecord.includes(:order).references(:order).where(timestamp: [nil, '']).where('orders.status != ? and order_payment_records.cost > ?', 'canceled', 0).order('order_payment_records.updated_at desc').ransack(@params)
     end
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
     @operate_users = User.where(id: @items.map(&:operate_user_id).uniq)
   end
 
@@ -92,7 +92,7 @@ class Admin::OrderPaymentRecordsController < Admin::BaseController
   end
 
   def reimbursement
-    @items = OrderPaymentRecord.includes(:order).where(timestamp: nil).where('order_payment_records.cost < ?', 0).page(params[:page])
+    @items = OrderPaymentRecord.includes(:order).where(timestamp: nil).where('order_payment_records.cost < ?', 0).page(params[:page]).per(100)
     @admins_hash = Admin.where(id: @items.map(&:admin_id)).pluck(:id, :name).to_h
   end
 

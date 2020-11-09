@@ -3,7 +3,7 @@ class Admin::DeliveryOrdersController < Admin::BaseController
   before_action :get_order
 
   def index
-    @items = @order.delivery_orders.includes(:purchased_items).page(params[:page])
+    @items = @order.delivery_orders.includes(:purchased_items).page(params[:page]).per(100)
     @product_hash = Product.where(id: PurchasedItem.where(delivery_order_id: @items.map(&:id)).pluck(:product_id)).pluck(:id, :title).to_h
   end
 

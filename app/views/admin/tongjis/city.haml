@@ -13,6 +13,7 @@
       %tr
         %th 单号
         %th 订购人
+        %th 收货人
         %th 产品信息
         %th 省
         %th 市
@@ -21,7 +22,9 @@
         %th 小区
         %th 推荐人
         %th 组织人
-        %th 费用
+        %th 定金
+        %th 尾款
+        %th 费用合计
         %th 状态
         %th 创建时间
     %tbody
@@ -29,6 +32,7 @@
         %tr
           %td= link_to item.external_id, admin_order_path(item)
           %td= @users_hash[item.user_id]
+          %td= "#{item.recipient_name}|#{item.recipient_phone_number}"
           %td
             - item.purchased_items.each do |sub_item|
               - product = @product_hash[sub_item.product_id]
@@ -44,6 +48,8 @@
           %td= item.location_details
           %td= show_referral_info(item, {})
           %td= show_organizer_info(item, {})
+          %td= @order_payment_records.select{|r| r.order_id == item.id and r.payment_method_id == Order::TENPAY_ID}.map(&:cost).map(&:to_f).reduce(0, :+).round(2) 
+          %td= @order_payment_records.select{|r| r.order_id == item.id and r.payment_method_id != Order::TENPAY_ID}.map(&:cost).map(&:to_f).reduce(0, :+).round(2) 
           %td= @order_payment_records.select{|r| r.order_id == item.id}.map(&:cost).map(&:to_f).reduce(0, :+).round(2)   
           %td= Order::STATUS[item.status]
           %td= item.created_at.strftime('%F %T')        

@@ -3,7 +3,7 @@ class Admin::PurchasedItemsController < Admin::BaseController
   before_action :get_order
 
   def index
-    @items = @order.purchased_items.page(params[:page])
+    @items = @order.purchased_items.page(params[:page]).per(100)
     @product_hash = Product.where(id: @items.map(&:product_id)).pluck(:id, :title).to_h
   end
 

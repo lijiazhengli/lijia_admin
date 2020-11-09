@@ -4,14 +4,14 @@ class Admin::ArrangersController < Admin::BaseController
   def index
     @params = params[:q] || {}
     @q = Arranger.order('active desc, orders_count desc').ransack(@params)
-    @arrangers = @q.result(distinct: true).page(params[:page])
+    @arrangers = @q.result(distinct: true).page(params[:page]).per(100)
   end
 
   def service_orders
     @arranger = Arranger.find(params[:id])
     @params = params[:q] || {}
     @q = @arranger.orders.order('start_date desc').ransack(@params)
-    @orders = @q.result(distinct: true).page(params[:page])
+    @orders = @q.result(distinct: true).page(params[:page]).per(100)
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
   end
 

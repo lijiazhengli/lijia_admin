@@ -5,7 +5,7 @@ class Admin::GoodsController < Admin::BaseController
   def index
     @params = params[:q] || {}
     @q = Good.order('active desc, position asc').ransack(@params)
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
     @product_sets_hash = ProductSet.where(id: @items.map(&:product_set_id)).pluck(:id, :title).to_h
   end
 
@@ -97,7 +97,7 @@ class Admin::GoodsController < Admin::BaseController
     else
       @q = Order.goods.noncanceled.includes(:purchased_items).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
     end
-    @orders = @q.result(distinct: true).page(params[:page])
+    @orders = @q.result(distinct: true).page(params[:page]).per(100)
     @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
     @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h

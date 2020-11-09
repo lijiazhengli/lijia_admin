@@ -3,7 +3,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def index
     @orders, @params, @q = Order.search_result(params)
-    @orders = @q.result(distinct: true).page(params[:page])
+    @orders = @q.result(distinct: true).page(params[:page]).per(100)
     @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
     @admins_hash = Admin.where(id: @orders.map(&:admin_id)).pluck(:id, :name).to_h
     product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id)
@@ -118,7 +118,7 @@ class Admin::OrdersController < Admin::BaseController
       @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').order('orders.id desc').ransack(@params)
     end
 
-    @orders = @q.result(distinct: true).page(params[:page])
+    @orders = @q.result(distinct: true).page(params[:page]).per(100)
     order_ids = @q.result(distinct: true).map(&:id).uniq
     @order_paided_count = OrderPaymentRecord.where(order_id: order_ids).where.not(timestamp: nil).sum(:cost)
     @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)

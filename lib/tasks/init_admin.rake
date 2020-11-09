@@ -220,4 +220,14 @@ namespace :admin do
     end
   end
 
+  desc '更新整理师信息'
+  task :init_role_200419 => :environment do
+    { 
+      base_employee: '基础员工',
+      senior_manage: '资深管理员'
+    }.each do |role_name, description|
+      Role.where(name: role_name, description: description).first_or_create
+    end
+  end
+
 end
