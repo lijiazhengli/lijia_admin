@@ -221,12 +221,24 @@ namespace :admin do
   end
 
   desc '更新整理师信息'
-  task :init_role_200419 => :environment do
+  task :init_role_201111 => :environment do
     { 
       base_employee: '基础员工',
       senior_manage: '资深管理员'
     }.each do |role_name, description|
       Role.where(name: role_name, description: description).first_or_create
+    end
+
+    role = Role.find_by_name('senior_manage')
+    {
+      'tangling' => '唐玲',
+      'bolei' => '薄蕾',
+      'linxuefeng' => '林雪枫'
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.present?
+        admin.role_assignments.where(role_id: role.id).first_or_create
+      end
     end
   end
 

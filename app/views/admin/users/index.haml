@@ -44,7 +44,7 @@
           %td= show_active_chinese_name(item.show_achievement)
           %td= item.created_at.strftime('%F %T')
           %td
-            - if @admin.senior_stockholder?
+            - if @admin.senior_manage?
               = link_to '修改', edit_admin_user_path(item)
               |
             = link_to '订单', admin_orders_path(user_id: item.id)
