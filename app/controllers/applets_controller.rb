@@ -627,6 +627,7 @@ class AppletsController < ApplicationController
   def applet_service_base_info(order_info)
     info = applet_order_base_info(order_info)
     info[:order_type] = 'Service'
+    info[:wx_pay_type] = 'Service'
     info[:notes] = order_info[:notes]
     info
   end
@@ -637,6 +638,7 @@ class AppletsController < ApplicationController
     info[:address_city] = order_info[:address_city]
     info[:address_district] = order_info[:address_district]
     info[:order_type] = 'Course'
+    info[:wx_pay_type] = 'Course'
     info[:city_name] = order_info[:course_city] if order_info[:course_city].present?
     if order_info[:course_date].present?
       course_dates = order_info[:course_date].split('-')
@@ -658,6 +660,7 @@ class AppletsController < ApplicationController
     info = applet_order_base_info(order_info)
     info[:zhekou] = order_info[:zhekou] || 1
     info[:order_type] = 'Product'
+    info[:wx_pay_type] = 'Product'
     info
   end
 

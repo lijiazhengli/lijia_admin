@@ -48,7 +48,7 @@ class OrderPaymentRecord < ActiveRecord::Base
       total_fee: (self.pay_cost * 100).round,
       refund_fee: (-self.cost * 100).round,
     }
-    result = WxPay::Service.invoke_refund params, {appid: ENV['WX_MINIAPPLET_APP_ID'], mch_id: ENV['WX_MCH_ID']}
+    result = WxPay::Service.invoke_refund params, self.order.get_wxpay_option
     if result['return_code'] == "SUCCESS" && result['result_code'] == "SUCCESS"
       success = self.update_attributes(timestamp: Time.now, refund_id: result['refund_id'])
     else

@@ -1,3 +1,4 @@
+require 'openssl'
 class Order < ApplicationRecord
   has_many  :order_payment_records
   accepts_nested_attributes_for :order_payment_records, allow_destroy: true
@@ -43,6 +44,29 @@ class Order < ApplicationRecord
   }
 
   CURRENT_STATUS = %w(unpaid paided part-paid confirming confirmed on_the_road completed)
+
+
+  def get_wxpay_option
+    payed_type = self.wx_pay_type.upcase
+
+    mch_id = ENV["WX_MCH_ID_#{payed_type}"]
+    key = ENV["WX_MCH_KEY_#{payed_type}"]
+
+    pkcs12_path = ENV["WX_PKCS12_FILEPATH_#{payed_type}"]
+    pkcs12_str = File.binread("#{ENV['RAILS_APPLICATION_PATH']}/#{pkcs12_path}")
+
+    pkcs12 = OpenSSL::PKCS12.new(pkcs12_str, mch_id)
+    apiclient_cert = pkcs12.certificate
+    apiclient_key = pkcs12.key
+
+    { 
+      appid: ENV['WX_MINIAPPLET_APP_ID'],
+      mch_id: mch_id,
+      key: key,
+      apiclient_cert: apiclient_cert,
+      apiclient_key: apiclient_key
+    }
+  end
 
 
 
@@ -273,7 +297,7 @@ class Order < ApplicationRecord
       trade_type: 'JSAPI',
       openid: openid
       }
-    r = WxPay::Service.invoke_unifiedorder params, wx_attr
+    r = WxPay::Service.invoke_unifiedorder params, self.get_wxpay_option
     p r
     if r.success?
       option = {
