@@ -92,9 +92,10 @@
         .sub-title-font.margin-t5 合理的使用收纳工具，会让我们的整理工作更加有条理
       .col-md-12.padding-0px
         - @goods.each do |item|
+          - set = @good_sets.where(id: item.product_set_id).first
           .col-md-3.good-image-list-content.margin-t20.gray-shadow
             %a{href: "#{good_path(item)}"}
-              = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
+              = image_tag(set.try(:pc_front_image) || item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
             .info-content
               .title= item.title
               .red-text.font-18px= "¥ #{item.price}"

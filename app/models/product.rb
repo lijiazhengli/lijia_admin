@@ -1,5 +1,6 @@
 class Product < ActiveRecord::Base
   has_many :product_images
+  belongs_to :product_set
   scope :active, -> { where(active: true).order(:position) }
 
   GOOD_TYPE = {
@@ -7,7 +8,6 @@ class Product < ActiveRecord::Base
     'Course'     => '课程培训',
     'Good'       => '收纳工具'
   }
-
 
   def up_serial(target_id)
     self.class.transaction do

@@ -574,7 +574,7 @@ class AppletsController < ApplicationController
 
       order_attr[:user_id] = user.id
       order_attr[:city_name] = order_attr[:city_name]
-
+      order_attr[:recipient_phone_number] = order_attr[:recipient_phone_number].gsub(' ', '') if order_attr[:recipient_phone_number].present?
       option = {order_attr: order_attr.permit!, params: order_info}
       option[:purchased_items] = get_course_purchased_items(order_info)
       option[:user] = user if user.present?
@@ -704,6 +704,7 @@ class AppletsController < ApplicationController
       :customer_phone_number,
       :recipient_name,
       :recipient_phone_number,
+      :notes,
       :user_id
     )
   end

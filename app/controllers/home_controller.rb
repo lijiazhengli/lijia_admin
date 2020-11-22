@@ -6,6 +6,7 @@ class HomeController < ApplicationController
     @courses = products.select{|item| item.type == 'Course'}
     @courses_extends = CourseExtend.where(course_id: @courses.map(&:id))
     @goods = products.select{|item| item.type == 'Good'}
+    @good_sets = ProductSet.where(id: @goods.map(&:product_set_id).uniq)
   end
 
   def info
