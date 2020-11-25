@@ -1,6 +1,6 @@
 class Product < ActiveRecord::Base
   has_many :product_images
-  belongs_to :product_set
+  belongs_to :product_set, optional: true
   scope :active, -> { where(active: true).order(:position) }
 
   GOOD_TYPE = {
