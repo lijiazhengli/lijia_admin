@@ -139,6 +139,7 @@ class Order < ApplicationRecord
     attrs["purchased_items"] = self.purchased_items.map{|item| item.to_quantity_order_list}
     attrs["order_total_fee"] = self.order_total_fee
     attrs["no_payed_due"] = self.no_paid_due
+    attrs["delivery_fee"] = self.delivery_fee
     attrs["order_paid_due"] = self.order_paid_due
     attrs["tenpay_payed_due"] = self.no_tenpay_paid_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
