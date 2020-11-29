@@ -261,4 +261,30 @@ namespace :admin do
     end
   end
 
+  desc '更新整理师信息'
+  task :init_role_201129 => :environment do
+    { 
+      junior_marketing: '营销专员',
+    }.each do |role_name, description|
+      Role.where(name: role_name, description: description).first_or_create
+    end
+
+    role = Role.find_by_name('junior_marketing')
+
+    realm = "Lijia"
+    password = "lijia99"
+
+    {
+      'wuwen' => '吴雯'
+
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.blank?
+        p_hash = Digest::MD5.hexdigest([name, realm, password].join(':'))
+        admin = Admin.create!(name: name, password_hash: p_hash, active: true, user_name: user_name)
+        admin.role_assignments.create!(role_id: role.id)
+      end
+    end
+  end
+
 end

@@ -72,13 +72,14 @@
             = link_to '修改', edit_admin_course_path(item)
             |
             = link_to "讲师", admin_course_course_teachers_path(item)
-            |
-            = link_to "学员", admin_students_path(course_id: item.id)
-            |
-            = link_to '订单', order_admin_course_path(item)
-            |
-            = link_to '报名情况', course_admin_tongjis_path(product_ids: item.id)
-            |
+            - if @admin.senior_stockholder?
+              |
+              = link_to "学员", admin_students_path(course_id: item.id)
+              |
+              = link_to '订单', order_admin_course_path(item)
+              |
+              = link_to '报名情况', course_admin_tongjis_path(product_ids: item.id)
+              |
             = link_to "详情图片", admin_product_product_images_path(item)
             - if item.course_extend.show_city_list
               |

@@ -265,6 +265,7 @@ class Order < ApplicationRecord
       product_cost = self.purchased_items.sum('price * quantity')
       total_cost = (product_cost * (self.zhekou || 1)).round(2)
     end
+    total_cost += self.delivery_fee
     total_cost
   end
 
@@ -276,7 +277,7 @@ class Order < ApplicationRecord
   def total_unpaid_fee
     product_cost = self.purchased_items.sum('price * quantity')
     paid_due = self.order_paid_due
-    (product_cost-paid_due).round(2)
+    (product_cost + self.delivery_fee - paid_due).round(2)
   end
 
   def order_transfer_info(method_id)
@@ -429,7 +430,7 @@ class Order < ApplicationRecord
       raise '订单不存在' if order_hash[:order].blank?
       order = order_hash[:order]
       product_cost = order.purchased_items.sum('price * quantity')
-      total_cost = (product_cost * (order.zhekou || 1)).round(2)
+      total_cost = (product_cost * (order.zhekou || 1) + order.delivery_fee).round(2)
       order_payment_record = order.order_payment_records.build({payment_method_id: Order::TENPAY_ID, payment_method_name: '自动创建付款记录', cost: total_cost, out_trade_no: order.next_payment_method_num(Order::TENPAY_ID)})
       order_payment_record.save!
       order_hash[:order_payment_record] = order_payment_record

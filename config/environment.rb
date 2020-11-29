@@ -10,5 +10,8 @@ QUANGUO_PRODUCT_INDELIVERY_PROVINCE_NAME = [] # %w(新疆 青海 西藏 宁夏 �
 QUANGUO_PRODUCT_INDELIVERY_CITY_NAME = []
 QUANGUO_PRODUCT_INDELIVERY_AREA_NAME = []
 
+QUANGUO_PRODUCT_DELIVERY_FEE_INFOS = {
+  "新疆" => {base_delivery_fee: 10, base_product_cost: 50, unit_product_cost: 25, unit_delivery_fee: 5}
+}
 
 COURSE_STUDENT_ZHEKOU = 0.8

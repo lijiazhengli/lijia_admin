@@ -23,7 +23,7 @@
       - @items.each do |item|
         %tr
           %td= item.title
-          %td= item.url
+          %td= "https://www.lijiazhengli.com/" + item.url
           %td= active_chinese_name(item)
           %td
             = link_to '修改', edit_admin_page_path(item)

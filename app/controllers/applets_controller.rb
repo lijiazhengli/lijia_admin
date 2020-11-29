@@ -120,7 +120,9 @@ class AppletsController < ApplicationController
         inprovince_names: QUANGUO_PRODUCT_INDELIVERY_PROVINCE_NAME,
         incity_names: QUANGUO_PRODUCT_INDELIVERY_CITY_NAME,
         inarea_names: QUANGUO_PRODUCT_INDELIVERY_AREA_NAME
-      }
+      },
+
+      delivery_fee_infos: QUANGUO_PRODUCT_DELIVERY_FEE_INFOS
     }
     render json: request_info
   end
@@ -704,6 +706,7 @@ class AppletsController < ApplicationController
       :customer_phone_number,
       :recipient_name,
       :recipient_phone_number,
+      :delivery_fee,
       :notes,
       :user_id
     )

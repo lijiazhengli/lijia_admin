@@ -48,6 +48,8 @@
               = render 'layouts/admin_for_senior_manage'
             - if @admin.senior_stockholder?
               = render 'layouts/admin_for_senior_stockholder'
+            - if @admin.junior_marketing?
+              = render 'layouts/admin_for_junior_marketing'
             - if @admin.admin_customer_service?
               = render 'layouts/admin_for_customer_service'
             - if @admin.senior_accounting?
