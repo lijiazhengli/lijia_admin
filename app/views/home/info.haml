@@ -1,7 +1,7 @@
 - if @info.present?
   .banner-list-content
-    = image_tag @info.pc_image || '', title: @info.title, alt: @info.title, class: 'banner-img d-none d-sm-block'
-    = image_tag @info.pc_image || '', title: @info.title, alt: @info.title, class: 'banner-img d-sm-none'
+    = image_tag change_to_qiniu_https_url(@info.pc_image || ''), title: @info.title, alt: @info.title, class: 'banner-img d-none d-sm-block'
+    = image_tag change_to_qiniu_https_url(@info.pc_image || ''), title: @info.title, alt: @info.title, class: 'banner-img d-sm-none'
 .gray-list-content
   .container.margin-b20.info-show-content
     .row
@@ -19,7 +19,7 @@
           .col-md-6.teacher-list-content
             .teacher-info-list.width-red-shadow
               .left-img
-                = image_tag item.mobile_image || '', title: item.name + item.tag, alt: item.name + item.tag, class: 'circle-img'
+                = image_tag change_to_qiniu_https_url(item.mobile_image || ''), title: item.name + item.tag, alt: item.name + item.tag, class: 'circle-img'
               .right-content
                 .title
                   %span.teacher-name= item.name
@@ -34,8 +34,8 @@
           - @teams.each do |item|
             .service-list-content.circle-img.margin-t20
               .teacher-info-list.introduct-info-list
-                = image_tag item.pc_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-none d-sm-block'
-                = image_tag item.mobile_image || '', title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-sm-none'
+                = image_tag change_to_qiniu_https_url(item.pc_image || ''), title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-none d-sm-block'
+                = image_tag change_to_qiniu_https_url(item.mobile_image || ''), title: item.title + item.tag, alt: item.title + item.tag, class: 'left-img circle-img d-sm-none'
                 .right-content
                   .title.margin-t20
                     %span.teacher-name= item.title
@@ -47,7 +47,7 @@
         .center-text.title-list-nborder
           %span.info-title 合伙人扶持计划
         .margin-t20.mb-margin-t10
-          = image_tag @franchise.pc_image || '', title: @franchise.title, alt: @franchise.title, class: 'circle-img'
+          = image_tag change_to_qiniu_https_url(@franchise.pc_image || ''), title: @franchise.title, alt: @franchise.title, class: 'circle-img'
         .margin-t20
           - (@franchise.description || '').split("\r\n").each do |info|
             %p= info

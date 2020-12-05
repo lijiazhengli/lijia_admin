@@ -1,4 +1,5 @@
 class Course < Product
+  include LijiaLocal
   has_many  :students
   accepts_nested_attributes_for :students, allow_destroy: true
 
@@ -21,7 +22,7 @@ class Course < Product
       city_name: self.city_name,
       start_date: self.start_date,
       end_date: self.end_date,
-      img_url: self.front_image
+      img_url: change_to_qiniu_https_url(self.front_image)
     }
     info_extend = self.self_extend
     attrs[:show_city_list] = true  if info_extend.present? and info_extend.show_city_list

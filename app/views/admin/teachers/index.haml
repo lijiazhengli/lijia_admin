@@ -27,7 +27,7 @@
           %td= item.name
           %td= item.tag
           %td= item.web_tag
-          %td= image_tag(item.mobile_image || '', width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.mobile_image || ''), width: '100px')
           %td= item.active
           %td
             = link_to '修改', edit_admin_teacher_path(item)

@@ -1,4 +1,6 @@
 class Introduce < ApplicationRecord
+  include LijiaLocal
+
   ITEM_TYPE = {
     'applet_home' => '小程序品牌介绍', 'applet_team' => '团队介绍', 'applet_franchise' => '加盟服务介绍',
     'web_home' => '官网首页', 'home_info' => "品牌介绍", 'franchise' => '加盟服务'
@@ -15,8 +17,8 @@ class Introduce < ApplicationRecord
     {
       title: self.title,
       tag: self.tag,
-      pc_img_url: self.pc_image,
-      mb_img_url: self.mobile_image,
+      pc_img_url: change_to_qiniu_https_url(self.pc_image),
+      mb_img_url: change_to_qiniu_https_url(self.mobile_image),
       desc: self.description
     }
   end
@@ -25,7 +27,7 @@ class Introduce < ApplicationRecord
     {
       title: self.title,
       tag: self.tag,
-      img_url: self.mobile_image,
+      img_url: change_to_qiniu_https_url(self.mobile_image),
       desc: self.description
     }
   end

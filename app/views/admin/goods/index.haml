@@ -44,8 +44,8 @@
           %td= item.size
           %td= item.price
           %td= item.min_count
-          %td= image_tag(item.front_image || '', width: '100px')
-          %td= image_tag(item.pc_front_image || '', width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), width: '100px')
           - if false
             %td= image_tag(item.detailed_image || '', width: '100px')
             %td= image_tag(item.pc_detailed_image || '', width: '100px')

@@ -25,8 +25,8 @@
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_cases_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_cases_path(:id =>item.id)}")
           %td= item.title
           %td= item.url
-          %td= item.mobile_image ? image_tag(item.mobile_image, width: '100px') : ''
-          %td= item.pc_image ? image_tag(item.pc_image, width: '100px') : ''
+          %td= item.mobile_image ? image_tag(change_to_qiniu_https_url(item.mobile_image), width: '100px') : ''
+          %td= item.pc_image ? image_tag(change_to_qiniu_https_url(item.pc_image), width: '100px') : ''
           %td= active_chinese_name(item)
           %td
             - if item.active

@@ -1,5 +1,5 @@
 .banner-list-content
-  = image_tag @product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img'
+  = image_tag change_to_qiniu_https_url(@product.pc_detailed_image || ''), title: @product.title, alt: @product.title, class: 'banner-img'
   .center-title.white-text.center-text
     %span 整理、让生活更轻松
     %br
@@ -34,7 +34,7 @@
           - @other_products.each do |item|
             .service-right-list
               %a{href: "#{service_path(item)}"}
-                = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                = image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
               .service-info-content
                 .title= item.title
                 .desc.gray-text= item.sub_title

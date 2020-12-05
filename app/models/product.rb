@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  include LijiaLocal
   has_many :product_images
   belongs_to :product_set, optional: true
   scope :active, -> { where(active: true).order(:position) }
@@ -69,7 +70,7 @@ class Product < ActiveRecord::Base
       city_name: self.city_name,
       start_date: self.start_date,
       end_date: self.end_date,
-      img_url: self.detailed_image
+      img_url: change_to_qiniu_https_url(self.detailed_image)
     }
     attrs[:start_time] = self.start_time.strftime('%Y/%m/%d %T') if self.start_time.present?
     attrs[:end_time] = self.end_time.strftime('%Y/%m/%d %T') if self.end_time.present?
@@ -120,7 +121,7 @@ class Product < ActiveRecord::Base
       price: self.price,
       earnest_price: self.earnest_price,
       min_count: self.min_count,
-      img_url: self.front_image,
+      img_url: change_to_qiniu_https_url(self.front_image),
       advance_days: self.advance_days
     }
     if self.type == 'Course'
@@ -136,7 +137,7 @@ class Product < ActiveRecord::Base
       title: self.title,
       price: self.price,
       min_count: self.min_count,
-      img_url: self.front_image,
+      img_url: change_to_qiniu_https_url(self.front_image),
       advance_days: self.advance_days
     }
   end

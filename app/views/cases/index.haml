@@ -4,8 +4,8 @@
       - @items.each do |item|
         .case-info-list.circle-img.margin-t20
           .case-img
-            = image_tag item.pc_image || '', title: item.title, alt: item.title, class: 'left-img circle-img d-none d-sm-block'
-            = image_tag item.mobile_image || '', title: item.title, alt: item.title, class: 'left-img circle-img d-sm-none'
+            = image_tag change_to_qiniu_https_url(item.pc_image || ''), title: item.title, alt: item.title, class: 'left-img circle-img d-none d-sm-block'
+            = image_tag change_to_qiniu_https_url(item.mobile_image || ''), title: item.title, alt: item.title, class: 'left-img circle-img d-sm-none'
           .case-content
             .title
               %span.case-name= item.title

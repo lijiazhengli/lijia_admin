@@ -1,4 +1,5 @@
 class Service < Product
+  include LijiaLocal
   scope :applet_home, -> {where(active: true).order(:position)}
 
   def to_applet_list
@@ -8,7 +9,7 @@ class Service < Product
       desc: self.description,
       count_string: self.count_string,
       price: self.price,
-      img_url: self.front_image
+      img_url: change_to_qiniu_https_url(self.front_image)
     }
 
     attrs[:start_time] = self.start_time.strftime('%Y/%m/%d %T') if self.start_time.present?

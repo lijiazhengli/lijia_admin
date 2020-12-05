@@ -1,4 +1,5 @@
 class Franchise < ApplicationRecord
+  include LijiaLocal
   has_many :franchise_images
   scope :available, -> { where(status: ['unconfirmed', 'confirming', 'completed']) }
   scope :inavailable, -> { where(status: ['canceled']) }
@@ -43,7 +44,7 @@ class Franchise < ApplicationRecord
       title: self.title,
       city_name: self.city_name,
       desc: self.desc,
-      img_url: self.front_image
+      img_url: change_to_qiniu_https_url(self.front_image)
     }
   end
 
@@ -66,7 +67,7 @@ class Franchise < ApplicationRecord
       title: self.title,
       desc: self.desc,
       city_name: self.city_name,
-      img_url: self.detailed_image
+      img_url: change_to_qiniu_https_url(self.detailed_image)
     }
     attrs[:desc_images] = self.franchise_images.active.pluck(:mobile_image)
     attrs

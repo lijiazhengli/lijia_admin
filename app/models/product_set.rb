@@ -1,4 +1,5 @@
 class ProductSet < ApplicationRecord
+  include LijiaLocal
   has_many :product_set_images
   has_many :products
   scope :active, -> { where(active: true).order(:position) }
@@ -8,7 +9,7 @@ class ProductSet < ApplicationRecord
     {
       id: self.id,
       title: self.title,
-      img_url: self.front_image
+      img_url: change_to_qiniu_https_url(self.front_image)
     }
   end
 
@@ -17,11 +18,11 @@ class ProductSet < ApplicationRecord
       id: self.id,
       title: self.title,
       desc: self.description,
-      img_url: self.detailed_image
+      img_url: change_to_qiniu_https_url(self.detailed_image)
     }
 
     attrs[:exprie_product] = true unless self.active
-    attrs[:item_images] = self.product_set_images.active.pluck(:mobile_image)
+    attrs[:item_images] = self.product_set_images.active.pluck(:mobile_image).map{|i| change_to_qiniu_https_url(i)}
     attrs
   end
 

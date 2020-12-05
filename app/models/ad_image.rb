@@ -1,4 +1,5 @@
 class AdImage < ApplicationRecord
+  include LijiaLocal
   #AD_TYPE = {'applet_home' => '小程序首页', 'applet_service' => '小程序莉家服务页面', 'applet_course' => '小程序课程页面', 'applet_good' => '收纳工具'}
   AD_TYPE = {'applet_home' => '小程序首页', 'applet_service' => '小程序莉家服务页面', 'applet_good' => '收纳工具页面', 'web_service' => '官网莉家服务页面'}
   scope :applet_home, -> {where(ad_type: "applet_home", active: true)}
@@ -10,7 +11,7 @@ class AdImage < ApplicationRecord
     {
       title: self.title,
       url: self.url,
-      img_url: self.mobile_image
+      img_url: change_to_qiniu_https_url(self.mobile_image)
     }
   end
 end

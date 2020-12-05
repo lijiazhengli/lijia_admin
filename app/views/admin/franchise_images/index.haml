@@ -14,7 +14,7 @@
     - @items.each do |item|
       - @draggable = true
       %tr(id="franchise-image-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_franchise_franchise_images_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_franchise_franchise_images_path(:id =>item.id)}")
-        %td= image_tag item.mobile_image, style: 'width: 100px'
+        %td= image_tag change_to_qiniu_https_url(item.mobile_image), style: 'width: 100px'
         %td= active_chinese_name(item)
         %td
           = link_to '修改', edit_admin_franchise_franchise_image_path(@parent, item)

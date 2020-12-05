@@ -3,7 +3,7 @@
     - @slideshows.each do |item|
       .swiper-slide
         %a{href: ''}
-          = image_tag(item.pc_image, title: item.title, alt: item.title)
+          = image_tag(change_to_qiniu_https_url(item.pc_image), title: item.title, alt: item.title)
   .swiper-pagination.pc-swiper-pagination
 
 .white-list-content
@@ -21,7 +21,7 @@
             .col-md-4.swiper-slide.md-32width
               .service-image-list-content.margin-t10.margin-b10.gray-shadow
                 %a{href: "#{service_path(item)}"}
-                  = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                  = image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
                 .service-info-content
                   .title= item.title
                   .desc= item.description
@@ -38,7 +38,7 @@
             .col-md-12
               .service-image-list-content.margin-t10.margin-b10.gray-shadow
                 %a{href: "#{service_path(item)}"}
-                  = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                  = image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
                 .service-info-content
                   .title= item.title
                   .desc= item.description
@@ -50,7 +50,7 @@
           - @services.each do |item|
             .mb-service-list.gray-shadow
               %a.left-content{href: "#{service_path(item)}"}
-                = image_tag(item.front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                = image_tag(change_to_qiniu_https_url(item.front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
               .service-info-content
                 .title= item.title
                 .margin-t5.desc= item.description
@@ -68,7 +68,7 @@
         - @courses.each do |item|
           .col-md-6.course-image-list-content.margin-t20
             %a{href: "#{course_path(item)}"}
-              = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
+              = image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), title: item.title, alt: item.title, class: "info-image")
             .info-content.red-shadow{:onclick =>"showAppletPop('扫码报名', '扫一扫 小程序下单报名')"}
               .title= item.title
               - sub_item = @courses_extends.select{|i| i.course_id == item.id}.first
@@ -95,7 +95,7 @@
           - set = @good_sets.where(id: item.product_set_id).first
           .col-md-3.good-image-list-content.margin-t20.gray-shadow
             %a{href: "#{good_path(item)}"}
-              = image_tag(set.try(:pc_front_image) || item.pc_front_image || '', title: item.title, alt: item.title, class: "info-image")
+              = image_tag(change_to_qiniu_https_url(set.try(:pc_front_image) || item.pc_front_image || ''), title: item.title, alt: item.title, class: "info-image")
             .info-content
               .title= item.title
               .red-text.font-18px= "¥ #{item.price}"

@@ -20,7 +20,7 @@
         %tr
           %td= item.teacher.name
           %td= item.teacher.tag
-          %td= image_tag(item.teacher.mobile_image || '', width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.teacher.mobile_image || ''), width: '100px')
           %td
             = link_to '修改', edit_admin_course_course_teacher_path(@course, item)
             |

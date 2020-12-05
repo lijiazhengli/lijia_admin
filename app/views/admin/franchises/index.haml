@@ -51,8 +51,8 @@
           %td= item.city_name
           %td= "#{item.user_name}|#{item.phone_number}"
           %td= item.email
-          %td= image_tag(item.front_image || '', width: '100px')
-          %td= image_tag(item.detailed_image || '', width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.detailed_image || ''), width: '100px')
           %td= Franchise::STATUS[item.status]
           %td= active_chinese_name(item)
           %td

@@ -58,10 +58,10 @@
           %td= item.advance_days
           %td= item.start_time.present? ? item.start_time.strftime("%F %H:%M") : ''
           %td= item.end_time.present? ? item.end_time.strftime("%F %H:%M") : ''
-          %td= image_tag(item.front_image || '', width: '100px')
-          %td= image_tag(item.pc_front_image || '', width: '100px')
-          %td= image_tag(item.detailed_image || '', width: '100px')
-          %td= image_tag(item.pc_detailed_image || '', width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.detailed_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.pc_detailed_image || ''), width: '100px')
           %td= item.service_percent
           %td= active_chinese_name(item)
           %td= show_active_chinese_name(item.create_tenpay)

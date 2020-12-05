@@ -29,8 +29,8 @@
           %td= item.title
           %td= AdImage::AD_TYPE[item.ad_type]
           %td= item.url
-          %td= item.mobile_image ? image_tag(item.mobile_image, width: '100px') : ''
-          %td= item.pc_image ? image_tag(item.pc_image, width: '100px') : ''
+          %td= item.mobile_image ? image_tag(change_to_qiniu_https_url(item.mobile_image), width: '100px') : ''
+          %td= item.pc_image ? image_tag(change_to_qiniu_https_url(item.pc_image), width: '100px') : ''
           %td= item.active
           %td
             = link_to '修改', edit_admin_ad_image_path(item)

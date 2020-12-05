@@ -1,5 +1,5 @@
 .banner-list-content
-  = image_tag @set.try(:pc_detailed_image) || @product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img'
+  = image_tag change_to_qiniu_https_url(@set.try(:pc_detailed_image) || @product.pc_detailed_image || ''), title: @product.title, alt: @product.title, class: 'banner-img'
   .center-title.white-text.center-text
     %span.line-white-title 收纳工具、让整理更高效
 
@@ -23,7 +23,7 @@
               .col-md-3.swiper-slide
                 .service-image-list-content.margin-t10.margin-b10.gray-shadow
                   %a{href: "#{good_path(item)}"}
-                    = image_tag(item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                    = image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
                   .course-info-content
                     .title= item.title
                     .red-text.font-small ¥#{item.price}
@@ -40,7 +40,7 @@
               .col-xs-6.col-md-6.swiper-slide
                 .service-image-list-content.margin-t10.margin-b10.gray-shadow
                   %a{href: "#{good_path(item)}"}
-                    = image_tag(set.try(:pc_front_image) || item.pc_front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+                    = image_tag(change_to_qiniu_https_url(set.try(:pc_front_image) || item.pc_front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
                   .course-info-content
                     .title= item.title
                     .red-text.font-small ¥#{item.price}

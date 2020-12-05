@@ -1,4 +1,5 @@
 class Good < Product
+  include LijiaLocal
   scope :applet_home, -> {where(active: true).order(:position)}
 
   def to_applet_list
@@ -7,7 +8,7 @@ class Good < Product
       title: self.title,
       min_count: self.min_count,
       price: self.price,
-      img_url: self.front_image
+      img_url: change_to_qiniu_https_url(self.front_image)
     }
   end
 
@@ -18,7 +19,7 @@ class Good < Product
       min_count: self.min_count,
       price: self.price,
       size: self.size,
-      img_url: self.front_image
+      img_url: change_to_qiniu_https_url(self.front_image)
     }
   end
 end

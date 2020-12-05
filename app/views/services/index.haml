@@ -1,6 +1,6 @@
 .banner-list-content
   - if @ad_image
-    = image_tag @ad_image.pc_image || '', title: @ad_image.title, alt: @ad_image.title, class: 'banner-img'
+    = image_tag change_to_qiniu_https_url(@ad_image.pc_image || ''), title: @ad_image.title, alt: @ad_image.title, class: 'banner-img'
   .center-title.white-text.center-text
     %span 整理、让生活更轻松
     %br
@@ -33,7 +33,7 @@
 
             - if product.pc_detailed_image
               .margin-t20
-                = image_tag product.pc_detailed_image || '', title: product.title, alt: product.title, class: 'circle-img'
+                = image_tag change_to_qiniu_https_url(product.pc_detailed_image || ''), title: product.title, alt: product.title, class: 'circle-img'
             .margin-t20
               - (product.description || '').split("\r\n").each do |info|
                 %p= info
@@ -47,7 +47,7 @@
         - @products.each_with_index do |item, index|
           .mb-service-list.gray-shadow
             %a.left-content{href: "#{service_path(item)}"}
-              = image_tag(item.front_image || '', title: item.title, alt: item.title, class: "service-info-image")
+              = image_tag(change_to_qiniu_https_url(item.front_image || ''), title: item.title, alt: item.title, class: "service-info-image")
             .service-info-content
               .title= item.title
               .margin-t5.desc= item.description

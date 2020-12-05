@@ -1,4 +1,5 @@
 class Teacher < ApplicationRecord
+  include LijiaLocal
   scope :current_active, -> {where(active: true).order(:position)}
 
   def up_serial(target_id)
@@ -25,7 +26,7 @@ class Teacher < ApplicationRecord
       name: self.name,
       tag: self.tag,
       desc: self.introduce,
-      img_url: self.mobile_image
+      img_url: change_to_qiniu_https_url(self.mobile_image)
     }
   end
 
@@ -34,7 +35,7 @@ class Teacher < ApplicationRecord
       id: self.id,
       name: self.name,
       tag: self.tag,
-      img_url: self.mobile_image
+      img_url: change_to_qiniu_https_url(self.mobile_image)
     }
   end
   class << self
