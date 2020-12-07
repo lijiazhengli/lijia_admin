@@ -14,3 +14,10 @@
   = link_to '网页', admin_pages_path, class: "nav-link #{'active' if params[:controller] == 'admin/pages'}"
 %li.nav-item
   = link_to '经典案例', admin_cases_path, class: "nav-link #{'active' if params[:controller] == 'admin/cases'}" 
+
+
+%li.nav-item
+  = link_to '产品sku查询', admin_products_path, class: "nav-link #{'active' if params[:controller] == 'admin/products' and %w(index).include?(params[:action])}"
+
+%li.nav-item
+  = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and !%w(accounting).include?(params[:action])}"

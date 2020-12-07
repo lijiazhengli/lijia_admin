@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_29_145340) do
+ActiveRecord::Schema.define(version: 2020_12_07_145112) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -312,6 +312,8 @@ ActiveRecord::Schema.define(version: 2020_11_29_145340) do
     t.string "completed_at"
     t.string "wx_pay_type", default: "Product"
     t.float "delivery_fee", default: 0.0
+    t.float "star"
+    t.text "evaluation"
     t.index ["external_id"], name: "index_orders_on_external_id"
     t.index ["order_type"], name: "index_orders_on_order_type"
     t.index ["purchase_source"], name: "index_orders_on_purchase_source"
