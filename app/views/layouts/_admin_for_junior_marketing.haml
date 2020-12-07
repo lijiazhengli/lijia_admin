@@ -15,7 +15,10 @@
 %li.nav-item
   = link_to '经典案例', admin_cases_path, class: "nav-link #{'active' if params[:controller] == 'admin/cases'}" 
 
+%br
 
+%li.nav-item
+  = link_to '用户信息', admin_users_path, class: "nav-link #{'active' if params[:controller] == 'admin/users'}"
 %li.nav-item
   = link_to '产品sku查询', admin_products_path, class: "nav-link #{'active' if params[:controller] == 'admin/products' and %w(index).include?(params[:action])}"
 
