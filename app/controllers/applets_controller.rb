@@ -189,6 +189,34 @@ class AppletsController < ApplicationController
     end
   end
 
+  def order_evaluation_show
+    p params
+    delivery_orders = []
+    if params[:id].present?
+      order = Order.find(params[:id])
+      order_product_ids = order.purchased_items.pluck(:product_id)
+    end
+    products = Product.get_product_list_hash(order_product_ids.uniq)
+    if order.present?
+      render json: {
+        order: order,
+        products: products,
+        purchased_items: order.purchased_items,
+      }
+    else
+      render json: {emptyPageNotice: '暂无订单'}
+    end
+  end
+
+  def save_evaluation
+    order = Order.find(params[:order_id])
+    order_info = {}
+    order_info[:star]  = params[:star] if params[:star].present?
+    order_info[:evaluation]  = params[:evaluation] if params[:evaluation].present?
+    order.update(order_info) if order_info.present?
+    render json: {success: true, order: order}
+  end
+
   def create_order_payment
     user = User.where(phone_number: params[:customer_phone_number]).last
     order = Order.find(params[:order_id])
@@ -232,14 +260,18 @@ class AppletsController < ApplicationController
 
   def user_info
     p params
-    user = User.where(phone_number: params[:customer_phone_number]).last    
-    render json: {userInfo: user.to_applet_list}
+    info = {} 
+    user = User.where(phone_number: params[:customer_phone_number]).last
+    info = user.to_applet_list if user.present?
+    render json: {userInfo: info}
   end
 
   def crm_info
     p params
+    info = {} 
     user = User.where(phone_number: params[:customer_phone_number]).last
-    render json: {userInfo: user.to_applet_crm_list}
+    info = user.to_applet_crm_list if user.present?
+    render json: {userInfo: user.info}
   end
 
   def apply_fee

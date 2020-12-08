@@ -140,6 +140,9 @@ class Order < ApplicationRecord
     attrs["order_total_fee"] = self.order_total_fee
     attrs["no_payed_due"] = self.no_paid_due
     attrs["delivery_fee"] = self.delivery_fee
+
+    attrs["star"] = self.star
+    attrs["evaluation"] = self.evaluation
     attrs["order_paid_due"] = self.order_paid_due
     attrs["tenpay_payed_due"] = self.no_tenpay_paid_due
     attrs["product_counts"] = self.purchased_items.sum(:quantity)
@@ -147,7 +150,7 @@ class Order < ApplicationRecord
     attrs["order_show_date"] = self.course_show_date if self.is_course?
     attrs["order_show_city"] = self.order_show_city if self.is_course?
     attrs["order_show_address"] = self.course_show_address if self.is_course?
-    
+    attrs["can_evaluation"] = true if self.can_evaluation?
     attrs["show_delivery_button"] = true if self.delivery_orders.size > 0
     attrs['full_address'] = self.full_address
     product_ids = self.purchased_items.pluck(:product_id).uniq
@@ -202,6 +205,11 @@ class Order < ApplicationRecord
 
   def is_product?
     self.order_type == PRODUCT_ORDER
+  end
+
+  def can_evaluation?
+    return true if !self.star and ['part-paid', 'on_the_road', 'completed'].include?(self.status)
+    false
   end
 
   def check_applet_order_status

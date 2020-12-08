@@ -279,6 +279,7 @@ Rails.application.routes.draw do
       get  :load_product_infos
       get  :orders
       get  :order_show
+      get  :order_evaluation_show
       get  :order_payment_show
       get  :product_show
       get  :product_set_index
@@ -286,6 +287,7 @@ Rails.application.routes.draw do
       get  :set_phone
       get  :service_index
       post :save_address
+      post :save_evaluation
       post :save_user_info
       post :update_order_arranger
       get  :user_info
