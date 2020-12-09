@@ -271,7 +271,7 @@ class AppletsController < ApplicationController
     info = {} 
     user = User.where(phone_number: params[:customer_phone_number]).last
     info = user.to_applet_crm_list if user.present?
-    render json: {userInfo: user.info}
+    render json: {userInfo: info}
   end
 
   def apply_fee
