@@ -287,4 +287,28 @@ namespace :admin do
     end
   end
 
+
+  desc '更新整理师信息20201209'
+  task :init_role_201209 => :environment do
+
+    role = Role.find_by_name('senior_stockholder')
+    realm = "Lijia"
+    password = "lijia99"
+
+    {
+      'zhaoli' => '赵丽'
+
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.blank?
+        p_hash = Digest::MD5.hexdigest([name, realm, password].join(':'))
+        admin = Admin.create!(name: name, password_hash: p_hash, active: true, user_name: user_name)
+        admin.role_assignments.create!(role_id: role.id)
+      end
+    end
+  end
+
+
+
+
 end
