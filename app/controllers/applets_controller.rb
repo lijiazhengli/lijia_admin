@@ -672,7 +672,7 @@ class AppletsController < ApplicationController
     info[:address_city] = order_info[:address_city]
     info[:address_district] = order_info[:address_district]
     info[:order_type] = 'Course'
-    info[:wx_pay_type] = 'Course'
+    info[:wx_pay_type] = 'Product'
     info[:city_name] = order_info[:course_city] if order_info[:course_city].present?
     if order_info[:course_date].present?
       course_dates = order_info[:course_date].split('-')
