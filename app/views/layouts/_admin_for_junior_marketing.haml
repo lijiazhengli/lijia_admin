@@ -17,10 +17,23 @@
 
 %br
 
+%br
 %li.nav-item
   = link_to '用户信息', admin_users_path, class: "nav-link #{'active' if params[:controller] == 'admin/users'}"
+%li.nav-item
+  = link_to '整理师', admin_arrangers_path, class: "nav-link #{'active' if params[:controller] == 'admin/arrangers'}"
+%li.nav-item
+  = link_to '讲师', admin_teachers_path, class: "nav-link #{'active' if params[:controller] == 'admin/teachers'}"
+%li.nav-item
+  = link_to '学员', admin_students_path, class: "nav-link #{'active' if params[:controller] == 'admin/students'}"
+
+%li.nav-item
+  = link_to '加入信息', admin_franchises_path, class: "nav-link #{'active' if params[:controller] == 'admin/franchise'}"
+
 %li.nav-item
   = link_to '产品sku查询', admin_products_path, class: "nav-link #{'active' if params[:controller] == 'admin/products' and %w(index).include?(params[:action])}"
 
 %li.nav-item
   = link_to '订单', admin_orders_path, class: "nav-link #{'active' if params[:controller] == 'admin/orders' and !%w(accounting).include?(params[:action])}"
+
+
