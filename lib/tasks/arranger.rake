@@ -12,7 +12,7 @@ namespace :arranger do
   desc '更新整理师信息'
   task :update_arranger_orders_count => :environment do
     Arranger.where(active: true).each do |item|
-      orders_count = OrderArrangerAssignment.where(arranger_id: item.id, order_type: Order::SERVICE_ORDER).select('distinct order_id').count
+      orders_count = OrderArrangerAssignment.where(arranger_id: item.id).select('distinct order_id').count
       item.update_attributes(orders_count: ((item.base_order_count || 0) + orders_count))
     end
   end
