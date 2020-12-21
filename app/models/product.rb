@@ -110,7 +110,7 @@ class Product < ActiveRecord::Base
     end
 
     attrs[:exprie_product] = true unless self.active
-    attrs[:product_images] = self.product_images.active.pluck(:mobile_image)
+    attrs[:product_images] = self.product_images.active.pluck(:mobile_image).map{|i| change_to_qiniu_https_url(i)}
     attrs
   end
 

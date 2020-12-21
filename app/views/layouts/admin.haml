@@ -62,3 +62,12 @@
         = render 'layouts/flash_messages'
         = yield
     %footer#footer
+
+    :javascript
+      $("#export_data").click(function(){
+        setTimeout(function(){
+          $("[name=commit]").each(function(){
+            $(this).removeAttr('disabled');
+          })
+        },5000)
+      })
