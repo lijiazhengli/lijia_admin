@@ -36,7 +36,7 @@ class Admin::CourseCityInfosController < Admin::BaseController
   def destroy
     @item = @course.course_city_infos.find(params[:id])
     @item.destroy
-    redirect_to :back
+    redirect_to admin_course_course_city_infos_path(@course)
   end
 
 

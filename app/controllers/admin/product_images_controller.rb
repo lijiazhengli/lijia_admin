@@ -35,7 +35,7 @@ class Admin::ProductImagesController < Admin::BaseController
   def destroy
     @item = @product.product_images.find(params[:id])
     @item.destroy
-    redirect_to :back
+    redirect_to admin_product_product_images_path(@product)
   end
 
   def file_upload

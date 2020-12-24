@@ -37,7 +37,7 @@ class Admin::GoodsController < Admin::BaseController
 
   def destroy
     @good = Good.find(params[:id])
-    redirect_to :back if @good.destroy
+    redirect_to admin_goods_path if @good.destroy
   end
 
   def file_upload
