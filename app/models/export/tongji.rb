@@ -42,6 +42,9 @@ class Export::Tongji
               p_info_arr << "#{product[:title]}x#{sub_item.quantity}"
             else
               p_info_arr << product[:title]
+            end
+          end
+        end
         result << p_info_arr.join("\r\n")
         result << item.address_province
         result << item.address_city
