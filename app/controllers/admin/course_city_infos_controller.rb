@@ -4,7 +4,9 @@ class Admin::CourseCityInfosController < Admin::BaseController
   before_action :admin_senior_stockholder_required, only: [:index, :new, :create, :update, :edit, :destroy]
 
   def index
-    @items = @course.course_city_infos.order('active desc,position')
+    @params = params[:q] || {}
+    @q = @course.course_city_infos.order('active desc,position').ransack(@params)
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
   end
 
   def new
