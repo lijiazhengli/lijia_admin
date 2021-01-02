@@ -1,4 +1,5 @@
 class ProductImage < ApplicationRecord
+  audited
   belongs_to :product
   scope :active, -> { where(active: true).order(:position) }
 

@@ -27,8 +27,9 @@
         %th 最小购买数量
         %th 购物车图片
         %th 电脑购物车图片
+        %th 详细页图片
         - if false
-          %th 详细页图片
+          
           %th 电脑详细页图片
         %th 是否启用
         %th 操作
@@ -46,6 +47,7 @@
           %td= item.min_count
           %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
           %td= image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.detailed_image || ''), width: '100px')
           - if false
             %td= image_tag(item.detailed_image || '', width: '100px')
             %td= image_tag(item.pc_detailed_image || '', width: '100px')

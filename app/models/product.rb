@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  audited
   include LijiaLocal
   has_many :product_images
   belongs_to :product_set, optional: true

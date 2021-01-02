@@ -6,7 +6,7 @@
       %span{id: "#{button_name}-image-select-text"} 选择图片
       %input.form-control{id: "#{button_name}"}(type='file' multiple=false)
 .col-md-12{id: "#{button_name}-image-collection"}
-  %img.img-thumbnail.img-fixed{id: "#{button_name}-image"}(src="#{item.send(image_name)}?imageView2/0/w/750")
+  %img.img-thumbnail.img-fixed{id: "#{button_name}-image"}(src="#{change_to_qiniu_https_url(item.send(image_name))}?imageView2/0/w/750")
 
 :javascript
   $('##{button_name}').fileupload({
@@ -22,6 +22,6 @@
   }).bind('fileuploaddone', function (e, data) {
     $('##{button_name}-image-btn').removeClass('disabled');
     $('##{button_name}-image-select-text').text('选择图片');
-    $('##{input_name}').val(data.result.download_url);
+    $('##{input_name}').val(data.result.record_url);
     $('##{button_name}-image').attr('src', data.result.download_url + '?imageView2/0/w/750');
   });

@@ -1,4 +1,5 @@
 class Introduce < ApplicationRecord
+  audited
   include LijiaLocal
 
   ITEM_TYPE = {

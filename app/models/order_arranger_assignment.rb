@@ -1,4 +1,5 @@
 class OrderArrangerAssignment < ActiveRecord::Base
+  audited
   belongs_to :order
   belongs_to :arranger
   after_create :plus_arranger_order_count, :if => Proc.new{|i| i.order_type == Order::SERVICE_ORDER }

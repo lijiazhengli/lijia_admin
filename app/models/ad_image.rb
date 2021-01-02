@@ -1,4 +1,5 @@
 class AdImage < ApplicationRecord
+  audited
   include LijiaLocal
   #AD_TYPE = {'applet_home' => '小程序首页', 'applet_service' => '小程序莉家服务页面', 'applet_course' => '小程序课程页面', 'applet_good' => '收纳工具'}
   AD_TYPE = {'applet_home' => '小程序首页', 'applet_service' => '小程序莉家服务页面', 'applet_good' => '收纳工具页面', 'web_service' => '官网莉家服务页面'}

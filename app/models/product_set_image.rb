@@ -1,4 +1,5 @@
 class ProductSetImage < ApplicationRecord
+  audited
   belongs_to :product_set
   scope :active, -> { where(active: true).order(:position) }
 

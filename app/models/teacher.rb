@@ -1,4 +1,5 @@
 class Teacher < ApplicationRecord
+  audited
   include LijiaLocal
   scope :current_active, -> {where(active: true).order(:position)}
 

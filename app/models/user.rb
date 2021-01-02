@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  audited
   has_many  :orders
   has_many  :applies
   has_many  :franchises

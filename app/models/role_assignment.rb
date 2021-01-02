@@ -1,4 +1,5 @@
 class RoleAssignment < ActiveRecord::Base
+  audited
   belongs_to :admin
   belongs_to :role
 

@@ -1,4 +1,5 @@
 class Admin < ActiveRecord::Base
+  audited
   has_many :role_assignments
   has_many :roles, through: :role_assignments
 

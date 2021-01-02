@@ -1,4 +1,5 @@
 class CourseCityInfo < ApplicationRecord
+  audited
   scope :active, -> { where(active: true).order(:position) }
   def up_serial(target_id)
     self.class.transaction do

@@ -41,6 +41,10 @@
     .form-group
       = f.text_field :pc_front_image, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @good, image_name: 'pc_front_image', image_size: '购物车图片(300x200)', button_name: 'pc-front-image', input_name: 'good_pc_front_image', upload_url: file_upload_admin_goods_path(type: 'pc-front')}
+
+    .form-group
+      = f.text_field :detailed_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @good, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'good_detailed_image', upload_url: file_upload_admin_goods_path(type: 'detailed')}
     
     - if true
       %div ----------------以下信息即将被删除-----------
@@ -53,10 +57,6 @@
         = f.label "详细描述"
         %br
         = f.cktext_area :web_content, ckeditor: { language: 'zh-cn'}
-
-      .form-group
-        = f.text_field :detailed_image, style: 'display: none'
-        = render partial: 'upload_image', locals: {item: @good, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'good_detailed_image', upload_url: file_upload_admin_goods_path(type: 'detailed')}
 
       .form-group
         = f.text_field :pc_detailed_image, style: 'display: none'

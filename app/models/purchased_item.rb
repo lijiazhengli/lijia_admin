@@ -1,4 +1,5 @@
 class PurchasedItem < ActiveRecord::Base
+  audited
   belongs_to :order
   belongs_to :product
   has_one :delivery_order

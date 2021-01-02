@@ -1,4 +1,5 @@
 class Admin::BaseController < ApplicationController
+  include LijiaLocal
   layout "admin"
 
   before_action :admin_required, except: [:admin_login]
@@ -53,7 +54,7 @@ class Admin::BaseController < ApplicationController
       logger.fatal "error:#{$!} at:#{$@}"
       render status: :internal_server_error, json: {status: -1}
     else
-      render json: {status: 0, message: 'success', download_url: "#{ENV['QINIU_URL']}#{result['key']}"}
+      render json: {status: 0, message: 'success', download_url: "#{change_to_qiniu_https_url(ENV['QINIU_URL']+result['key'])}", record_url: result['key']}
     end
   end
 

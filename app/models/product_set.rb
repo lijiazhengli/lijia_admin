@@ -1,4 +1,5 @@
 class ProductSet < ApplicationRecord
+  audited
   include LijiaLocal
   has_many :product_set_images
   has_many :products

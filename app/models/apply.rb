@@ -1,4 +1,5 @@
 class Apply < ApplicationRecord
+  audited
   belongs_to :user
   has_many  :apply_items
   accepts_nested_attributes_for :apply_items, allow_destroy: true

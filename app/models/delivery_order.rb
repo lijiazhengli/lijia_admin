@@ -1,4 +1,5 @@
 class DeliveryOrder < ApplicationRecord
+  audited
   belongs_to :order
   has_many :purchased_items
 

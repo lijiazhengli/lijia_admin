@@ -19,6 +19,7 @@ class Good < Product
       min_count: self.min_count,
       price: self.price,
       size: self.size,
+      detail_img_url: change_to_qiniu_https_url(self.detailed_image),
       img_url: change_to_qiniu_https_url(self.front_image)
     }
   end

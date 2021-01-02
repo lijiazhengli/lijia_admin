@@ -1,5 +1,6 @@
 require 'openssl'
 class Order < ApplicationRecord
+  audited
   has_many  :order_payment_records
   accepts_nested_attributes_for :order_payment_records, allow_destroy: true
 

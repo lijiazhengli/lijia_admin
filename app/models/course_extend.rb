@@ -1,4 +1,5 @@
 class CourseExtend < ApplicationRecord
+  audited
   belongs_to :course
 
   def city_infos_list
