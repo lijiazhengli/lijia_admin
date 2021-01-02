@@ -97,11 +97,17 @@ class Admin::GoodsController < Admin::BaseController
     else
       @q = Order.goods.noncanceled.includes(:purchased_items).order("#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
     end
-    @orders = @q.result(distinct: true).page(params[:page]).per(100)
-    @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
-    product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
-    @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
-    @product_hash = Product.get_product_list_hash(product_ids)
+    if params['commit'] != '导出数据'
+      @orders = @q.result(distinct: true).page(params[:page]).per(100)
+      @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
+      product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
+      @users_hash = User.where(id: @orders.map(&:user_id)).pluck(:id, :name).to_h
+      @product_hash = Product.get_product_list_hash(product_ids)
+    else
+      @orders = @q.result(distinct: true)
+      @orders = [] if params[:customer_name_cont].present? and @params[:user_id_in].blank?
+      return send_data(Export::Order.goods(@orders), :type => "text/excel;charset=utf-8; header=present", :filename => "业绩及绩效统计#{Time.now.strftime('%Y%m%d%H%M%S%L')}.xls" )
+    end
   end
 
   private

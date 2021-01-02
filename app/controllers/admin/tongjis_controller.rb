@@ -19,6 +19,9 @@ class Admin::TongjisController < Admin::BaseController
     end
     @results = results
     @users = User.where(phone_number: results.keys)
+    if params['commit'] == '导出数据'
+      return send_data(Export::Tongji.achievement(@per_infos, @results, @users), :type => "text/excel;charset=utf-8; header=present", :filename => "业绩及绩效统计#{Time.now.strftime('%Y%m%d%H%M%S%L')}.xls" )
+    end
   end
 
   def city

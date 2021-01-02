@@ -57,5 +57,5 @@
       = select_tag "sort_order_type", options_for_select({'降序' => 'desc', '升序' => 'asc'}, params[:sort_order_type]), include_blank: false, class: "form-control"
 
   = f.submit '查询', class: "btn btn-secondary"
-  - if params[:controller] == 'admin/tongjis' and %w(city).include?(params[:action])
+  - if (params[:controller] == 'admin/tongjis' and %w(city achievement).include?(params[:action])) or (params[:controller] == 'admin/orders' and %w(index).include?(params[:action]))
     = f.submit "导出数据", class: 'btn btn-primary margin-l20', id: 'export_data'
