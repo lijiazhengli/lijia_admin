@@ -3,6 +3,9 @@
   = search_form_for @q, url: admin_courses_path, html: {class: 'form-inline'} do |f|
     .form-group
       = f.search_field :title_cont, class: "form-control", placeholder: "配置说明"
+    .form-group
+      = f.search_field :course_city_infos_date_info_cont, class: "form-control", placeholder: "开课时间"
+      
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建课程', new_admin_course_path, class: "btn btn-success"
 

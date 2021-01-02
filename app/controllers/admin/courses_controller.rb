@@ -5,7 +5,7 @@ class Admin::CoursesController < Admin::BaseController
 
   def index
     @params = params[:q] || {}
-    @q = Course.includes(:course_extend).order('active desc, position asc').ransack(@params)
+    @q = Course.includes(:course_extend, :course_city_infos).order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page]).per(100)
   end
 
