@@ -36,7 +36,7 @@ class Admin::ServicesController < Admin::BaseController
 
   def destroy
     @service = Service.find(params[:id])
-    redirect_to :back if @service.destroy
+    redirect_to admin_services_path if @service.destroy
   end
 
   def file_upload

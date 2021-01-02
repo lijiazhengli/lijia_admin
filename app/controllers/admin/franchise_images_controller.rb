@@ -35,7 +35,7 @@ class Admin::FranchiseImagesController < Admin::BaseController
   def destroy
     @item = @parent.franchise_images.find(params[:id])
     @item.destroy
-    redirect_to :back
+    redirect_to admin_franchise_franchise_images_path(@parent)
   end
 
   def file_upload
