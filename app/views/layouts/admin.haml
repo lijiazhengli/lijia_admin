@@ -52,6 +52,8 @@
               = render 'layouts/admin_for_junior_marketing'
             - if @admin.admin_customer_service?
               = render 'layouts/admin_for_customer_service'
+            - if @admin.junior_customer_service?
+              = render 'layouts/admin_for_junior_customer_service'
             - if @admin.senior_accounting?
               = render 'layouts/admin_for_senior_accounting'
             - if @admin.junior_purchase?

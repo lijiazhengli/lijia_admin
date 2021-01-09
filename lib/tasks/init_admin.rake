@@ -318,5 +318,14 @@ namespace :admin do
     end
   end
 
+  desc '更新整理师信息'
+  task :init_role_210101 => :environment do
+    { 
+      junior_customer_service: '基础客服',
+    }.each do |role_name, description|
+      Role.where(name: role_name, description: description).first_or_create
+    end
+  end
+
 
 end
