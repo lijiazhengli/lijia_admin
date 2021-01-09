@@ -334,7 +334,7 @@ DEPENDENCIES
   mina-multistage
   mina-puma
   mini_magick
-  mysql2 (>= 0.3.18, < 0.4.9)
+  mysql2 (~> 0.4.8)
   paperclip
   puma (~> 3.11)
   qiniu
