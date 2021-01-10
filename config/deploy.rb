@@ -30,7 +30,6 @@ task deploy: :environment do
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
-    invoke :'ruby -v'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     command %{#{fetch(:rails)} db:seed}
