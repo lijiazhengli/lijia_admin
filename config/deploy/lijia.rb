@@ -1,6 +1,6 @@
 set :domain, '211.149.145.98'
 set :deploy_to, '/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
-set :branch, 'production'
+set :branch, 'lijia'
 set :user, 'root'
 set :rails_env, 'production'
