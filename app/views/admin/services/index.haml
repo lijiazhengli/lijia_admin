@@ -3,6 +3,9 @@
   = search_form_for @q, url: admin_services_path, html: {class: 'form-inline'} do |f|
     .form-group
       = f.search_field :title_cont, class: "form-control", placeholder: "服务名称"
+    .form-group
+      = f.label '分类'
+      = select_tag "q[product_set_id_eq]", options_for_select(ServiceSet.pluck(:title, :id).to_h, @params[:product_set_id_eq]), include_blank: true, class: "form-control"
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建整理服务', new_admin_service_path, class: "btn btn-success"
 
@@ -25,6 +28,7 @@
     %thead
       %tr
         %th sku
+        %th 分类名称
         %th 名称
         %th 短描述
         - if false
@@ -48,6 +52,7 @@
         - @draggable = true
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_services_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_services_path(:id =>item.id)}")
           %td= item.id
+          %td= @product_sets_hash[item.product_set_id]
           %td= item.title
           %td= item.sub_title
           - if false

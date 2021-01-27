@@ -11,6 +11,16 @@
       = f.text_field :title, class: 'form-control'
 
     .form-group
+      = f.label "*分类"
+      %br
+      = f.select :product_set_id, options_for_select(ServiceSet.all.pluck(:title, :id), @service.product_set_id), {include_blank: true}, class: 'form-control'
+
+    .form-group
+      = f.label "*收费标准"
+      %br
+      = f.text_field :size, class: 'form-control'
+
+    .form-group
       = f.label "短描述"
       %br
       不操过20个汉字

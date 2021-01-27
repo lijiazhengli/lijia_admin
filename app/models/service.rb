@@ -1,5 +1,6 @@
 class Service < Product
   include LijiaLocal
+  belongs_to :service_set, optional: true, foreign_key: :product_set_id, class_name: "ServiceSet"
   scope :applet_home, -> {where(active: true).order(:position)}
 
   def to_applet_list

@@ -1,6 +1,12 @@
-%h3 收纳工具分类详细图片列表
-= link_to '新建收纳工具分类图片', new_admin_product_set_product_set_image_path(@parent), class: "btn btn-success"
+%h3 分类详细图片列表
+= link_to '新建分类图片', new_admin_product_set_product_set_image_path(@parent), class: "btn btn-success"
 = link_to '返回', admin_product_sets_path, class: "btn btn-success"
+- if @parent.type == 'GoodSet'
+  = link_to '返回收纳工具列表', admin_good_sets_path, class: "btn btn-success"
+- elsif @parent.type == 'ServiceSet'
+  = link_to '返回整理服务列表', admin_service_sets_path, class: "btn btn-success"
+- elsif false and  @parent.type == 'CourseSet'
+  = link_to '返回课程列表', admin_course_sets_path, class: "btn btn-success"
 
 
 %table.table.table-striped

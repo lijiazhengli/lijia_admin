@@ -1,0 +1,42 @@
+%h2 整理服务分类列表
+- if true
+  = search_form_for @q, url: admin_service_sets_path, html: {class: 'form-inline'} do |f|
+    .form-group
+      = f.search_field :title_cont, class: "form-control", placeholder: "名称"
+    = f.submit '查询', class: "btn btn-secondary"
+    = link_to '新建整理分类', new_admin_service_set_path, class: "btn btn-success"
+
+%br
+%div
+  总数： 
+  = @items.total_count
+.table-responsive
+  %table.table.table-striped.table-sm
+    %thead
+      %tr
+        %th 名称
+        %th 激活产品数量
+        %th 首页图片
+        %th 详细页图片
+        %th 是否启用
+        %th 操作
+    %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
+      - @items.each do |item|
+        - @draggable = true
+        %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_service_sets_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_service_sets_path(:id =>item.id)}")
+          %td= item.title
+          %td= @products.select{|i| i.product_set_id == item.id}.size
+          %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.detailed_image || ''), width: '100px')
+          %td= active_chinese_name(item)
+          %td
+            = link_to '修改', edit_admin_service_set_path(item)
+            |
+            - if item.active
+              = link_to '关闭', disable_admin_service_set_path(item), :method => :put
+            - else
+              = link_to '启用', enable_admin_service_set_path(item), :method => :put
+            |
+            = link_to "详情图片", admin_product_set_product_set_images_path(item)
+
+  = paginate @items

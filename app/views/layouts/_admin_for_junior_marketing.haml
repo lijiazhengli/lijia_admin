@@ -3,11 +3,14 @@
 %li.nav-item
   = link_to '图片信息', admin_ad_images_path, class: "nav-link #{'active' if params[:controller] == 'admin/ad_images'}"
 %li.nav-item
+  = link_to '整理服务分类', admin_service_sets_path, class: "nav-link #{'active' if params[:controller] == 'admin/service_sets'}"
+%li.nav-item
   = link_to '整理服务', admin_services_path, class: "nav-link #{'active' if params[:controller] == 'admin/services'}"
 %li.nav-item
   = link_to '课程培训', admin_courses_path, class: "nav-link #{'active' if params[:controller] == 'admin/courses'}"
 %li.nav-item
-  = link_to '收纳工具分类', admin_product_sets_path, class: "nav-link #{'active' if params[:controller] == 'admin/product_sets' and params[:action] != 'order'}"
+  = link_to '收纳工具分类', admin_good_sets_path, class: "nav-link #{'active' if params[:controller] == 'admin/good_sets'}"
+
 %li.nav-item
   = link_to '收纳工具sku', admin_goods_path, class: "nav-link #{'active' if params[:controller] == 'admin/goods' and params[:action] != 'order'}"
 %li.nav-item

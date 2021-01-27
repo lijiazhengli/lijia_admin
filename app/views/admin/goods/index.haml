@@ -5,7 +5,7 @@
       = f.search_field :title_cont, class: "form-control", placeholder: "sku名称"
     .form-group
       = f.label '收纳工具分类'
-      = select_tag "q[product_set_id_eq]", options_for_select(ProductSet.pluck(:title, :id).to_h, @params[:product_set_id_eq]), include_blank: true, class: "form-control"
+      = select_tag "q[product_set_id_eq]", options_for_select(GoodSet.pluck(:title, :id).to_h, @params[:product_set_id_eq]), include_blank: true, class: "form-control"
     = f.submit '查询', class: "btn btn-secondary"
     = link_to '新建收纳工具sku', new_admin_good_path, class: "btn btn-success"
 

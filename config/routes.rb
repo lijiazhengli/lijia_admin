@@ -130,6 +130,20 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :good_sets do
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
+      end
+    end
+
     resources :introduces do
       collection do
         post :file_upload
@@ -199,6 +213,20 @@ Rails.application.routes.draw do
           put :enable
         end
       end
+      collection do
+        post :file_upload
+        put :file_upload
+        patch :file_upload
+        put :up_serial
+        put :down_serial
+      end
+      member do
+        put :disable
+        put :enable
+      end
+    end
+
+    resources :service_sets do
       collection do
         post :file_upload
         put :file_upload

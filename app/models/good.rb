@@ -1,5 +1,6 @@
 class Good < Product
   include LijiaLocal
+  belongs_to :good_set, optional: true, foreign_key: :product_set_id, class_name: "GoodSet"
   scope :applet_home, -> {where(active: true).order(:position)}
 
   def to_applet_list

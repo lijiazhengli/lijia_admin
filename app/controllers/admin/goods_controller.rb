@@ -6,7 +6,7 @@ class Admin::GoodsController < Admin::BaseController
     @params = params[:q] || {}
     @q = Good.order('active desc, position asc').ransack(@params)
     @items = @q.result(distinct: true).page(params[:page]).per(100)
-    @product_sets_hash = ProductSet.where(id: @items.map(&:product_set_id)).pluck(:id, :title).to_h
+    @product_sets_hash = GoodSet.where(id: @items.map(&:product_set_id)).pluck(:id, :title).to_h
   end
 
   def new

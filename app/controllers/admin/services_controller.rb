@@ -5,7 +5,8 @@ class Admin::ServicesController < Admin::BaseController
   def index
     @params = params[:q] || {}
     @q = Service.order('active desc, position asc').ransack(@params)
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true).page(params[:page]).per(100)
+    @product_sets_hash = ProductSet.where(id: @items.map(&:product_set_id)).pluck(:id, :title).to_h
   end
 
   def new
