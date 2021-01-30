@@ -1,7 +1,7 @@
 class Admin::CourseCityInfosController < Admin::BaseController
   layout 'admin'
   before_action :get_course
-  before_action :admin_senior_stockholder_required, only: [:index, :new, :create, :update, :edit, :destroy]
+  #before_action :admin_senior_stockholder_required, only: [:index, :new, :create, :update, :edit, :destroy]
 
   def index
     @params = params[:q] || {}
