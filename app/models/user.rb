@@ -1,3 +1,4 @@
+# TODO: 是否享受课程优惠
 class User < ApplicationRecord
   audited
   has_many  :orders

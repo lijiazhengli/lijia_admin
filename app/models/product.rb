@@ -1,3 +1,4 @@
+# TODO: 优惠金额&折扣
 class Product < ActiveRecord::Base
   audited
   include LijiaLocal

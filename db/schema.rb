@@ -182,26 +182,11 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
   create_table "course_teachers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "course_id"
     t.integer "teacher_id"
-    t.string "name"
     t.text "introduce"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_course_teachers_on_course_id"
     t.index ["teacher_id"], name: "index_course_teachers_on_teacher_id"
-  end
-
-  create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "title"
-    t.string "city_id"
-    t.string "city_name"
-    t.string "start_date"
-    t.string "end_date"
-    t.text "description"
-    t.string "front_image"
-    t.string "detailed_image"
-    t.boolean "active"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "delivery_orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -283,7 +268,6 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.integer "payment_method_id"
     t.string "payment_method_name"
     t.float "cost"
-    t.boolean "active"
     t.datetime "timestamp"
     t.string "out_trade_no"
     t.string "transaction_id"
@@ -479,8 +463,8 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "mobile_image"
     t.string "tag"
-    t.string "web_tag"
     t.integer "position", default: 999
+    t.string "web_tag"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

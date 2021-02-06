@@ -725,6 +725,8 @@ class AppletsController < ApplicationController
     end
   end
 
+  # TODO: 传用户
+  # 若用户配置了享受课程优惠，同时课程配置了活动（折扣or金额）price 计算
   def get_course_purchased_items(order_info)
     return [] if order_info[:course_id].blank?
     course = Course.find(order_info[:course_id])
