@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_02_030209) do
+ActiveRecord::Schema.define(version: 2021_02_06_035854) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.string "size", default: ""
     t.datetime "start_time"
     t.datetime "end_time"
+    t.float "event_price", comment: "活动金额"
     t.index ["product_set_id"], name: "index_products_on_product_set_id"
     t.index ["type"], name: "index_products_on_type"
   end
@@ -484,6 +485,7 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.float "zhekou", default: 1.0
     t.integer "status", default: 1
     t.boolean "show_achievement", default: false
+    t.boolean "is_course_discount", default: false, comment: "是否享受课程优惠"
     t.index ["phone_number"], name: "index_users_on_phone_number"
     t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"

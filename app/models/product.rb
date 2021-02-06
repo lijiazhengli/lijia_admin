@@ -1,4 +1,4 @@
-# TODO: 优惠金额&折扣
+# event_price: 活动金额(若配置了按活动金额)
 class Product < ActiveRecord::Base
   audited
   include LijiaLocal

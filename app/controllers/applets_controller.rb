@@ -610,7 +610,7 @@ class AppletsController < ApplicationController
       order_attr[:city_name] = order_attr[:city_name]
       order_attr[:recipient_phone_number] = order_attr[:recipient_phone_number].gsub(' ', '') if order_attr[:recipient_phone_number].present?
       option = {order_attr: order_attr.permit!, params: order_info}
-      option[:purchased_items] = get_course_purchased_items(order_info)
+      option[:purchased_items] = get_course_purchased_items(order_info, user)
       option[:user] = user if user.present?
 
       
@@ -725,12 +725,15 @@ class AppletsController < ApplicationController
     end
   end
 
-  # TODO: 传用户
   # 若用户配置了享受课程优惠，同时课程配置了活动（折扣or金额）price 计算
-  def get_course_purchased_items(order_info)
+  def get_course_purchased_items(order_info, user)
     return [] if order_info[:course_id].blank?
     course = Course.find(order_info[:course_id])
-    [{product_id: course.id, quantity: order_info[:course_quantity] || 1, price: course.price}]
+    course_price = course.price
+    if user.is_course_discount? && course.event_price_usable?
+      course_price = course.event_price
+    end
+    [{product_id: course.id, quantity: order_info[:course_quantity] || 1, price: course_price}]
   end
 
 
