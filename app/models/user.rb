@@ -25,7 +25,7 @@ class User < ApplicationRecord
 
   def to_applet_list
     attrs = {}
-    %w(name profession avatar address_province address_city address_district zhekou).each do |info|
+    %w(name profession avatar address_province address_city address_district zhekou is_course_discount).each do |info|
       attrs[info.to_sym] =  self.send(info)
     end
     attrs[:sex] = self.get_applet_sex
