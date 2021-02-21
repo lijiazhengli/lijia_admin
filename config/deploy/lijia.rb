@@ -1,4 +1,4 @@
-set :domain, '211.149.145.98'
+set :domain, '211.149.145.98 -p 2021'
 set :deploy_to, '/data/lijia_admin'
 set :repository, 'git@github.com:lijiazhengli/lijia_admin.git'
 set :branch, 'lijia'
