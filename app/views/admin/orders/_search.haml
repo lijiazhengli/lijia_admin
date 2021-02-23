@@ -37,6 +37,12 @@
     = f.date_field :created_at_lteq, class: "form-control"
 
   .form-group
+    = f.label "修改时间起"
+    = f.date_field :updated_at_gteq, class: "form-control"
+    = f.label "修改时间止"
+    = f.date_field :updated_at_lteq, class: "form-control"
+
+  .form-group
     = f.search_field :city_name_cont, class: "form-control", placeholder: "城市"
 
   .form-group

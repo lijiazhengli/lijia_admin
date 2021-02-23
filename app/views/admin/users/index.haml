@@ -11,6 +11,9 @@
     = f.label '类型'
     = select_tag "q[status_eq]", options_for_select(User::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
   .form-group
+    = f.label '大区'
+    = select_tag "q[area_eq]", options_for_select(User::STATUS.invert, @params[:area_eq]), include_blank: true, class: "form-control"
+  .form-group
     = f.label '是否享受课程优惠'
     = select_tag "q[is_course_discount_eq]", options_for_select({'是' => true, '否' => false}, @params[:is_course_discount_eq]), include_blank: true, class: "form-control"
   .form-group
@@ -30,9 +33,10 @@
       %tr
         %th 姓名
         %th 电话
-        %th 类型
         %th OpenId
         %th 折扣
+        %th 类型
+        %th 大区
         %th 是否查看绩效
         %th 是否享受课程优惠
         %th 创建时间
@@ -42,9 +46,10 @@
         %tr
           %td= item.name
           %td= item.phone_number
-          %td= User::STATUS[item.status]
           %td= item.wx_ma_id
           %td= item.zhekou
+          %td= User::STATUS[item.status]
+          %td= User::AREA_STATUS[item.area]
           %td= show_active_chinese_name(item.show_achievement)
           %td= show_active_chinese_name(item.is_course_discount)
           %td= item.created_at.strftime('%F %T')
