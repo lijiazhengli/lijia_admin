@@ -96,32 +96,7 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def accounting
-    p params
-    product_ids = params[:product_ids].present? ? params[:product_ids].split(',') : []
-    @params = params[:q] || {}
-    if params[:order_type].present?
-      @params[:order_type_eq] = params[:order_type]
-    end
-
-    @params = params[:q] || {}
-
-    user_ids = []
-
-    if params[:customer_name_cont].present?
-      user_ids += User.ransack(name_cont: params[:customer_name_cont]).result(distinct: true).pluck(:id).uniq
-    end
-
-    if params[:customer_phone_number_cont].present?
-      user_ids += User.ransack(phone_number_cont: params[:customer_phone_number_cont]).result(distinct: true).pluck(:id).uniq
-    end
-    @params[:user_id_in] = user_ids if user_ids.present?
-
-    if product_ids.present?
-      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').where(purchased_items: {product_id: product_ids}).order('orders.id desc').ransack(@params)
-    else
-      @q = Order.noncanceled.includes(:order_payment_records, :purchased_items).references(:order_payment_records, :purchased_items).where('order_payment_records.timestamp != ? or order_payment_records.timestamp != ?', nil, '').order('orders.id desc').ransack(@params)
-    end
-
+    @orders, @params, @q = Order.search_result(params)
     @orders = @q.result(distinct: true).page(params[:page]).per(100)
     order_ids = @q.result(distinct: true).map(&:id).uniq
     @order_paided_count = OrderPaymentRecord.where(order_id: order_ids).where.not(timestamp: nil).sum(:cost)
