@@ -96,16 +96,20 @@ class Admin::OrdersController < Admin::BaseController
   end
 
   def accounting
-    @orders, @params, @q = Order.search_result(params)
-    @orders = @q.result(distinct: true).page(params[:page]).per(100)
-    order_ids = @q.result(distinct: true).map(&:id).uniq
-    @order_paided_count = OrderPaymentRecord.where(order_id: order_ids).where.not(timestamp: nil).sum(:cost)
-    @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)
-    product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
-    @product_hash = Product.get_product_list_hash(product_ids)
-    @users = User.where(id: @orders.map(&:user_id))
-    phone_numbers =  @orders.map(&:referral_phone_number) + @orders.map(&:organizer_phone_number)
-    @phone_numbers_infos = User.where(phone_number: phone_numbers).map{|i| [i.phone_number, i]}.to_h
+    @orders, @params, @q = Order.search_result(params, true)
+    if params['commit'] != '导出数据'
+      @orders = @q.result(distinct: true).page(params[:page]).per(100)
+      order_ids = @q.result(distinct: true).map(&:id).uniq
+      @order_paided_count = OrderPaymentRecord.where(order_id: order_ids).where.not(timestamp: nil).sum(:cost)
+      @order_unpaid_count = OrderPaymentRecord.where(order_id: order_ids, timestamp: nil).sum(:cost)
+      product_ids = PurchasedItem.where(order_id: @orders.map(&:id).uniq).pluck(:product_id) if product_ids.blank?
+      @product_hash = Product.get_product_list_hash(product_ids)
+      @users = User.where(id: @orders.map(&:user_id))
+      phone_numbers =  @orders.map(&:referral_phone_number) + @orders.map(&:organizer_phone_number)
+      @phone_numbers_infos = User.where(phone_number: phone_numbers).map{|i| [i.phone_number, i]}.to_h
+    else
+      return send_data(Export::Accounting.list(@orders), :type => "text/excel;charset=utf-8; header=present", :filename => "订单收入统计#{Time.now.strftime('%Y%m%d%H%M%S%L')}.xls" )
+    end
   end
 
 
