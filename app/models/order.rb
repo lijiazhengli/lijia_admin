@@ -81,7 +81,7 @@ class Order < ApplicationRecord
     end
 
     if default_create
-      @params[:created_at_gteq] ||= (Time.now-1.day).strftime("%F")
+      @params[:created_at_gteq] ||= (Time.now-10.day).strftime("%F")
     end
 
     user_ids = []

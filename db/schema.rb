@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_035854) do
+ActiveRecord::Schema.define(version: 2021_02_23_145733) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -486,6 +486,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_035854) do
     t.integer "status", default: 1
     t.boolean "show_achievement", default: false
     t.boolean "is_course_discount", default: false, comment: "是否享受课程优惠"
+    t.integer "area", comment: "区域"
     t.index ["phone_number"], name: "index_users_on_phone_number"
     t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"

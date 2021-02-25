@@ -20,6 +20,9 @@
       说明：此类型用于算提成和绩效
       = f.select :status, options_for_select(User::STATUS.invert, @item.status), {}, class: 'form-control'
     .form-group
+      = f.label "大区"
+      = f.select :area, options_for_select(User::AREA_STATUS.invert, @item.area), {include_blank: true}, class: 'form-control'
+    .form-group
       = f.label "*折扣"
       %br
       说明：0.9 代表下单时享受9折优惠（仅收纳工具订单有效），折扣信息不能大于1， 学员8折、合伙人6折。
