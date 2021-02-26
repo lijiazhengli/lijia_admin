@@ -248,8 +248,6 @@ ActiveRecord::Schema.define(version: 2021_02_23_145733) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "tag"
     t.string "pc_image"
-    t.string "url"
-    t.integer "position", default: 999
     t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 
