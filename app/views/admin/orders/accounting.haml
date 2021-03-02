@@ -30,16 +30,17 @@
         %th 推荐人
         %th 组织人
         %th 创建时间
-        %th 修改时间
+        %th 支付时间
     %tbody
       - @orders.each do |item|
+        - order_payment_records = @order_payment_records.select{|i| i.order_id == item.id}
         %tr
           %td= link_to item.external_id, admin_order_path(item)
           %td= item.city_name || item.address_city
           %td= Order::STATUS[item.status]
           %td= item.zhekou
           %td
-            - item.order_payment_records.each do |sub_item|
+            - order_payment_records.each do |sub_item|
               %div
                 %span= sub_item.payment_name
                 %span= "¥#{sub_item.cost}"
@@ -55,12 +56,16 @@
                   %div #{product[:title]}x#{sub_item.quantity}
                 - else
                   %div #{product[:title]}
-          %td= item.order_payment_records.where.not(timestamp: [nil]).sum(:cost).round(2)
+          %td= order_payment_records.map{|i| i.cost}.sum.round(2)
           %td
             - user = @users.select{|u| u.id == item.user_id}.first
             = "#{user.name}|#{user.phone_number}|#{user.show_status}"
           %td= show_referral_info(item, @phone_numbers_infos)
           %td= show_organizer_info(item, @phone_numbers_infos)
           %td= item.created_at.strftime('%F %T')
-          %td= item.updated_at.strftime('%F %T')      
+          %td
+            - if order_payment_records.present?
+              = order_payment_records[0].timestamp.strftime('%F %T')
+            - else
+              = ''
   = paginate @orders
