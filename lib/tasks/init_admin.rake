@@ -405,5 +405,33 @@ namespace :admin do
     end
   end
 
+  desc '更新整理师信息'
+  task :init_role_20210308 => :environment do
+    {
+      course_manage: '课程管理专员',
+    }.each do |role_name, description|
+      Role.where(name: role_name, description: description).first_or_create
+    end
+
+    # 托娅、赵丽、朱婧、张维
+    role = Role.find_by_name('course_manage')
+    realm = "Lijia"
+    password = "lijia99"
+    {
+      'tangling' => '唐玲',
+      'tuoya' => '托娅',
+      'zhaoli' => '赵丽',
+      'zhuqian' => '朱婧',
+      'zhangwei' => '张维',
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.blank?
+        p_hash = Digest::MD5.hexdigest([name, realm, password].join(':'))
+        admin = Admin.create!(name: name, password_hash: p_hash, active: true, user_name: user_name)
+      end
+      admin.role_assignments.where(role_id: role.id).first_or_create
+    end
+  end
+
 
 end
