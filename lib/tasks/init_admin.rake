@@ -386,8 +386,24 @@ namespace :admin do
     end
   end
 
+  task :init_role_210302 => :environment do
 
-  
+    role = Role.find_by_name('admin_customer_service')
+    realm = "Lijia"
+    password = "lijia99"
+
+    {
+      'maiqiqi' => '麦淇淇'
+
+    }.each do |name, user_name|
+      admin = Admin.find_by_name(name)
+      if admin.blank?
+        p_hash = Digest::MD5.hexdigest([name, realm, password].join(':'))
+        admin = Admin.create!(name: name, password_hash: p_hash, active: true, user_name: user_name)
+        admin.role_assignments.create!(role_id: role.id)
+      end
+    end
+  end
 
 
 end

@@ -107,6 +107,7 @@ class Admin::OrdersController < Admin::BaseController
       @users = User.where(id: @orders.map(&:user_id))
       phone_numbers =  @orders.map(&:referral_phone_number) + @orders.map(&:organizer_phone_number)
       @phone_numbers_infos = User.where(phone_number: phone_numbers).map{|i| [i.phone_number, i]}.to_h
+      @order_payment_records = OrderPaymentRecord.where("timestamp is not null").where(order_id: order_ids)
     else
       return send_data(Export::Accounting.list(@orders), :type => "text/excel;charset=utf-8; header=present", :filename => "订单收入统计#{Time.now.strftime('%Y%m%d%H%M%S%L')}.xls" )
     end

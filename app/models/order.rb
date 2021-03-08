@@ -100,6 +100,26 @@ class Order < ApplicationRecord
       user_ids += User.ransack(phone_number_cont: params[:customer_phone_number_cont]).result(distinct: true).pluck(:id).uniq
     end
     @params[:user_id_in] = user_ids
+
+    p params
+
+    params[:sort_type] ||= 'id'
+    params[:sort_order_type] ||= 'desc'
+
+    if params[:area].present?
+      area_users = User.where(area: params[:area])
+      area_phone_number = area_users.pluck(:phone_number)
+      area_user_ids = area_users.pluck(:id)
+
+      if params[:user_type] == '1'
+        @params[:user_id_in] += area_user_ids if area_user_ids.present?
+      elsif params[:user_type] == '2'
+        @params[:referral_phone_number_in] = area_phone_number if area_phone_number.present?
+      elsif params[:user_type] == '3'
+        @params[:organizer_phone_number_in] = area_phone_number if area_phone_number.present?
+      end   
+    end
+
     if product_ids.present?
       @q = Order.noncanceled.includes(:purchased_items).where(purchased_items: {product_id: product_ids}).order("orders.#{params[:sort_type]} #{params[:sort_order_type]}").ransack(@params)
     else

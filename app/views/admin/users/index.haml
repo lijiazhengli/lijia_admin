@@ -12,7 +12,7 @@
     = select_tag "q[status_eq]", options_for_select(User::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
   .form-group
     = f.label '大区'
-    = select_tag "q[area_eq]", options_for_select(User::STATUS.invert, @params[:area_eq]), include_blank: true, class: "form-control"
+    = select_tag "q[area_eq]", options_for_select(User::AREA_STATUS.invert, @params[:area_eq]), include_blank: true, class: "form-control"
   .form-group
     = f.label '是否享受课程优惠'
     = select_tag "q[is_course_discount_eq]", options_for_select({'是' => true, '否' => false}, @params[:is_course_discount_eq]), include_blank: true, class: "form-control"
