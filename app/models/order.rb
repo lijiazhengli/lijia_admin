@@ -389,21 +389,37 @@ class Order < ApplicationRecord
       @@order_logger.info (Time.now.to_s + {'m_name' => 'TRANSACTION_METHODS_BIGIN', 'METHODS' => select_methods, 'ORDER_HASH' => order_hash}.to_s)
       begin
         Order.transaction do
-          check_redis_expire_name(order_hash, options)
+          check_custom_lock_name(order_hash, options)
           select_methods.each do |method|
             send("#{method}", order_hash, params)
           end
           p order_hash
-          $redis.del(options[:redis_expire_name]) if options[:redis_expire_name].present?
+          del_custom_lock_name(options[:redis_expire_name]) if options[:redis_expire_name].present?
+          # $redis.del(options[:redis_expire_name]) if options[:redis_expire_name].present?
           success = true
         end
 
       rescue Exception => exp
         order_hash[:errors][:raise_erro] = exp.message
-        $redis.del(options[:redis_expire_name]) if options[:redis_expire_name].present?
+        del_custom_lock_name(options[:redis_expire_name]) if options[:redis_expire_name].present?
+        # $redis.del(options[:redis_expire_name]) if options[:redis_expire_name].present?
       end
       @@order_logger.info (Time.now.to_s + {'m_name' => 'TRANSACTION_METHODS_END', 'METHODS' => select_methods, 'ORDER_HASH' => order_hash}.to_s)
       [order_hash[:order],success,order_hash[:errors]]
+    end
+
+    def check_custom_lock_name(order_hash, params)
+      raise '请不要重复提交订单' if order_hash[:redis_expire_name].blank?
+      lock = CustomLock.where(name: order_hash[:redis_expire_name]).last
+      raise '不要重复提交订单' if lock and lock.expire_at > Time.now
+      lock = lock || CustomLock.new(name: order_hash[:redis_expire_name])
+      lock.expire_at = Time.now+5.minutes
+      lock.save
+    end
+
+    def del_custom_lock_name(expire_name)
+      return if expire_name.blank?
+      CustomLock.where(name: expire_name).delete_all
     end
 
     def check_redis_expire_name(order_hash, params)

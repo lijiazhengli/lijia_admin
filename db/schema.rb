@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_23_145733) do
+ActiveRecord::Schema.define(version: 2021_03_11_150349) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -189,6 +189,14 @@ ActiveRecord::Schema.define(version: 2021_02_23_145733) do
     t.index ["teacher_id"], name: "index_course_teachers_on_teacher_id"
   end
 
+  create_table "custom_locks", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "name"
+    t.datetime "expire_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_custom_locks_on_name"
+  end
+
   create_table "delivery_orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "order_id"
     t.string "status", default: "new"
@@ -248,6 +256,8 @@ ActiveRecord::Schema.define(version: 2021_02_23_145733) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "tag"
     t.string "pc_image"
+    t.string "url"
+    t.integer "position", default: 999
     t.index ["item_type", "active"], name: "index_introduces_on_item_type_and_active"
   end
 

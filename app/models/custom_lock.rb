@@ -1,0 +1,2 @@
+class CustomLock < ApplicationRecord
+end
