@@ -12,7 +12,7 @@ class Admin::UsersController < Admin::BaseController
 
   def update
     @item = User.find(params[:id])
-    if @item.update_attributes(current_record_params)
+    if @item.update(current_record_params)
       redirect_to admin_users_path
     else
       render :edit

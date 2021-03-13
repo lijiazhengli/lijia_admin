@@ -48,4 +48,5 @@ yarn-debug.log*
 yarn.lock
 
 /public/ckeditor_assets/*
-
+coverage/*
+dump.rdb

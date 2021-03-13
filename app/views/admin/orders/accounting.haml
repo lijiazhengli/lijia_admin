@@ -4,39 +4,7 @@
 %p 2. ✅ 代表该条交易已收钱
 %p 3.服务整理、课程、收纳工具可以一起搜索， 输入其对应的sku 
 %p 4.多个sku请用英文逗号分割。此条件为包含关系查询，即当输入'1,25'时，查询的是【空间诊断】整理服务 或者 含【透明抽屉柜】收纳工具 订单
-- if true
-  = search_form_for @q, url: accounting_admin_orders_path, html: {class: 'form-inline'} do |f|
-    .form-group
-      = f.search_field :external_id_cont, class: "form-control", placeholder: "单号"
-    .form-group
-    = text_field_tag :customer_name_cont, params[:customer_name_cont], class: "form-control", placeholder: "订购人"
-    .form-group
-    = text_field_tag :customer_phone_number_cont, params[:customer_phone_number_cont], class: "form-control", placeholder: "订购人电话"
-    .form-group
-      = f.search_field :referral_name_cont, class: "form-control", placeholder: "推荐人"
-    .form-group
-      = f.search_field :referral_phone_number_cont, class: "form-control", placeholder: "推荐人电话"
-    .form-group
-    = f.search_field :organizer_name_cont, class: "form-control", placeholder: "组织人"
-    .form-group
-    = f.search_field :organizer_phone_number_cont, class: "form-control", placeholder: "组织人电话"
-    .form-group
-      = text_field_tag :product_ids, params[:product_ids], class: 'form-control', placeholder: 'sku，多个sku请用英文逗号分割', style: "width: 320px"
-    .form-group
-      = f.label "创建开始时间"
-      = f.date_field :created_at_gteq, class: "form-control"
-      = f.label "创建结束时间"
-      = f.date_field :created_at_lteq, class: "form-control"
-
-    .form-group
-      = f.label '订单状态'
-      = select_tag "q[status_eq]", options_for_select(Order::STATUS.invert, @params[:status_eq]), include_blank: true, class: "form-control"
-
-    .form-group
-      = f.label '订单类型'
-      = select_tag "q[order_type_eq]", options_for_select(Order::ORDER_TYPE.invert, @params[:order_type_eq]), include_blank: true, class: "form-control"
-
-    = f.submit '查询', class: "btn btn-secondary"
+= render :partial => 'search', :locals => {url: accounting_admin_orders_path, order_list: true}
 
 %div
   总数： 
@@ -62,15 +30,17 @@
         %th 推荐人
         %th 组织人
         %th 创建时间
+        %th 支付时间
     %tbody
       - @orders.each do |item|
+        - order_payment_records = @order_payment_records.select{|i| i.order_id == item.id}
         %tr
           %td= link_to item.external_id, admin_order_path(item)
           %td= item.city_name || item.address_city
           %td= Order::STATUS[item.status]
           %td= item.zhekou
           %td
-            - item.order_payment_records.each do |sub_item|
+            - order_payment_records.each do |sub_item|
               %div
                 %span= sub_item.payment_name
                 %span= "¥#{sub_item.cost}"
@@ -86,11 +56,16 @@
                   %div #{product[:title]}x#{sub_item.quantity}
                 - else
                   %div #{product[:title]}
-          %td= item.order_payment_records.where.not(timestamp: [nil]).sum(:cost).round(2)
+          %td= order_payment_records.map{|i| i.cost}.sum.round(2)
           %td
             - user = @users.select{|u| u.id == item.user_id}.first
             = "#{user.name}|#{user.phone_number}|#{user.show_status}"
           %td= show_referral_info(item, @phone_numbers_infos)
           %td= show_organizer_info(item, @phone_numbers_infos)
-          %td= item.created_at.strftime('%F %T')      
+          %td= item.created_at.strftime('%F %T')
+          %td
+            - if order_payment_records.present?
+              = order_payment_records[0].timestamp.strftime('%F %T')
+            - else
+              = ''
   = paginate @orders

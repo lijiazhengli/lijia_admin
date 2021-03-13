@@ -23,7 +23,6 @@ module LijiaAdmin
 
     config.autoload_paths += %w(#{config.root}/app/models/ckeditor)
 
-
     #取消所有model的关联对象验证
     #Rails.application.config.active_record.belongs_to_required_by_default = false
 

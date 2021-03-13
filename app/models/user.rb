@@ -1,3 +1,4 @@
+# is_course_discount：是否享受课程优惠
 class User < ApplicationRecord
   audited
   has_many  :orders
@@ -8,6 +9,8 @@ class User < ApplicationRecord
   PARTNER_ZHEKOU = 0.6
   ZHEKOU = {1 => '普通客人', 0.8 => '学员', 0.6 => '合伙人'}
   STATUS = {1 => '普通客人', 2 => '学员', 3 => '城市合伙人', 4 => '事业合伙人', 5 => '战略合伙人'}
+  AREA_STATUS = {1 => '山东东北大区', 2 => '华北大区', 3 => '华东大区', 4 => '华中大区', 5 => '华南大区', 6 => '西部大区'}
+
 
   def get_applet_sex
     self.sex ? "#{self.sex}" : '0'
@@ -24,7 +27,7 @@ class User < ApplicationRecord
 
   def to_applet_list
     attrs = {}
-    %w(name profession avatar address_province address_city address_district zhekou).each do |info|
+    %w(name profession avatar address_province address_city address_district zhekou is_course_discount).each do |info|
       attrs[info.to_sym] =  self.send(info)
     end
     attrs[:sex] = self.get_applet_sex

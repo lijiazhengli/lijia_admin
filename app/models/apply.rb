@@ -78,20 +78,40 @@ class Apply < ApplicationRecord
           end
           apply = Apply.create!(user_id: user.id, item_type: Apply::ORDER_FEE_TYPE, cost: option[:total_fee], apply_items_attributes: apply_items_attributes)
           success = true
-          $redis.del(option[:redis_expire_name]) if option[:redis_expire_name].present?
+          del_custom_lock_name(option[:redis_expire_name]) if option[:redis_expire_name].present?
+          # $redis.del(option[:redis_expire_name]) if option[:redis_expire_name].present?
         end
       rescue Exception => exp
         msg = exp.message
-        $redis.del(option[:redis_expire_name]) if option[:redis_expire_name].present?
+        del_custom_lock_name(option[:redis_expire_name]) if option[:redis_expire_name].present?
+        # $redis.del(option[:redis_expire_name]) if option[:redis_expire_name].present?
       end
       [apply, success, msg]
     end
 
     def check_order_fee_apply_option option
+      msg = check_custom_lock_name(option)
+      return msg if msg.present?
       return '申请费用的用户不存在' if option[:customer_phone_number].blank?
       return '没有申请费用的订单' if option[:order_ids].blank?
       return '申请费用必须大于0' if option[:total_fee].to_f <= 0
       nil
+    end
+
+
+    def check_custom_lock_name(option)
+      redis_expire_name = option[:redis_expire_name]
+      return '请不要重复提交订单' if redis_expire_name.blank?
+      lock = CustomLock.where(name: redis_expire_name).last
+      return '请不要重复提交订单' if lock and lock.expire_at < Time.now
+      lock = lock || CustomLock.where(name: redis_expire_name).first_or_create
+      lock.update(expire_at: (Time.now+5.minutes))
+      nil
+    end
+
+    def del_custom_lock_name(expire_name)
+      return if expire_name.blank?
+      CustomLock.where(name: expire_name).delete_all
     end
 
     def check_redis_expire_name(option)
