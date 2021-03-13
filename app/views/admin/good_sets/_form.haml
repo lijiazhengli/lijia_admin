@@ -18,6 +18,13 @@
     .form-group
       = f.label "是否启用"
       = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
+    
+
+    .form-group
+      = f.text_field :home_icon, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @item, image_name: 'home_icon', image_size: '首页图标(40x40)', button_name: 'home-icon', input_name: 'good_set_home_icon', upload_url: file_upload_admin_good_sets_path(type: 'home_icon')}
+
+    %div ----------------以下信息即将被删除-----------
     .form-group
       = f.text_field :front_image, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @item, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'good_set_front_image', upload_url: file_upload_admin_good_sets_path(type: 'front')}

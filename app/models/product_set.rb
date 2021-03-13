@@ -14,6 +14,14 @@ class ProductSet < ApplicationRecord
     }
   end
 
+  def to_home_applet_list
+    {
+      id: self.id,
+      title: self.title,
+      img_url: change_to_qiniu_https_url(self.home_icon)
+    }
+  end
+
   def to_applet_show
     attrs = {
       id: self.id,

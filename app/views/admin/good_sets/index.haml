@@ -15,9 +15,9 @@
     %thead
       %tr
         %th 名称
+        %th 小程序链接
         %th 激活产品数量
-        %th 首页图片
-        %th 详细页图片
+        %th 首页图标
         %th 是否启用
         %th 操作
     %tbody(ondragstart="dragEnterHandler(event)" ondragover="dragOverHandler(event)" ondragend="dragEndHandler(event)")
@@ -25,9 +25,9 @@
         - @draggable = true
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_good_sets_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_good_sets_path(:id =>item.id)}")
           %td= item.title
+          %td= item.applet_url
           %td= @products.select{|i| i.product_set_id == item.id}.size
-          %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
-          %td= image_tag(change_to_qiniu_https_url(item.detailed_image || ''), width: '100px')
+          %td= image_tag(change_to_qiniu_https_url(item.home_icon || ''), width: '40px')
           %td= active_chinese_name(item)
           %td
             = link_to '修改', edit_admin_good_set_path(item)

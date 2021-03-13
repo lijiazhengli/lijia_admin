@@ -27,13 +27,14 @@
     .form-group
       = f.text_field :home_icon, style: 'display: none'
       = render partial: 'upload_image', locals: {item: @item, image_name: 'home_icon', image_size: '首页图标(40x40)', button_name: 'home-icon', input_name: 'service_set_home_icon', upload_url: file_upload_admin_service_sets_path(type: 'home_icon')}
-    .form-group
-      = f.text_field :front_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @item, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'service_set_front_image', upload_url: file_upload_admin_service_sets_path(type: 'front')}
+    - if false
+      .form-group
+        = f.text_field :front_image, style: 'display: none'
+        = render partial: 'upload_image', locals: {item: @item, image_name: 'front_image', image_size: '首页图片(220x220)', button_name: 'front-image', input_name: 'service_set_front_image', upload_url: file_upload_admin_service_sets_path(type: 'front')}
 
-    .form-group
-      = f.text_field :detailed_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @item, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'service_set_detailed_image', upload_url: file_upload_admin_service_sets_path(type: 'detailed')}
+      .form-group
+        = f.text_field :detailed_image, style: 'display: none'
+        = render partial: 'upload_image', locals: {item: @item, image_name: 'detailed_image', image_size: '详细页图片(750x360)', button_name: 'detailed-image', input_name: 'service_set_detailed_image', upload_url: file_upload_admin_service_sets_path(type: 'detailed')}
 
 
     = f.submit '保存', class: 'btn btn-success'

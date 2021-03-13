@@ -27,10 +27,21 @@ class AppletsController < ApplicationController
   def index
     request_info = {}
     request_info[:pages_slideshows] = AdImage.applet_home.map{|item| item.to_applet_list}
+    home_ads = AdImage.applet_home_ads
+    home_ads.map(&:ad_type).uniq.each do |ad_type|
+      request_info[ad_type] = home_ads.select{|item| item.ad_type == ad_type}.map{|item| item.to_applet_list}
+    end
+
     request_info[:services] = Service.applet_home.map{|item| item.to_applet_list}
     request_info[:courses] = Course.applet_home.map{|item| item.to_applet_list}
     request_info[:goods] = Good.applet_home.map{|item| item.to_applet_list}
-    request_info[:product_sets] = ProductSet.applet_home.map{|item| item.to_applet_list}
+    product_sets = ProductSet.applet_home
+
+    request_info[:product_sets] = product_sets.map{|item| item.to_applet_list}
+    request_info[:product_service_sets] = product_sets.select{|item| item.type == 'ServiceSet'}.map{|item| item.to_home_applet_list}
+    request_info[:product_service_sets] = request_info[:product_service_sets] * 6
+    request_info[:product_good_sets] = ProductSet.select{|item| item.type == 'GoodSet'}.map{|item| item.to_home_applet_list}
+    # request_info[:product_good_sets] = request_info[:product_good_sets] * 6
     render json: request_info
   end
 

@@ -23,8 +23,13 @@
       = f.label "是否启用"
       = f.select :active, options_for_select({'是' => true, '否' => false}, @item.active), {}, class: 'form-control'
 
-    = f.text_field :mobile_image, style: 'display: none'
-    = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '手机图片(750x360)', button_name: 'mobile-image', input_name: 'ad_image_mobile_image', upload_url: file_upload_admin_ad_images_path(type: 'mobile')}
+    - if @item.ad_type == 'applet_home'
+      = f.text_field :mobile_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '手机图片(750x360)', button_name: 'mobile-image', input_name: 'ad_image_mobile_image', upload_url: file_upload_admin_ad_images_path(type: 'mobile')}
+    - else
+      = f.text_field :mobile_image, style: 'display: none'
+      = render partial: 'upload_image', locals: {item: @item, image_name: 'mobile_image', image_size: '手机图片(646x192)', button_name: 'mobile-image', input_name: 'ad_image_mobile_image', upload_url: file_upload_admin_ad_images_path(type: 'mobile')}
+
 
     = f.text_field :pc_image, style: 'display: none'
     = render partial: 'upload_image', locals: {item: @item, image_name: 'pc_image', image_size: '电脑图片(1920x500)', button_name: 'pc-image', input_name: 'ad_image_pc_image', upload_url: file_upload_admin_ad_images_path(type: 'pc')}
