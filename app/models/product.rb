@@ -1,3 +1,4 @@
+# event_price: 活动金额(若配置了按活动金额)
 class Product < ActiveRecord::Base
   audited
   include LijiaLocal
@@ -67,6 +68,7 @@ class Product < ActiveRecord::Base
       max_count: self.max_count,
       desc: self.description,
       price: self.price,
+      event_price: self.event_price,
       earnest_price: self.earnest_price,
       city_name: self.city_name,
       start_date: self.start_date,

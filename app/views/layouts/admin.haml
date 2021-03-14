@@ -44,6 +44,8 @@
                 %a.nav-link
                   //%span.fa.fa-user-o
                   用户信息
+            - if @admin.course_manage?
+              = render 'layouts/admin_for_course_manage'
             - if @admin.senior_manage?
               = render 'layouts/admin_for_senior_manage'
             - if @admin.senior_stockholder?

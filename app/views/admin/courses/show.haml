@@ -20,14 +20,88 @@
     %td
       - @course.course_teachers.each do |item|
         %div #{item.name}
-        %div #{item.introduce} 
-  %tr
-    %th 学员
-    %td
-      - @course.students.includes(:user).each do |item|
-        - user = item.user
-        .bold-text= "#{user.name} #{user.phone_number}"
-        %div= "职业： #{item.careers}"
+        %div #{item.introduce}
+  - if false
+    %tr
+      %th 学员
+      %td
+        - @course.students.includes(:user).each do |item|
+          - user = item.user
+          .bold-text= "#{user.name} #{user.phone_number}"
+          %div= "职业： #{item.careers}"
+
+%h3 操作记录
+- audits = @course.audits
+- if audits.count > 0
+  %div
+    %table.table.table-striped.order_modifications
+      %tr
+        %td
+          %b 操作者
+        %td 动作
+        %td 内容
+        %td 操作时间
+      - audits.sort_by(&:created_at).reverse.each do |audit|
+        %tr
+          %td
+            %b= audit.user.try(:user_name) || "root"
+          %td
+            - if audit.action == "update"
+              %i 修改
+            - elsif audit.action == "create"
+              %i 创建
+            - elsif audit.action == "destroy"
+              %i 删除
+          %td
+            - if audit.auditable_type == "Product"
+              - if audit.action == "create"
+                录了
+                - for change_key, changes in audit.audited_changes
+                  - if changes.class == Array and changes.length == 2
+                    %div
+                      = "#{t(change_key)}: #{changes[0]}"
+                      &rArr;
+                      = "#{changes[1]}"
+                  - elsif changes.present?
+                    %div
+                      = "#{t(change_key)}: #{changes}"
+              - else
+                - for change_key, changes in audit.audited_changes
+                  - if changes.class == Array and changes.length == 2
+                    %div
+                      - if changes[0].class == Time or changes[0].class == DateTime
+                        - c0 = changes[0].in_time_zone.strftime("%Y-%m-%d %H:%M:%S")
+                      - else
+                        - c0 = changes[0]
+                      - if changes[1].class == Time or changes[1].class == DateTime
+                        - c1 = changes[1].in_time_zone.strftime("%Y-%m-%d %H:%M:%S")
+                      - else
+                        - c1 = changes[1]
+                      = "#{t(change_key)}: #{c0}"
+                      &rArr;
+                      = "#{c1}"
+                  - else
+                    %div
+                      - if changes.class == Time or changes.class == DateTime
+                        - c = changes.in_time_zone.strftime("%Y-%m-%d %H:%M:%S")
+                      - else
+                        - c = changes
+                      = "#{t(change_key)}: #{c}"
+            - elsif audit.auditable_type == "DeliveryWarehouseAssetConfiguration"
+              - delivery_warehouse_id = audit.audited_changes["delivery_warehouse_id"]
+              - delivery_warehouse = DeliveryWarehouse.find_by(id: delivery_warehouse_id)
+              - if audit.action == "create"
+                = "设置<#{delivery_warehouse.name}>为可接单"
+              - else
+                = "设置<#{delivery_warehouse.name}>为不可接单"
+            - elsif audit.auditable_type == "ProductCityBlacklist"
+              - city_id = audit.audited_changes["city_id"]
+              - city = City.find_by(id: city_id)
+              - if audit.action == "create"
+                = "设置<#{city.chinese_name}>为限单"
+              - else
+                = "设置<#{city.chinese_name}>为不限单"
+          %td= audit.created_at.strftime("%Y-%m-%d %H:%M:%S")
 
 
 

@@ -1,7 +1,8 @@
 .banner-list-content
-  = image_tag change_to_qiniu_https_url(@product.pc_detailed_image || '', title: @product.title, alt: @product.title, class: 'banner-img')
-  .center-title.white-text.center-text.d-none.d-sm-block
-    %span.line-white-title= @product.title
+  = image_tag change_to_qiniu_https_url(@product.pc_detailed_image || ''), title: @product.title, alt: @product.title, class: 'banner-img'
+  - if false
+    .center-title.white-text.center-text.d-none.d-sm-block
+      %span.line-white-title= @product.title
 
 .gray-list-content
   .container.margin-b20

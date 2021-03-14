@@ -13,6 +13,11 @@ class Course < Product
 
   scope :applet_home, -> {where(active: true).order(:position)}
 
+  # 是否使用配置的活动金额
+  def event_price_usable?
+    event_price.present? && event_price > 0
+  end
+
   def to_applet_list
     attrs = {
       id: self.id,

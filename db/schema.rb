@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_02_030209) do
+ActiveRecord::Schema.define(version: 2021_03_11_150349) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -182,7 +182,6 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
   create_table "course_teachers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "course_id"
     t.integer "teacher_id"
-    t.string "name"
     t.text "introduce"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -190,18 +189,12 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.index ["teacher_id"], name: "index_course_teachers_on_teacher_id"
   end
 
-  create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "title"
-    t.string "city_id"
-    t.string "city_name"
-    t.string "start_date"
-    t.string "end_date"
-    t.text "description"
-    t.string "front_image"
-    t.string "detailed_image"
-    t.boolean "active"
+  create_table "custom_locks", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "name"
+    t.datetime "expire_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_custom_locks_on_name"
   end
 
   create_table "delivery_orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -283,7 +276,6 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.integer "payment_method_id"
     t.string "payment_method_name"
     t.float "cost"
-    t.boolean "active"
     t.datetime "timestamp"
     t.string "out_trade_no"
     t.string "transaction_id"
@@ -422,6 +414,7 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.string "size", default: ""
     t.datetime "start_time"
     t.datetime "end_time"
+    t.float "event_price", comment: "活动金额"
     t.index ["product_set_id"], name: "index_products_on_product_set_id"
     t.index ["type"], name: "index_products_on_type"
   end
@@ -479,8 +472,8 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "mobile_image"
     t.string "tag"
-    t.string "web_tag"
     t.integer "position", default: 999
+    t.string "web_tag"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -500,6 +493,8 @@ ActiveRecord::Schema.define(version: 2021_01_02_030209) do
     t.float "zhekou", default: 1.0
     t.integer "status", default: 1
     t.boolean "show_achievement", default: false
+    t.boolean "is_course_discount", default: false, comment: "是否享受课程优惠"
+    t.integer "area", comment: "区域"
     t.index ["phone_number"], name: "index_users_on_phone_number"
     t.index ["wx_ma_id"], name: "index_users_on_wx_ma_id"
     t.index ["wx_union_id"], name: "index_users_on_wx_union_id"

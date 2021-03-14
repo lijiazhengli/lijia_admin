@@ -5,6 +5,10 @@ class Admin::BaseController < ApplicationController
   before_action :admin_required, except: [:admin_login]
   # before_action :admin_required, except: [:index]
 
+  def authenticated_audited_user
+    @admin
+  end
+
   def admin_login
     if cookies.signed[:admin_id].present? and Admin.where(id: cookies.signed[:admin_id]).includes(:roles).first
       redirect_to admin_home_url

@@ -31,13 +31,15 @@
         %th 名称
         %th 费用
         %th 定金
+        %th 活动费用
         %th 城市名称
         %th 开始日期
         %th 结束日期
         %th 首页图片
-        %th 电脑首页图片
         %th 详细页图片
-        %th 电脑详细页图片
+        - if false
+          %th 电脑首页图片
+          %th 电脑详细页图片
         %th 是否启用
         %th 自动创建微信付款记录
         %th 预定人数
@@ -52,13 +54,15 @@
           %td= item.title
           %td= item.price
           %td= item.earnest_price
+          %td= item.event_price
           %td= item.city_name
           %td= item.start_date
           %td= item.end_date
           %td= image_tag(change_to_qiniu_https_url(item.front_image || ''), width: '100px')
-          %td= image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), width: '100px')
           %td= image_tag(change_to_qiniu_https_url(item.detailed_image || ''), width: '100px')
-          %td= image_tag(change_to_qiniu_https_url(item.pc_detailed_image || ''), width: '100px')
+          - if false
+            %td= image_tag(change_to_qiniu_https_url(item.pc_front_image || ''), width: '100px')
+            %td= image_tag(change_to_qiniu_https_url(item.pc_detailed_image || ''), width: '100px')
           %td= active_chinese_name(item)
           %td= show_active_chinese_name(item.create_tenpay)
           %td= item.max_count
