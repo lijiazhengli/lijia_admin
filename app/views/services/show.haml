@@ -1,9 +1,10 @@
 .banner-list-content
   = image_tag change_to_qiniu_https_url(@product.pc_detailed_image || ''), title: @product.title, alt: @product.title, class: 'banner-img'
-  .center-title.white-text.center-text
-    %span 整理、让生活更轻松
-    %br
-    %span.font-small Organize and make life easier
+  - if false
+    .center-title.white-text.center-text
+      %span 整理、让生活更轻松
+      %br
+      %span.font-small Organize and make life easier
 
 .white-list-content
   .container.margin-b20.margin-t20
