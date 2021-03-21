@@ -29,6 +29,7 @@
       %tr
         %th sku
         %th 名称
+        %th 副标题
         %th 费用
         %th 定金
         %th 活动费用
@@ -52,6 +53,7 @@
         %tr(id="item-#{item.id}" draggable='true' data-id= "#{item.id}" data-up_url= "#{up_serial_admin_courses_path(:id =>item.id)}" data-down_url= "#{down_serial_admin_courses_path(:id =>item.id)}")
           %td= item.id
           %td= item.title
+          %td= item.sub_title
           %td= item.price
           %td= item.earnest_price
           %td= item.event_price

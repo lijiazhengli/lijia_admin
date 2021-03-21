@@ -9,6 +9,10 @@
       = f.label "*名称"
       %br
       = f.text_field :title, class: 'form-control'
+    .form-group
+      = f.label "*副标题"
+      %br
+      = f.text_field :sub_title, class: 'form-control'
 
     .form-group
       = f.label "城市"
@@ -77,7 +81,7 @@
 
     .form-group
       = f.text_field :front_image, style: 'display: none'
-      = render partial: 'upload_image', locals: {item: @course, image_name: 'front_image', image_size: '首页图片(686x340)', button_name: 'front-image', input_name: 'course_front_image', upload_url: file_upload_admin_courses_path(type: 'front')}
+      = render partial: 'upload_image', locals: {item: @course, image_name: 'front_image', image_size: '首页图片(60X60)', button_name: 'front-image', input_name: 'course_front_image', upload_url: file_upload_admin_courses_path(type: 'front')}
 
     .form-group
       = f.text_field :pc_front_image, style: 'display: none'
