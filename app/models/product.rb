@@ -46,6 +46,10 @@ class Product < ActiveRecord::Base
     self.end_date.present? ? self.end_date.gsub(/-/, '.') : ''
   end
 
+  def show_pc_front_image
+    self.pc_front_image.present?  ? self.pc_front_image : self.front_image
+  end
+
 
   def self.get_purchased_items(order_type)
     current_type =  order_type == Order::PRODUCT_ORDER ? 'Good' : order_type

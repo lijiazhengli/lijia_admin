@@ -2,3 +2,71 @@
 
 = link_to '返回', admin_users_path, class: "btn btn-secondary"
 = render :partial => 'form', :locals => {url: admin_user_path(@item)}
+
+%h3 操作记录
+- audits = @item.audits
+- if audits.count > 0
+  %div
+    %table.table.table-striped.order_modifications
+      %tr
+        %td
+          %b 操作者
+        %td 动作
+        %td 内容
+        %td 操作时间
+      - audits.sort_by(&:created_at).reverse.each do |audit|
+        %tr
+          %td
+            %b= audit.user.try(:user_name) || "root"
+          %td
+            - if audit.action == "update"
+              %i 修改
+            - elsif audit.action == "create"
+              %i 创建
+            - elsif audit.action == "destroy"
+              %i 删除
+          %td
+            - if audit.auditable_type == "User"
+              - if audit.action == "create"
+                录了
+                - for change_key, changes in audit.audited_changes
+                  - if changes.class == Array and changes.length == 2
+                    %div
+                      = "#{t(change_key)}: #{changes[0]}"
+                      &rArr;
+                      = "#{changes[1]}"
+                  - elsif changes.present?
+                    %div
+                      = "#{t(change_key)}: #{changes}"
+              - else
+                - for change_key, changes in audit.audited_changes
+                  - if changes.class == Array and changes.length == 2
+                    %div
+                      - if changes[0].class == Time or changes[0].class == DateTime
+                        - c0 = changes[0].in_time_zone.strftime("%Y-%m-%d %H:%M:%S")
+                      - elsif change_key == 'area'
+                        - c0 = User::AREA_STATUS[changes[0]]
+                      - elsif change_key == 'status'
+                        - c0 = User::STATUS[changes[0]]
+                      - else
+                        - c0 = changes[0]
+                      - if changes[1].class == Time or changes[1].class == DateTime
+                        - c1 = changes[1].in_time_zone.strftime("%Y-%m-%d %H:%M:%S")
+                      - elsif change_key == 'area'
+                        - c1 = User::AREA_STATUS[changes[1]]
+                      - elsif change_key == 'status'
+                        - c1 = User::STATUS[changes[1]]
+                      - else
+                        - c1 = changes[1]
+                      = "#{t(change_key)}: #{c0}"
+                      &rArr;
+                      = "#{c1}"
+                  - else
+                    %div
+                      - if changes.class == Time or changes.class == DateTime
+                        - c = changes.in_time_zone.strftime("%Y-%m-%d %H:%M:%S")
+                      - else
+                        - c = changes
+                      = "#{t(change_key)}: #{c}"
+
+          %td= audit.created_at.strftime("%Y-%m-%d %H:%M:%S")

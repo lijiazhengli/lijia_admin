@@ -1,6 +1,8 @@
 class Admin::AdminController < Admin::BaseController
   layout 'admin'
   skip_before_action :admin_required, only: [:do_login]
+  skip_before_action :verify_authenticity_token, only: [:do_login]
+
 
   def index
     @admins = Admin.all.page params[:page]

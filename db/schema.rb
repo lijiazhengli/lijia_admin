@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_150349) do
     t.index ["teacher_id"], name: "index_course_teachers_on_teacher_id"
   end
 
-  create_table "custom_locks", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "custom_locks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "expire_at"
     t.datetime "created_at", precision: 6, null: false
